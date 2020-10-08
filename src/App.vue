@@ -1,7 +1,11 @@
 <template lang="pug">
+	//div
+		router-view.mainContent(v-if="$route.name==='pin'||$route.name==='login'")
+		VtrAdditionalBottomMenu(v-else-if="$store.state.user.data!=='-1'")
 	div
 		router-view.mainContent
-		VtrAdditionalBottomMenu(v-if="$store.state.user.data!=='-1'")
+		VtrAdditionalBottomMenu(v-if="$store.state.user.data!=='-1'&&$route.name!=='pin'&&$route.name!=='login'")
+
 </template>
 
 <script>
