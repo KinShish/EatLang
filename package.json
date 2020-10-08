@@ -17,8 +17,12 @@
   "dependencies": {
     "cordova-ios": "^5.1.1",
     "core-js": "^3.6.5",
+    "ios-deploy": "^1.11.2",
+    "jsonwebtoken": "^8.5.1",
     "pug-plain-loader": "^1.0.0",
-    "vue": "^2.6.11"
+    "v-mask": "^2.2.3",
+    "vue": "^2.6.11",
+    "vuelidate": "^0.7.5"
   },
   "devDependencies": {
     "axios": "^0.20.0",

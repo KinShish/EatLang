@@ -5,16 +5,155 @@ body{
     opacity: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling:touch;
+    background-color: #f7f7f7;
 }
-#app{
-    padding-bottom: 65px;
+/*Кнопки начало*/
+.btnRed{
+    display: block;
+    outline: none;
+    border: 2px solid #F64646;
+    background: #F64646;
+    color: white;
+    border-radius: 3px;
+    padding: 5px 50px;
+    font-size: 16px;
 }
-.bottom-menu{
-    background: red;
-    height: 60px;
-    width: 100%;
+/*Кнопки конец*/
+/*Табы начало*/
+.customTabsProfile{
+    font-size: 14px !important;
+}
+.customTabContent{
+    min-height: 300px !important;
+}
+.customTabsProfile .nav-pills .nav-link.active, .nav-pills .show > .nav-link{
+    background: white !important;
+    border-radius: 14px !important;
+    color: #757575 !important;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.11) !important;
+}
+.customTabsProfile .nav-pills .nav-link{
+    background: white !important;
+    border-radius: 14px !important;
+    color: #F64646 !important;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.11) !important;
+    padding: 7px !important;
+    margin: 0 3px !important;
+}
+.customTabsProfile .card-header{
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: 20px !important;
+    background: #f7f7f7 !important;
+    position: relative !important;
+    box-shadow: none !important;
+    height: fit-content !important;
+}
+.customTabsProfile .nav-item{
+    display: block !important;
+    margin: 0 auto !important;
+}
+.customTabsProfile .card-header-pills{
+    width: fit-content !important;
+    margin: 0 auto !important;
+}
+.customTabsProfile .card{
+    border:none !important;
+    background-color: #f7f7f7 !important;
+}
+.customTabsProfile .card-body{
+    padding: 0 !important;
+}
+/*Табы конец*/
+/*Кнопки нижнего меню начало*/
+
+.customTabsBottomMenu{
+    font-size: 14px;
+}
+.customTabsBottomMenu{
+    min-height: 100%;
+}
+.customTabsBottomMenu .nav-pills .nav-link.active, .nav-pills .show > .nav-link{
+    background: white;
+    color: black;
+}
+.customTabsBottomMenu .nav-pills .nav-link{
+    margin: 0;
+    padding: 0;
+    background: white;
+    color: black;
+    outline: none;
+    font-size: 12px;
+}
+.customTabsBottomMenu .nav-pills .nav-link img{
+    display: block;
+    margin: 0 auto;
+}
+.customTabsBottomMenu .nav-pills .nav-link span{
+    display: block;
+    padding-top: 5px;
+}
+.customTabsBottomMenu .card-header{
     position: fixed;
     bottom: 0;
-    right: 0;
-    left: 0;
+    width: 100%;
+    background: white;
+    height: 50px;
+    padding: 7px 0 0 0;
+    display: flex;
+    box-shadow: 0 -4px 4px rgba(0, 0, 0, 0.1);
+    z-index: 100;
 }
+.customTabsBottomMenu .nav-item{
+    display: block;
+    margin: 0 auto;
+}
+.customTabsBottomMenu .card-header-pills{
+    display: contents;
+    width: 100%;
+}
+.customTabsBottomMenu .card{
+    border:none;
+    background-color: #f7f7f7;
+}
+.customTabsBottomMenu .card-body{
+    padding: 0;
+}
+/*Кнопки нижнего меню конец*/
+/*Шапка начало*/
+.header{
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.12);
+    height: 50px;
+    line-height: 50px;
+    padding-left: 10px;
+    font-size: 19px;
+    background-color: #f7f7f7;
+    position: relative;
+}
+.back{
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+}
+/*Шапка конец*/
+/*Анимация перехода начало*/
+.opacity-enter-active {
+    opacity: 1;
+    transition: all .3s ease;
+}
+.opacity-enter, .opacity-leave-to {
+    opacity: 0;
+    transition: all .3s ease;
+}
+/*Анимация перехода конец*/
+/*Дополнительно начало*/
+.redColor{
+    color: #F64646;
+}
+.whiteBlock{
+    background-color: white;
+}
+.greyBlock{
+    background-color: #f7f7f7;
+}
+/*Дополнительно конец*/
