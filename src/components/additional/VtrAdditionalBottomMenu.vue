@@ -15,42 +15,6 @@
 		router-link(to="/profile")
 			img(src="../../assets/menuImg/profile.svg")
 			span Профиль
-	//.customTabsBottomMenu
-		b-card(no-body)
-			b-tabs(pills card)
-				b-tab
-					template(v-slot:title)
-						img(src="../../assets/menuImg/feed.svg")
-						span Главная
-					.customTabContent
-						h1 Главная
-				b-tab
-					template(v-slot:title)
-						img(src="../../assets/menuImg/search.svg")
-						span Поиск
-					.customTabContent
-						h1 Поиск
-				b-tab
-					template(v-slot:title)
-						router-link(to="/add")
-							img(src="../../assets/menuImg/add.svg")
-							span Добавить
-					.customTabContent
-						h1 Добавить
-				b-tab
-					template(v-slot:title)
-						img(src="../../assets/menuImg/chat.svg")
-						span Чат
-					.customTabContent
-						h1 Чат
-				b-tab
-					template(v-slot:title)
-						router-link(to="/profile")
-							img(src="../../assets/menuImg/profile.svg")
-							span Профиль
-					.customTabContent
-						transition(name="opacity")
-							router-view.mainContent
 </template>
 
 <script>

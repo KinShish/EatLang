@@ -103,6 +103,9 @@
 </script>
 
 <style scoped>
+	.orderBorder{
+		border: 1px dashed #757575;
+	}
 	.exit{
 		float: right;
 		line-height: 50px;

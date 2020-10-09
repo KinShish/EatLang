@@ -31,8 +31,15 @@ let routes = {
 		},
 		{
 			path: 'chat',
-			component: () => import('../components/VtrChat'),
+			component: () => import('../components/chat/VtrChat'),
 			name: 'chat',
+			children:[
+				{
+					path: 'dialog/:id',
+					component: () => import('../components/chat/VtrChatDialog'),
+					name: 'dialog',
+				}
+			]
 		},
 		{
 			path: 'profile',

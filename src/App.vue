@@ -1,10 +1,8 @@
 <template lang="pug">
-	//div
-		router-view.mainContent(v-if="$route.name==='pin'||$route.name==='login'")
-		VtrAdditionalBottomMenu(v-else-if="$store.state.user.data!=='-1'")
 	div
-		router-view.mainContent
-		VtrAdditionalBottomMenu(v-if="$store.state.user.data!=='-1'&&$route.name!=='pin'&&$route.name!=='login'")
+		transition(name="opacity")
+			router-view.mainContent
+		VtrAdditionalBottomMenu(v-if="$store.state.user.data!=='-1'&&!($route.name==='pin'&&$route.name==='login')&&($route.name==='feed'||$route.name==='search'||$route.name==='add'||$route.name==='chat'||$route.name==='profile')")
 
 </template>
 
