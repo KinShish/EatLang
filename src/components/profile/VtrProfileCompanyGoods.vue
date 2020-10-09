@@ -32,6 +32,12 @@
 </script>
 
 <style scoped>
+	.noGoods{
+		text-align: center;
+		font-size: 30px;
+		line-height: 250px;
+		color: #f54646;
+	}
 	.customTabsProfile{
 		margin-top: 10px;
 	}

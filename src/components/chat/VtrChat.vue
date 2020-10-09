@@ -2,7 +2,7 @@
 	div
 		div(v-if="$route.name==='chat'")
 			.header
-				b-input(v-model="search" placeholder="Поиск по сообщениям")
+				b-input.borderInput(v-model="search" placeholder="Поиск по сообщениям")
 			.whiteBlock
 				router-link.mainChatBlock(v-for="item in 10" to="chat/dialog/1" :key="item")
 					.chatBlock
@@ -30,9 +30,6 @@
 </script>
 
 <style scoped>
-	.chatBorder{
-		border: 1px dashed #757575;
-	}
 	.header{
 		padding: 5px;
 	}
@@ -40,8 +37,8 @@
 		width: 95%;
 		margin: 5px auto;
 		border: 1px solid #333333;
-		height: 29px;
-		line-height: 29px;
+		height: 30px;
+		line-height: 30px;
 		font-size: 14px;
 	}
 	.mainChatBlock{
@@ -82,10 +79,13 @@
 		background: #DEDEDE;
 		line-height: 40px;
 		min-width: 50px;
+		overflow: hidden;
 	}
 	.chatBlockImg img{
-		width: 100%;
-		height: auto;
+		width: auto;
+		height: 40px;
+		display: block;
+		margin: 0 auto;
 	}
 	.chatPrice{
 		padding-bottom: 10px;

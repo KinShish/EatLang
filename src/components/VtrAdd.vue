@@ -5,20 +5,20 @@
 		b-form.mainBlock(@submit.stop.prevent="")
 			b-form-group
 				label(for="inpCat") Выбирите категорию*
-				b-form-select#inpCat(placholder="Категория" :options="options" v-model="form.cat")
+				b-form-select#inpCat.borderInput(placholder="Категория" :options="options" v-model="form.cat")
 				label(for="inpSubCat") Выбирите подкатегорию*
-				b-form-select#inpSubCat(placholder="Подкатегория" :options="options" v-model="form.subCat")
+				b-form-select#inpSubCat.borderInput(placholder="Подкатегория" :options="options" v-model="form.subCat")
 				label(for="nameInp") Название объявления
-				b-form-input#nameInp(placeholder="Название" v-model="form.name")
+				b-form-input#nameInp.borderInput(placeholder="Название" v-model="form.name")
 				label(for="priceInp") Цена
-				b-form-input#priceInp(placeholder="Цена" v-model="form.price")
+				b-form-input#priceInp.borderInput(placeholder="Цена" v-model="form.price")
 				label(for="descInp") Описание
-				b-form-textarea#descInp(placeholder="Описание" v-model="form.description")
+				b-form-textarea#descInp.borderInput(placeholder="Описание" v-model="form.description")
 				//картинки
 				label(for="videoInp") Видео
-				b-form-input#videoInp(placeholder="Ссылка" v-model="form.linkVideo")
+				b-form-input#videoInp.borderInput(placeholder="Ссылка" v-model="form.linkVideo")
 				label(for="inpCity") Город
-				b-form-select#inpCity(placholder="Выбрать город" :options="options" v-model="form.city")
+				b-form-select#inpCity.borderInput(placholder="Выбрать город" :options="options" v-model="form.city")
 			button.btnRed(type="submit") Добавить
 </template>
 
@@ -82,5 +82,9 @@
 	label{
 		margin-bottom: 0;
 		display: block;
+	}
+	textarea{
+		height: 150px;
+		resize: none;
 	}
 </style>

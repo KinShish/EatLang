@@ -14,8 +14,9 @@
 						router-link(:to="'managers/edit/1'")
 							img(src="../../assets/edit.svg")
 						img(src="../../assets/delete.svg" @click="vtr_manager_deleteManager('Димка 228',true)")
-			.btnAddManager
-				router-link(to="managers/add").btnRed Добавить нового менеджера
+			.btnAddManagerMain
+				.btnAddManager
+					router-link(to="managers/add").btnRed Добавить нового менеджера
 		transition(name="opacity")
 			router-view
 		b-modal(hide-footer ref="deleteManager" centered no-close-on-backdrop)
@@ -110,17 +111,20 @@
 		flex: auto;
 		text-overflow: ellipsis;
 	}
+	.btnAddManagerMain{
+		position: fixed;
+		bottom: 10px;
+		width: 100%;
+	}
 	.btnAddManager{
 		padding: 7px;
-		margin: 13px;
 		background: white;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 		border-radius: 3px;
-		position: fixed;
-		bottom: 50px;
-		left: 50%;
-		transform: translate(-50%, 0);
-		width: fit-content;
+		width: 95%;
+		margin: 0 auto;
+		max-width: 400px;
+		text-align: center;
 	}
 	.btnAddManager a{
 		color: white;

@@ -6,11 +6,11 @@
 		b-form.mainBlock(@submit.stop.prevent="vtr_edit_managerAdd")
 			b-form-group
 				label(for="inpName") Имя менеджера
-				b-input#inpName(v-model="formManager.name" placeholder="Имя менеджера")
+				b-input#inpName.borderInput(v-model="formManager.name" placeholder="Имя менеджера")
 				label(for="inpSurName") Фамилия менеджера
-				b-input#inpSurName(v-model="formManager.surName" placeholder="Фамилия менеджера")
+				b-input#inpSurName.borderInput(v-model="formManager.surName" placeholder="Фамилия менеджера")
 				label(for="inpNumber") Номер телефона
-				b-input#inpNumber(v-model="formManager.phone" v-mask="'+7(###) ###-##-##'" type="tel")
+				b-input#inpNumber.borderInput(v-model="formManager.phone" v-mask="'+7(###) ###-##-##'" type="tel" placeholder="+7 (___) __-__-___")
 			button.btnRed(type="submit") {{$route.name==='addManager'?'Добавить':'Редактировать'}}
 
 </template>
@@ -55,8 +55,5 @@
 	}
 	.mainBlock {
 		margin: 13px 15px 0 15px;
-	}
-	input{
-		border:1px solid #333333;
 	}
 </style>

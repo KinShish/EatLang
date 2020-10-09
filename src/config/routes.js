@@ -21,8 +21,15 @@ let routes = {
 		},
 		{
 			path: 'search',
-			component: () => import('../components/VtrSearch'),
+			component: () => import('../components/search/VtrSearch'),
 			name: 'search',
+			children: [
+				{
+					path: 'searchPage/:key',
+					component: () => import('../components/search/VtrSearchPage'),
+					name: 'searchPage',
+				}
+			]
 		},
 		{
 			path: 'add',

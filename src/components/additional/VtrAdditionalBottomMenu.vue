@@ -1,19 +1,24 @@
 <template lang="pug">
 	.mainBlockMenu
 		router-link(to="/feed")
-			img(src="../../assets/menuImg/feed.svg")
+			img(v-if="$route.name==='feed'" src="../../assets/menuImg/feedActive.svg")
+			img(v-else src="../../assets/menuImg/feed.svg")
 			span Главная
 		router-link(to="/search")
-			img(src="../../assets/menuImg/search.svg")
+			img(v-if="$route.name==='search'" src="../../assets/menuImg/searchActive.svg")
+			img(v-else src="../../assets/menuImg/search.svg")
 			span Поиск
 		router-link(to="/add")
-			img(src="../../assets/menuImg/add.svg")
+			img(v-if="$route.name==='add'" src="../../assets/menuImg/addActive.svg")
+			img(v-else src="../../assets/menuImg/add.svg")
 			span Добавить
 		router-link(to="/chat")
-			img(src="../../assets/menuImg/chat.svg")
+			img(v-if="$route.name==='chat'" src="../../assets/menuImg/chatActive.svg")
+			img(v-else src="../../assets/menuImg/chat.svg")
 			span Чат
 		router-link(to="/profile")
-			img(src="../../assets/menuImg/profile.svg")
+			img(v-if="$route.name==='profile'" src="../../assets/menuImg/profileActive.svg")
+			img(v-else src="../../assets/menuImg/profile.svg")
 			span Профиль
 </template>
 

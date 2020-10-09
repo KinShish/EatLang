@@ -1,5 +1,7 @@
 <template lang="pug">
-	h1 feedtab
+	div
+		.header
+			span Лента объявлений
 </template>
 
 <script>

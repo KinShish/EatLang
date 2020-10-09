@@ -19,7 +19,7 @@ body{
     font-size: 16px;
 }
 /*Кнопки конец*/
-/*Табы начало*/
+/*Табы в профиле начало*/
 .customTabsProfile{
     font-size: 14px;
 }
@@ -27,10 +27,7 @@ body{
     min-height: 300px;
 }
 .customTabsProfile .nav-pills .nav-link.active, .nav-pills .show > .nav-link{
-    background: white;
-    border-radius: 14px;
     color: #757575;
-    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.11);
 }
 .customTabsProfile .nav-pills .nav-link{
     background: white;
@@ -64,7 +61,49 @@ body{
 .customTabsProfile .card-body{
     padding: 0;
 }
-/*Табы конец*/
+/*Табы в профиле конец*/
+/*Табы в профиле начало*/
+.customTabsSearch{
+    font-size: 14px;
+}
+.customTabsSearch{
+    min-height: 300px;
+}
+.customTabsSearch .nav-pills .nav-link.active, .nav-pills .show > .nav-link{
+    color: black;
+}
+.customTabsSearch .nav-pills .nav-link{
+    background: white;
+    border-radius: 14px;
+    color: #757575;
+    padding: 7px;
+    margin: 0 3px;
+    font-size: 16px;
+}
+.customTabsSearch .card-header{
+    border: none;
+    padding: 0;
+    background: white;
+    position: relative;
+    box-shadow: none;
+    height: fit-content;
+}
+.customTabsSearch .nav-item{
+    display: block;
+    margin: 0 auto;
+}
+.customTabsSearch .card-header-pills{
+    width: fit-content;
+    margin: 0 auto;
+}
+.customTabsSearch .card{
+    border:none;
+    background-color: white;
+}
+.customTabsSearch .card-body{
+    padding: 0;
+}
+/*Табы в профиле конец*/
 /*Шапка начало*/
 .header{
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.12);
@@ -100,5 +139,36 @@ body{
 }
 .greyBlock{
     background-color: #f7f7f7;
+}
+.borderInput{
+    border:1px solid #333333;
+    border-radius: 3px;
+    background-color: #f7f7f7;
+}
+#sidebarFilter{
+    width: 100%;
+    background: white;
+}
+.radioBtnFilter .custom-control-inline{
+    display: block;
+}
+.radioBtnFilter{
+    margin: 30px 15px;
+}
+.radioBtnFilter .custom-control{
+    margin-bottom: 10px;
+}
+.radioBtnFilter .custom-control-label::after{
+    border-radius: 50%;
+    border: 2px solid #F64646;
+}
+.radioBtnFilter .custom-radio .custom-control-input:checked ~ .custom-control-label::after{
+    background-color: #F64646;
+}
+.searchActive{
+    background: red;
+}
+.b-sidebar > .b-sidebar-body{
+    background-color: white
 }
 /*Дополнительно конец*/

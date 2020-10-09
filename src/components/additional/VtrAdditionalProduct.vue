@@ -55,6 +55,9 @@
 	.statGoodsBlock span:nth-child(3){
 		color: #3cc281;
 	}
+	.statGoodsBlock img{
+		margin-right: 5px;
+	}
 	.nameGood{
 		font-size: 16px;
 	}
