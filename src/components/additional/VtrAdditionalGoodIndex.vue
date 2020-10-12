@@ -1,7 +1,10 @@
 <template lang="pug">
 	div
-		.blockImg
-			img(src="https://os1.ru/article/24743-novye-4-gusenichnye-traktory-s-sharnirno-sochlenennoy-ramoy-dlya-agrariev-odin-traktor-chetyre-gusenitsy/01.jpg")
+		.slider
+			span.countSlider {{slideIndex}}/3
+			agile(:options="sliderProduct" @after-change="$vtr_good_index_slideIndex")
+				.blockImg(v-for="item in 3")
+					img(src="https://os1.ru/article/24743-novye-4-gusenichnye-traktory-s-sharnirno-sochlenennoy-ramoy-dlya-agrariev-odin-traktor-chetyre-gusenitsy/01.jpg")
 		.greyBlock
 			.statGoodsIndexBlock
 				div
@@ -15,7 +18,7 @@
 					span 20.09.2020 15:09
 			.blockBorder
 				.nameIndexGood Японский мини трактор HINOMOTO N249D
-				.nameIndexGood(style="color:red;font-size:20px;") Показать цену
+				.priceIndexGood Показать цену
 			.blockBorder
 				span.watchGeoGood Показать местоположение
 			.blockBorder
@@ -61,12 +64,55 @@
 </template>
 
 <script>
+	import { VueAgile } from 'vue-agile'
 	export default {
-
+		data(){
+			return{
+				sliderProduct: {
+					navButtons: false,
+					dots: false,
+					slidesToShow: 1,
+				},
+				slideIndex:0,
+			}
+		},
+		methods:{
+			$vtr_good_index_slideIndex(index){
+				this.slideIndex=index.currentSlide+1;
+			}
+		},
+		components: {
+			agile: VueAgile
+		},
 	}
 </script>
 
 <style scoped>
+	.priceIndexGood{
+		font-weight: bold;
+		font-size: 20px;
+		line-height: 23px;
+		text-decoration-line: underline;
+		color: #26C281;
+		margin-bottom: 10px;
+	}
+	.slider{
+		position: relative;
+	}
+	.countSlider{
+		color: white;
+		position: absolute;
+		float: right;
+		z-index: 1;
+		right: 10px;
+		background: rgba(0, 0, 0, 0.5);
+		border-radius: 15px;
+		width: 40px;
+		text-align: center;
+		margin-top: 10px;
+		font-size: 12px;
+		padding: 2px;
+	}
 	.fastButton{
 		display: block;
 		outline: none;

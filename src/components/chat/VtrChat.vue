@@ -30,6 +30,9 @@
 </script>
 
 <style scoped>
+	.chatBorder{
+		border: 1px dashed #757575;
+	}
 	.header{
 		padding: 5px;
 	}

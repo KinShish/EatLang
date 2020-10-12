@@ -1,7 +1,10 @@
 <template lang="pug">
 	router-link.mainBlockGood(:to="hrefLink")
-		.blockImg
-			img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
+		.slider
+			span.countSlider {{slideIndex}}/3
+			agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex")
+				.blockImg(v-for="item in 3")
+					img(src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcScgwpR795aZ-GltGVR80A6aPAcUIo8kpYJ2g&usqp=CAU")
 		.contentGood
 			.statGoodsBlock
 				img(src="../../assets/goodsImg/eye.svg")
@@ -15,26 +18,58 @@
 			.descriptionGood
 				p {{string.substr(0,100)}}
 					span ... Подробнее
-			.priceBlock
-				span {{price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
-				span 20.09.2020 15:19
+			.priceBlock 20.09.2020 15:19
+				//span {{price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
+				//span 20.09.2020 15:19
 </template>
 
 <script>
+	import { VueAgile } from 'vue-agile'
 	export default {
 		props:{
-			hrefLink:String
+			hrefLink:String,
 		},
 		data(){
 			return{
+				sliderProduct: {
+					navButtons: false,
+					dots: false,
+					slidesToShow: 1,
+				},
+				slideIndex:0,
 				price:'600000',
 				string:'это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов. Lorem Ipsum не только успешно пережил без заметных изменений пять веков, но и перешагнул в электронный дизайн. Его популяризации в новое время послужили публикация листов Letraset с образцами Lorem Ipsum в 60-х годах и, в более недавнее время, программы электронной вёрстки типа Aldus PageMaker, в шаблонах которых используется Lorem Ipsum.'
 			}
+		},
+		methods:{
+			$vtr_product_slideIndex(index){
+				this.slideIndex=index.currentSlide+1;
+			}
+		},
+		components: {
+			agile: VueAgile
 		},
 	}
 </script>
 
 <style scoped>
+	.slider{
+		position: relative;
+	}
+	.countSlider{
+		color: white;
+		position: absolute;
+		float: right;
+		z-index: 1;
+		right: 10px;
+		background: rgba(0, 0, 0, 0.5);
+		border-radius: 15px;
+		width: 40px;
+		text-align: center;
+		margin-top: 10px;
+		font-size: 12px;
+		padding: 2px;
+	}
 	.mainBlockGood{
 		margin-bottom: 15px;
 		color: black;
@@ -81,12 +116,8 @@
 	}
 	.priceBlock{
 		font-size: 16px;
-	}
-	.priceBlock span:nth-child(1){
-		color: #26c281;
-	}
-	.priceBlock span:nth-child(2){
 		color: #757575;
-		float: right;
+		text-align: right;
+		width: 100%;
 	}
 </style>

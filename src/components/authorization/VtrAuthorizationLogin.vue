@@ -9,12 +9,10 @@
 						type="tel"
 						v-mask="'+7(###) ###-##-##'"
 						v-model="$v.formLogin.phone.$model"
-						:state="$v.formLogin.phone.$dirty?!$v.formLogin.phone.$error:null"
 						placeholder="+7 (___) __-__-___")
 					b-form-input(
 						required
 						v-model="$v.formLogin.password.$model"
-						:state="$v.formLogin.password.$dirty?!$v.formLogin.password.$error:null"
 						type="password"
 						placeholder="Пароль")
 				button.btnRed(type="submit" :disabled="$v.formLogin.$invalid") Далее
