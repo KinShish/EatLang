@@ -3,7 +3,6 @@
 		.blockCenter
 			h5 {{havePin?'Придумайте пин для входа в приложение':'Укажите пин для входа в приложение'}}
 			.formPin
-				.pinBlock
 				label(for="pinInput")
 					.blockPin(v-for="i in 4" :class="i<=pin.length?'blockPinActive':'blockPinDeActive'" :key="i")
 				input#pinInput(v-model="pin" maxlength="4" ref="pinInput")
@@ -64,15 +63,12 @@
 		position: absolute;
 		color: white;
 		text-align: center;
+		min-width: 100%;
 	}
 	.blockCenter{
 		top: 50%;
 		transform: translateY(-50%);
 		position: relative;
-	}
-	.pinBlock{
-		display: flex;
-		margin-top: 15px;
 	}
 	.blockPin{
 		width: 25px;
@@ -90,7 +86,7 @@
 	}
 	.formPin{
 		width: 50%;
-		margin: 0 auto;
+		margin: 15px auto;
 		display: block;
 		min-width: 290px;
 		max-width: 400px;

@@ -61,6 +61,7 @@
 		position: absolute;
 		color: white;
 		text-align: center;
+		min-width: 100%;
 	}
 	.blockCenter{
 		top: 50%;

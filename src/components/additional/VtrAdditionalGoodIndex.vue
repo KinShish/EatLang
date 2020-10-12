@@ -74,9 +74,10 @@
 		background: #F64646;
 		color: white;
 		border-radius: 3px;
-		padding: 5px 40px;
+		padding: 5px 10px;
 		font-size: 16px;
 		margin: 0 auto;
+		width: 45%;
 	}
 	.fastBtnGood{
 		position: fixed;

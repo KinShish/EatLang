@@ -18,9 +18,56 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
+        <icon background="public/icons/icon/android/ldpi.png" density="ldpi" foreground="public/icons/icon/android/ldpi.png" />
+        <icon background="public/icons/icon/android/mdpi.png" density="mdpi" foreground="public/icons/icon/android/mdpi.png" />
+        <icon background="public/icons/icon/android/hdpi.png" density="hdpi" foreground="public/icons/icon/android/hdpi.png" />
+        <icon background="public/icons/icon/android/xhdpi.png" density="xhdpi" foreground="public/icons/icon/android/xhdpi.png" />
+        <icon background="public/icons/icon/android/xxhdpi.png" density="xxhdpi" foreground="public/icons/icon/android/xxhdpi.png" />
+        <icon background="public/icons/icon/android/xxxhdpi.png" density="xxxhdpi" foreground="public/icons/icon/android/xxxhdpi.png" />
+        <splash density="port-hdpi" src="public/icons/screen/android/splash-port-hdpi.png" />
+        <splash density="port-ldpi" src="public/icons/screen/android/splash-port-ldpi.png" />
+        <splash density="port-mdpi" src="public/icons/screen/android/splash-port-mdpi.png" />
+        <splash density="port-xhdpi" src="public/icons/screen/android/splash-port-xhdpi.png" />
     </platform>
     <platform name="ios">
+        <preference name="UseSwiftLanguageVersion" value="4" />
+        <preference name="StatusBarOverlaysWebView" value="true"/>
+        <preference name="StatusBarBackgroundColor" value="#012470"/>
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
+        <icon height="180" src="public/icons/icon/ios/icon-60@3x.png" width="180" />
+        <icon height="60" src="public/icons/icon/ios/icon-60.png" width="60" />
+        <icon height="120" src="public/icons/icon/ios/icon-60@2x.png" width="120" />
+        <icon height="76" src="public/icons/icon/ios/icon-76.png" width="76" />
+        <icon height="152" src="public/icons/icon/ios/icon-76@2x.png" width="152" />
+        <icon height="40" src="public/icons/icon/ios/icon-small-40.png" width="40" />
+        <icon height="80" src="public/icons/icon/ios/icon-small-40@2x.png" width="80" />
+        <icon height="57" src="public/icons/icon/ios/icon.png" width="57" />
+        <icon height="114" src="public/icons/icon/ios/icon@2x.png" width="114" />
+        <icon height="72" src="public/icons/icon/ios/icon-72.png" width="72" />
+        <icon height="144" src="public/icons/icon/ios/icon-72@2x.png" width="144" />
+        <icon height="167" src="public/icons/icon/ios/icon-167.png" width="167" />
+        <icon height="29" src="public/icons/icon/ios/icon-small.png" width="29" />
+        <icon height="58" src="public/icons/icon/ios/icon-small@2x.png" width="58" />
+        <icon height="87" src="public/icons/icon/ios/icon-small@3x.png" width="87" />
+        <icon height="50" src="public/icons/icon/ios/icon-small-50.png" width="50" />
+        <icon height="100" src="public/icons/icon/ios/icon-small-50@2x.png" width="100" />
+        <icon height="167" src="public/icons/icon/ios/icon-83.5@2x.png" width="167" />
+        <splash src="public/icons/screen/ios/Default@2x~iphone~anyany.png" />
+        <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
+            <string>Данные о вашем местоположении могут быть использованы при подаче и поиске объявлений</string>
+        </edit-config>
+        <edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
+            <string>Приложению нужен доступ к камере что бы делать фотографии для логотипа пользователя</string>
+        </edit-config>
+        <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryUsageDescription">
+            <string>Приложению нужен доступ к галреее, что бы прикрепить фотографиюю к логотипу пользователя</string>
+        </edit-config>
+        <edit-config file="*-Info.plist" mode="merge" target="NSLocationAlwaysUsageDescription">
+            <string>Данные о вашем местоположении могут быть использованы при подаче и поиске объявлений</string>
+        </edit-config>
+        <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryAddUsageDescription">
+            <string>Приложению нужен доступ к галреее, что бы прикрепить фотографиюю к логотипу пользователя</string>
+        </edit-config>
     </platform>
 </widget>

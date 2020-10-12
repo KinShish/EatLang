@@ -80,6 +80,7 @@
 		line-height: 40px;
 		min-width: 50px;
 		overflow: hidden;
+		border-radius: 3px;
 	}
 	.chatBlockImg img{
 		width: auto;

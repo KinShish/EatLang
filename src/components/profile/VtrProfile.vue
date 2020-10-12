@@ -169,10 +169,14 @@
 		background: #DEDEDE;
 		line-height: 40px;
 		min-width: 50px;
+		overflow: hidden;
+		border-radius: 3px;
 	}
 	.orderBlockImg img{
-		width: 100%;
-		height: auto;
+		width: auto;
+		height: 40px;
+		display: block;
+		margin: 0 auto;
 	}
 	.orderNumberAndPrice{
 		font-size: 14px;
@@ -205,6 +209,7 @@
 	.socialBlocks{
 		display: flex;
 		padding: 10px 0;
+		font-weight: bold;
 	}
 	.socBlock{
 		background-color: white;
