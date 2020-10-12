@@ -1,48 +1,50 @@
 <template lang="pug">
 	div
-		.header
+
+		.header(v-if="$route.name!=='company'")
 			.borderInput(:class="searchActive?'noBorder':''" style="z-index:2")
 				img.back(src="../../assets/back.svg" @click="$router.go(-1)" v-if="$route.name!=='search'")
 				b-form-input#inputSearch(v-model="search" placeholder="Поиск" @focus="searchActive=true")
 				img.filterImg(src="../../assets/filter.svg" v-b-toggle.sidebarFilter v-if="!searchActive" @click="filterActive=true")
 				.searchBtn(@click="searchActive=false" v-else) Найти
-		.listSearch(v-if="searchActive")
-			div
-				span(@click="search='История 1'") История 1
-				span(@click="search='История 2'") История 2
-				span(@click="search='История 3'") История 3
-				span(@click="search='История 4'") История 4
-		.whiteBlock
-			.tabCat
-				span АВТОМОБИЛИ
-				span КВАДРОЦИКЛЫ
-				span СТРОИТЕЛЬНАЯ ТЕХНИКА
-				span АВТОМОБИЛИ
-				span АВТОМОБИЛИ
-				span КВАДРОЦИКЛЫ
-				span СТРОИТЕЛЬНАЯ ТЕХНИКА
-				span АВТОМОБИЛИ
-				span АВТОМОБИЛИ
-				span КВАДРОЦИКЛЫ
-				span СТРОИТЕЛЬНАЯ ТЕХНИКА
-				span АВТОМОБИЛИ
-			.customTabsSearch
-				b-card(no-body)
-					b-tabs(pills card)
-						b-tab(title='Рекомендуемое' active)
-							.customTabContent
-								div(v-for="item in 2" :key="item")
-									.infoGoodSearch
-										img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
-										span Имя пользователя
-									VtrAdditionalProduct(v-for="item in 2" :key="item")
-						b-tab(title='Новые объявления')
-							.customTabContent
-								div(v-for="item in 2" :key="item")
-									.infoGoodSearch
-										img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
-										span Имя пользователя
-									VtrAdditionalProduct(v-for="item in 1" :key="item")
+		div(v-if="$route.name==='search'")
+			.listSearch(v-if="searchActive")
+				div
+					span(@click="search='История 1'") История 1
+					span(@click="search='История 2'") История 2
+					span(@click="search='История 3'") История 3
+					span(@click="search='История 4'") История 4
+			.whiteBlock
+				.tabCat
+					span АВТОМОБИЛИ
+					span КВАДРОЦИКЛЫ
+					span СТРОИТЕЛЬНАЯ ТЕХНИКА
+					span АВТОМОБИЛИ
+					span АВТОМОБИЛИ
+					span КВАДРОЦИКЛЫ
+					span СТРОИТЕЛЬНАЯ ТЕХНИКА
+					span АВТОМОБИЛИ
+					span АВТОМОБИЛИ
+					span КВАДРОЦИКЛЫ
+					span СТРОИТЕЛЬНАЯ ТЕХНИКА
+					span АВТОМОБИЛИ
+				.customTabsSearch
+					b-card(no-body)
+						b-tabs(pills card)
+							b-tab(title='Рекомендуемое' active)
+								.customTabContent
+									div(v-for="item in 2" :key="item")
+										router-link.infoGoodUser(:to="'search/company/'+item")
+											img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
+											span Имя пользователя
+										VtrAdditionalProduct(:hrefLink="'search/good/'+item")
+							b-tab(title='Новые объявления')
+								.customTabContent
+									div(v-for="item in 2" :key="item")
+										router-link.infoGoodUser(:to="'search/company/'+item")
+											img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
+											span Имя пользователя
+										VtrAdditionalProduct(:hrefLink="'search/good/'+item")
 		.activeSearch(v-if="searchActive" @click="searchActive=false")
 		b-sidebar#sidebarFilter(title='Уточнить' right no-header)
 			.whiteBlock
@@ -69,6 +71,8 @@
 							v-model="selectedFilter"
 							:options="optionsFilter")
 					button.btnRed Показать объявления
+		transition(name="opacity")
+			router-view
 </template>
 <script>
 	export default {
@@ -211,19 +215,6 @@
 	}
 	.headerSidebar h4{
 		margin-left: 40px;
-	}
-	.infoGoodSearch{
-		height: 25px;
-		line-height: 25px;
-		margin-bottom: 5px;
-		font-size: 12px;
-	}
-	.infoGoodSearch img{
-		width: 25px;
-		height: 25px;
-		margin-left: 15px;
-		margin-right: 5px;
-		border-radius: 50%;
 	}
 	.tabCat{
 		overflow-x: scroll;

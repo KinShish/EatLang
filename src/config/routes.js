@@ -18,6 +18,25 @@ let routes = {
 			path: 'feed',
 			component: () => import('../components/VtrFeed'),
 			name: 'feed',
+			children: [
+				{
+					path: 'good/:idGood',
+					component: () => import('../components/additional/VtrAdditionalGoodIndex'),
+					name: 'good',
+				},
+				{
+					path: 'company/:idComp',
+					component: () => import('../components/profile/VtrProfileCompany'),
+					name: 'company',
+					children: [
+						{
+							path: 'good/:idGood',
+							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
+							name: 'good',
+						},
+					]
+				}
+			],
 		},
 		{
 			path: 'search',
@@ -28,6 +47,23 @@ let routes = {
 					path: 'searchPage/:key',
 					component: () => import('../components/search/VtrSearchPage'),
 					name: 'searchPage',
+				},
+				{
+					path: 'good/:idGood',
+					component: () => import('../components/additional/VtrAdditionalGoodIndex'),
+					name: 'good',
+				},
+				{
+					path: 'company/:idComp',
+					component: () => import('../components/profile/VtrProfileCompany'),
+					name: 'company',
+					children: [
+						{
+							path: 'good/:idGood',
+							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
+							name: 'good',
+						},
+					]
 				}
 			]
 		},
@@ -68,6 +104,11 @@ let routes = {
 							component: () => import('../components/profile/VtrProfileEditManager'),
 							name: 'editManager',
 						},
+						{
+							path: 'good/:idGood',
+							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
+							name: 'good',
+						},
 					]
 				},
 				{
@@ -79,6 +120,13 @@ let routes = {
 					path: 'favorites',
 					component: () => import('../components/profile/VtrProfileFavorites'),
 					name: 'favorites',
+					children: [
+						{
+							path: 'good/:idGood',
+							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
+							name: 'good',
+						},
+					]
 				},
 				{
 					path: 'notifications',
@@ -89,6 +137,11 @@ let routes = {
 					path: 'settings',
 					component: () => import('../components/profile/VtrProfileSettings'),
 					name: 'settings',
+				},
+				{
+					path: 'good/:idGood',
+					component: () => import('../components/additional/VtrAdditionalGoodIndex'),
+					name: 'good',
 				},
 			]
 		}

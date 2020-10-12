@@ -1,5 +1,5 @@
 <template lang="pug">
-	.mainBlockGood
+	router-link.mainBlockGood(:to="hrefLink")
 		.blockImg
 			img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
 		.contentGood
@@ -22,6 +22,9 @@
 
 <script>
 	export default {
+		props:{
+			hrefLink:String
+		},
 		data(){
 			return{
 				price:'600000',
@@ -34,6 +37,8 @@
 <style scoped>
 	.mainBlockGood{
 		margin-bottom: 15px;
+		color: black;
+		text-decoration: none;
 	}
 	.blockImg{
 		width: 100%;
@@ -41,9 +46,14 @@
 		background: #DEDEDE;
 	}
 	.blockImg img{
-		height: 100%;
-		display: block;
+		max-height: 200px;
+		height: auto;
+		max-width: 100%;
+		top: 50%;
+		position: relative;
+		transform: translate(0, -50%);
 		margin: 0 auto;
+		display: block;
 	}
 	.contentGood{
 		margin: 2px 15px;
@@ -51,6 +61,7 @@
 	.statGoodsBlock{
 		display: inline-block;
 		margin-right: 15px;
+		color: #757575;
 	}
 	.statGoodsBlock span:nth-child(3){
 		color: #3cc281;

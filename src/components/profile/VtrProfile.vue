@@ -4,10 +4,13 @@
 			.header
 				span {{$store.state.user.data.name}}
 				img.exit(src="../../assets/exit.svg" @click="$store.commit('logout')")
-			label.loadLogoBlock(for="laodlogoinp")
+			label.loadLogoBlock(for="laodlogoinp" v-if="$store.state.user.admin")
 				img(src="../../assets/loadLogo.svg")
 				span Загрузите логотип компании
-			b-form-file#laodlogoinp.d-none(type="file" @input="vtr_profile_loadLogo(fileLogo)" v-model="fileLogo")
+				b-form-file#laodlogoinp.d-none(type="file" @input="vtr_profile_loadLogo(fileLogo)" v-model="fileLogo")
+			.loadLogoBlock(v-else)
+				img(src="../../assets/loadLogo.svg")
+				span Фото отсутствует
 			.blockBtnProfile
 				.socialBlocks
 					router-link.socBlock(to="/profile/favorites")
@@ -33,7 +36,7 @@
 					b-tabs(pills card)
 						b-tab(title='АКТИВНЫЕ' active)
 							.customTabContent
-								VtrAdditionalProduct(v-for="item in 10" :key="item")
+								VtrAdditionalProduct(v-for="item in 10" :key="item" :hrefLink="'profile/good/'+item")
 						b-tab(title='НА МОДЕРАЦИИ')
 							.customTabContent
 								.noGoods Тут пусто :(
@@ -71,6 +74,9 @@
 						span Заказ №12
 						span 600 000
 					hr.orderBorder
+		.header(v-if="$route.name==='good'")
+			img.back(src="../../assets/back.svg" @click="$router.go(-1)")
+			span Личный кабинет
 		transition(name="opacity")
 			router-view
 </template>

@@ -3,7 +3,10 @@
 		.header
 			img.back(src="../../assets/back.svg" @click="$router.go(-1)")
 			span Избранное
-		VtrAdditionalProduct(v-for="item in 10" :key="item")
+		.greyBlock(v-if="$route.name==='favorites'")
+			VtrAdditionalProduct(v-for="item in 10" :key="item" :hrefLink="'favorites/good/'+item")
+		transition(name="opacity")
+			router-view
 </template>
 
 <script>

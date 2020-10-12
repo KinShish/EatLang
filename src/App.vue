@@ -39,5 +39,7 @@
 <style scoped>
 	.mainContent{
 		padding-bottom: 50px;
+		max-width: 600px;
+		margin: 0 auto;
 	}
 </style>

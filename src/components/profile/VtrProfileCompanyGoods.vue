@@ -8,7 +8,7 @@
 				b-tabs(pills card)
 					b-tab(title='АКТИВНЫЕ' active)
 						.customTabContent
-							VtrAdditionalProduct(v-for="item in 10" :key="item")
+							VtrAdditionalProduct(v-for="item in 10" :key="item" :hrefLink="'profile/good/'+item")
 							//.noGoods Тут пусто :(
 					b-tab(title='НА МОДЕРАЦИИ')
 						.customTabContent
