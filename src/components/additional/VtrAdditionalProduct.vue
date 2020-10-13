@@ -14,8 +14,6 @@
 				p {{string.substr(0,100)}}
 					span ... Подробнее
 			.priceBlock 20.09.2020 15:19
-				//span {{price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
-				//span 20.09.2020 15:19
 </template>
 
 <script>
