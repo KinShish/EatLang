@@ -10,7 +10,7 @@
 			button.btnRed Подписаться
 			button.btnRed Контакты компании
 			.title Объявления пользователя
-			VtrAdditionalProduct(v-for="item in 10" :key="item" :hrefLink="$route.params.idComp+'/good/'+item")
+			VtrAdditionalPrivateProduct(v-for="item in 10" :key="item" :hrefLink="$route.params.idComp+'/good/'+item")
 		transition(name="opacity")
 			router-view
 </template>
@@ -23,7 +23,7 @@
 			}
 		},
 		components:{
-			'VtrAdditionalProduct':()=>import('../additional/VtrAdditionalProduct'),
+			'VtrAdditionalPrivateProduct':()=>import('../additional/VtrAdditionalPrivateProduct'),
 		},
 	}
 </script>

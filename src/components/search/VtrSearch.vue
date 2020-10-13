@@ -1,13 +1,12 @@
 <template lang="pug">
 	div
-
-		.header(v-if="$route.name!=='company'")
-			.borderInput(:class="searchActive?'noBorder':''" style="z-index:2")
-				img.back(src="../../assets/back.svg" @click="$router.go(-1)" v-if="$route.name!=='search'")
-				b-form-input#inputSearch(v-model="search" placeholder="Поиск" @focus="searchActive=true")
-				img.filterImg(src="../../assets/filter.svg" v-b-toggle.sidebarFilter v-if="!searchActive" @click="filterActive=true")
-				.searchBtn(@click="searchActive=false" v-else) Найти
 		div(v-if="$route.name==='search'")
+			.header
+				.borderInput(:class="searchActive?'noBorder':''" style="z-index:2")
+					img.back(src="../../assets/back.svg" @click="$router.go(-1)" v-if="$route.name!=='search'")
+					b-form-input#inputSearch(v-model="search" placeholder="Поиск" @focus="searchActive=true")
+					img.filterImg(src="../../assets/filter.svg" v-b-toggle.sidebarFilter v-if="!searchActive" @click="filterActive=true")
+					.searchBtn(@click="searchActive=false" v-else) Найти
 			.listSearch(v-if="searchActive")
 				div
 					span(@click="search='История 1'") История 1
@@ -37,40 +36,40 @@
 										router-link.infoGoodUser(:to="'search/company/'+item")
 											img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
 											span Имя пользователя
-										VtrAdditionalProduct(:hrefLink="'search/good/'+item")
+										VtrAdditionalProduct(:hrefLink="'search/good/'+item" :pageName="'Поиск'")
 							b-tab(title='Новые объявления')
 								.customTabContent
 									div(v-for="item in 2" :key="item")
 										router-link.infoGoodUser(:to="'search/company/'+item")
 											img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
 											span Имя пользователя
-										VtrAdditionalProduct(:hrefLink="'search/good/'+item")
-		.activeSearch(v-if="searchActive" @click="searchActive=false")
-		b-sidebar#sidebarFilter(title='Уточнить' right no-header)
-			.whiteBlock
-				.headerSidebar
-					img(src="../../assets/close.svg" v-b-toggle.sidebarFilter @click="filterActive=false")
-					h4  Уточнить
-				.blockFilter
-					.boxShadowFilter
-						.blockFilterCity
-							label(for="cityFilterInp") Город
-							input#cityFilterInp(placeholder="Славянск на кубани")
-					.boxShadowFilter
-						.priceFilterInputs
-							label(for="priceFilterInp") Цена
-							.priceFilterInputsContetn
-								div
-									span от
-									input#priceFilterInp
-								div
-									span до
-									input
-					.boxShadowFilter
-						b-form-radio-group.radioBtnFilter(
-							v-model="selectedFilter"
-							:options="optionsFilter")
-					button.btnRed Показать объявления
+										VtrAdditionalProduct(:hrefLink="'search/good/'+item" :pageName="'Поиск'")
+			.activeSearch(v-if="searchActive" @click="searchActive=false")
+			b-sidebar#sidebarFilter(title='Уточнить' right no-header)
+				.whiteBlock
+					.headerSidebar
+						img(src="../../assets/close.svg" v-b-toggle.sidebarFilter @click="filterActive=false")
+						h4  Уточнить
+					.blockFilter
+						.boxShadowFilter
+							.blockFilterCity
+								label(for="cityFilterInp") Город
+								input#cityFilterInp(placeholder="Славянск на кубани")
+						.boxShadowFilter
+							.priceFilterInputs
+								label(for="priceFilterInp") Цена
+								.priceFilterInputsContetn
+									div
+										span от
+										input#priceFilterInp
+									div
+										span до
+										input
+						.boxShadowFilter
+							b-form-radio-group.radioBtnFilter(
+								v-model="selectedFilter"
+								:options="optionsFilter")
+						button.btnRed Показать объявления
 		transition(name="opacity")
 			router-view
 </template>

@@ -148,6 +148,30 @@ body{
     background-color: #F64646;
 }
 /*Радио кнопки конец*/
+/*Выпадающее меню в объявлении начало*/
+.hamburgerButtonDropDown .btn-secondary{
+    background: none;
+    max-width: 50px;
+    display: block;
+    top: -6px;
+    position: relative;
+    color: black;
+    outline: none;
+    border:none;
+    box-shadow: none;
+}
+.hamburgerButtonDropDown .btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active, .show > .btn-secondary.dropdown-toggle{
+    background: none;
+    color: black;
+    border:none;
+    box-shadow: none !important;
+}
+.hamburgerButtonDropDown .dropdown-item.active, .dropdown-item:active{
+    background: none;
+    color: black;
+    outline: none;
+}
+/*Выпадающее меню в объявлении конец*/
 /*Дополнительно начало*/
 .redColor{
     color: #F64646;

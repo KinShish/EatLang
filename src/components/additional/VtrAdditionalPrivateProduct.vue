@@ -2,20 +2,25 @@
 	router-link.mainBlockGood(:to="{ path: hrefLink, query: { pageName: pageName }}")
 		.slider
 			span.countSlider {{slideIndex}}/3
-			img.likeGood(src="../../assets/goodsImg/likeActive.svg" v-if="likeActive" @click="likeActive=false")
-			img.likeGood(src="../../assets/goodsImg/like.svg" v-else  @click="likeActive=true")
 			agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex")
 				.blockImg(v-for="item in 3")
 					img(src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcScgwpR795aZ-GltGVR80A6aPAcUIo8kpYJ2g&usqp=CAU")
 		.contentGood
+			.statGoodsBlock
+				img(src="../../assets/goodsImg/eye.svg")
+				span 320
+				span    +21
+			.statGoodsBlock
+				img(src="../../assets/goodsImg/heart.svg")
+				span 320
 			.nameGood
 				span Японский мини трактор HINOMOTO N249D
 			.descriptionGood
 				p {{string.substr(0,100)}}
 					span ... Подробнее
-			.priceBlock 20.09.2020 15:19
-				//span {{price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
-				//span 20.09.2020 15:19
+			.priceBlock
+				span {{price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
+				span 20.09.2020 15:19
 </template>
 
 <script>
@@ -53,13 +58,6 @@
 	.slider{
 		position: relative;
 	}
-	.likeGood{
-		position: absolute;
-		z-index: 1;
-		width: 25px;
-		margin-top: 15px;
-		margin-left: 10px;
-	}
 	.countSlider{
 		color: white;
 		position: absolute;
@@ -95,7 +93,18 @@
 		display: block;
 	}
 	.contentGood{
-		margin: 2px 15px;
+		margin: 2px 15px 13px 15px;
+	}
+	.statGoodsBlock{
+		display: inline-block;
+		margin-right: 15px;
+		color: #757575;
+	}
+	.statGoodsBlock span:nth-child(3){
+		color: #3cc281;
+	}
+	.statGoodsBlock img{
+		margin-right: 5px;
 	}
 	.nameGood{
 		font-size: 16px;
@@ -109,8 +118,13 @@
 	}
 	.priceBlock{
 		font-size: 16px;
+	}
+	.priceBlock span:nth-child(1){
+		color: #26c281;
+	}
+	.priceBlock span:nth-child(2){
 		color: #757575;
+		float: right;
 		text-align: right;
-		width: 100%;
 	}
 </style>

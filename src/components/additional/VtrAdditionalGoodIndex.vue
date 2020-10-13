@@ -1,7 +1,26 @@
 <template lang="pug">
 	div
+		.header
+			img.back(src="../../assets/back.svg" @click="$router.go(-1)")
+			span.title {{$route.query.pageName}}
+			.buttonsGood
+				img(src="../../assets/goodsImg/share.svg")
+				img(src="../../assets/goodsImg/compare.svg")
+				img(src="../../assets/goodsImg/edit.svg")
+			b-dropdown(no-caret right).hamburgerButtonDropDown
+				template(v-slot:button-content)
+					.hamburgerButton
+						span .
+						span .
+						span .
+				b-dropdown-item(href='#') Добавить в архив
+				b-dropdown-item(href='#') Поднять в списке
+				b-dropdown-item(href='#') Пожаловаться
+
 		.slider
 			span.countSlider {{slideIndex}}/3
+			img.likeGood(src="../../assets/goodsImg/likeActive.svg" v-if="likeActive" @click="likeActive=false")
+			img.likeGood(src="../../assets/goodsImg/like.svg" v-else  @click="likeActive=true")
 			agile(:options="sliderProduct" @after-change="$vtr_good_index_slideIndex")
 				.blockImg(v-for="item in 3")
 					img(src="https://os1.ru/article/24743-novye-4-gusenichnye-traktory-s-sharnirno-sochlenennoy-ramoy-dlya-agrariev-odin-traktor-chetyre-gusenitsy/01.jpg")
@@ -68,6 +87,7 @@
 	export default {
 		data(){
 			return{
+				likeActive:false,
 				sliderProduct: {
 					navButtons: false,
 					dots: false,
@@ -88,6 +108,49 @@
 </script>
 
 <style scoped>
+	.header .back{
+		height: 100%;
+		display: block;
+		min-width: 20px;
+	}
+	.header{
+		display: flex;
+	}
+	.header .title{
+		display: inline-block;
+		/* margin-left: 20px; */
+		white-space: nowrap;
+		overflow: hidden;
+		padding-right: 5px;
+		flex: auto;
+		text-overflow: ellipsis;
+	}
+	.buttonsGood{
+		display: inline-flex;
+		float: right;
+		height: 50px;
+	}
+	.buttonsGood img:nth-child(2){
+		margin: 0 12px;
+	}
+	.hamburgerButton{
+		display: block;
+		float: right;
+		line-height: 23px;
+		margin-left: 20px;
+		height: 50px;
+		padding: 0 5px;
+		margin-right: 5px;
+		right: -10px;
+		position: relative;
+	}
+	.hamburgerButton span{
+		font-weight: bolder;
+		display: list-item;
+		height: 7px;
+		list-style: none;
+		font-size: 25px;
+	}
 	.priceIndexGood{
 		font-weight: bold;
 		font-size: 20px;
@@ -99,6 +162,13 @@
 	.slider{
 		position: relative;
 	}
+	.likeGood{
+		position: absolute;
+		z-index: 1;
+		width: 25px;
+		margin-top: 15px;
+		margin-left: 10px;
+	}
 	.countSlider{
 		color: white;
 		position: absolute;
@@ -109,7 +179,7 @@
 		border-radius: 15px;
 		width: 40px;
 		text-align: center;
-		margin-top: 10px;
+		margin-top: 15px;
 		font-size: 12px;
 		padding: 2px;
 	}

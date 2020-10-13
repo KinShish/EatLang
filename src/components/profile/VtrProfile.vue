@@ -36,7 +36,7 @@
 					b-tabs(pills card)
 						b-tab(title='АКТИВНЫЕ' active)
 							.customTabContent
-								VtrAdditionalProduct(v-for="item in 10" :key="item" :hrefLink="'profile/good/'+item")
+								VtrAdditionalPrivateProduct(v-for="item in 10" :key="item" :hrefLink="'profile/good/'+item" :pageName="'Личный кабинет'")
 						b-tab(title='НА МОДЕРАЦИИ')
 							.customTabContent
 								.noGoods Тут пусто :(
@@ -74,9 +74,6 @@
 						span Заказ №12
 						span 600 000
 					hr.orderBorder
-		.header(v-if="$route.name==='good'")
-			img.back(src="../../assets/back.svg" @click="$router.go(-1)")
-			span Личный кабинет
 		transition(name="opacity")
 			router-view
 </template>
@@ -89,7 +86,7 @@
 			}
 		},
 		components:{
-			'VtrAdditionalProduct':()=>import('../additional/VtrAdditionalProduct'),
+			'VtrAdditionalPrivateProduct':()=>import('../additional/VtrAdditionalPrivateProduct'),
 		},
 		methods:{
 			vtr_profile_loadLogo(file){
