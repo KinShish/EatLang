@@ -115,6 +115,13 @@ let routes = {
 					path: 'companyGoods',
 					component: () => import('../components/profile/VtrProfileCompanyGoods'),
 					name: 'companyGoods',
+					children: [
+						{
+							path: 'good/:idGood',
+							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
+							name: 'good',
+						},
+					]
 				},
 				{
 					path: 'favorites',

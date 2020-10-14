@@ -1,19 +1,21 @@
 <template lang="pug">
-	router-link.mainBlockGood(:to="{ path: hrefLink, query: { pageName: pageName }}")
-		.slider
-			span.countSlider {{slideIndex}}/3
-			img.likeGood(src="../../assets/goodsImg/likeActive.svg" v-if="likeActive" @click="likeActive=false")
-			img.likeGood(src="../../assets/goodsImg/like.svg" v-else  @click="likeActive=true")
-			agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex")
-				.blockImg(v-for="item in 3")
-					img(src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcScgwpR795aZ-GltGVR80A6aPAcUIo8kpYJ2g&usqp=CAU")
-		.contentGood
-			.nameGood
-				span Японский мини трактор HINOMOTO N249D
-			.descriptionGood
-				p {{string.substr(0,100)}}
-					span ... Подробнее
-			.priceBlock 20.09.2020 15:19
+	div
+		span.countSlider {{slideIndex}}/3
+		.likeGood
+			img(src="../../assets/goodsImg/likeActive.svg" @click="likeActive=false" v-if="likeActive")
+			img(src="../../assets/goodsImg/like.svg" @click="likeActive=true" v-else)
+		router-link.mainBlockGood(:to="{ path: hrefLink, query: { pageName: pageName }}")
+			.slider
+				agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex")
+					.blockImg(v-for="item in 3")
+						img(src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcScgwpR795aZ-GltGVR80A6aPAcUIo8kpYJ2g&usqp=CAU")
+			.contentGood
+				.nameGood
+					span Японский мини трактор HINOMOTO N249D
+				.descriptionGood
+					p {{string.substr(0,100)}}
+						span ... Подробнее
+				.priceBlock 20.09.2020 15:19
 </template>
 
 <script>
