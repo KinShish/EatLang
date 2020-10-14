@@ -1,7 +1,6 @@
 <template lang="pug">
 	.mainPinBlock
-		.blockCenter
-			h5 {{havePin?'Придумайте пин для входа в приложение':'Укажите пин для входа в приложение'}}
+		h5 {{havePin?'Придумайте пин для входа в приложение':'Укажите пин для входа в приложение'}}
 			.formPin
 				label(for="pinInput")
 					.blockPin(v-for="i in 4" :class="i<=pin.length?'blockPinActive':'blockPinDeActive'" :key="i")
@@ -64,11 +63,8 @@
 		color: white;
 		text-align: center;
 		min-width: 100%;
-	}
-	.blockCenter{
-		top: 50%;
-		transform: translateY(-50%);
-		position: relative;
+		display: grid;
+		place-items: center;
 	}
 	.blockPin{
 		width: 25px;

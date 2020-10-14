@@ -1,7 +1,6 @@
 <template lang="pug">
 	.mainLoginBlock
-		.blockCenter
-			h3 Авторизация
+		h3 Авторизация
 			b-form.formLogin(@submit.stop.prevent="$store.commit('firstAuth',formLogin)")
 				b-form-group
 					b-form-input(
@@ -60,11 +59,8 @@
 		color: white;
 		text-align: center;
 		min-width: 100%;
-	}
-	.blockCenter{
-		top: 50%;
-		transform: translateY(-50%);
-		position: relative;
+		display: grid;
+		place-items: center;
 	}
 	.formLogin{
 		width: 50%;
