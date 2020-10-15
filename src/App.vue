@@ -12,15 +12,6 @@
 			'VtrAdditionalBottomMenu':()=>import('./components/additional/VtrAdditionalBottomMenu'),
 		},
 		created() {
-			if (!('serviceWorker' in navigator)) {
-				// Браузер не поддерживает сервис-воркеры.
-				alert('serviceWorker')
-			}
-
-			if (!('PushManager' in window)) {
-				// Браузер не поддерживает push-уведомления.
-				alert('PushManager')
-			}
 			if(localStorage.getItem('token')===null||localStorage.getItem('token')===''){
 				this.$router.push('/login')
 			}else{

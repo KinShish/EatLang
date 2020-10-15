@@ -22,17 +22,17 @@ let routes = {
 				{
 					path: 'good/:idGood',
 					component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-					name: 'good',
+					name: 'feedGood',
 				},
 				{
 					path: 'company/:idComp',
 					component: () => import('../components/profile/VtrProfileCompany'),
-					name: 'company',
+					name: 'feedCompany',
 					children: [
 						{
 							path: 'good/:idGood',
 							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-							name: 'good',
+							name: 'feedCompanyGood',
 						},
 					]
 				}
@@ -56,12 +56,12 @@ let routes = {
 				{
 					path: 'company/:idComp',
 					component: () => import('../components/profile/VtrProfileCompany'),
-					name: 'company',
+					name: 'searchCompany',
 					children: [
 						{
 							path: 'good/:idGood',
 							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-							name: 'good',
+							name: 'searchCompanyGood',
 						},
 					]
 				}
@@ -107,7 +107,7 @@ let routes = {
 						{
 							path: 'good/:idGood',
 							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-							name: 'good',
+							name: 'profileManagersGood',
 						},
 					]
 				},
@@ -119,7 +119,7 @@ let routes = {
 						{
 							path: 'good/:idGood',
 							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-							name: 'good',
+							name: 'profileCompanyGoodsGood',
 						},
 					]
 				},
@@ -131,7 +131,7 @@ let routes = {
 						{
 							path: 'good/:idGood',
 							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-							name: 'good',
+							name: 'favoritesGood',
 						},
 					]
 				},
@@ -148,7 +148,7 @@ let routes = {
 				{
 					path: 'good/:idGood',
 					component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-					name: 'good',
+					name: 'profileGood',
 				},
 			]
 		}

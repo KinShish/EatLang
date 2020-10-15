@@ -4,7 +4,7 @@
 			span.countSlider {{slideIndex}}/3
 			agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex")
 				.blockImg(v-for="item in 3")
-					img(src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcScgwpR795aZ-GltGVR80A6aPAcUIo8kpYJ2g&usqp=CAU")
+					img(src="https://img01.flagma.ru/photo/uslugi-spectehniki-spectehnika-v-arendu-5114258_big.jpg")
 		.contentGood
 			.statGoodsBlock
 				img(src="../../assets/goodsImg/eye.svg")

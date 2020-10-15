@@ -1,6 +1,6 @@
 <template lang="pug">
 	div
-		div(v-if="$route.name==='company'")
+		div(v-if="$route.name==='feedCompany'||$route.name==='searchCompany'")
 			.header
 				img.back(src="../../assets/back.svg" @click="$router.go(-1)")
 				span Название компании
@@ -10,7 +10,7 @@
 			button.btnRed Подписаться
 			button.btnRed Контакты компании
 			.title Объявления пользователя
-			VtrAdditionalPrivateProduct(v-for="item in 10" :key="item" :hrefLink="$route.params.idComp+'/good/'+item")
+			VtrAdditionalProduct(v-for="item in 10" :key="item" :hrefLink="$route.params.idComp+'/good/'+item" :pageName="'Название компании'")
 		transition(name="opacity")
 			router-view
 </template>
@@ -23,7 +23,7 @@
 			}
 		},
 		components:{
-			'VtrAdditionalPrivateProduct':()=>import('../additional/VtrAdditionalPrivateProduct'),
+			'VtrAdditionalProduct':()=>import('../additional/VtrAdditionalProduct'),
 		},
 	}
 </script>

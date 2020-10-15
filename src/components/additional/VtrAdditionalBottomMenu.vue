@@ -1,34 +1,83 @@
 <template lang="pug">
 	.mainBlockMenu
 		router-link(to="/feed")
-			img(v-if="$route.name==='feed'" src="../../assets/menuImg/feedActive.svg")
-			img(v-else src="../../assets/menuImg/feed.svg")
-			span Главная
+			div(@click="$_vtr_menu_aimationMenuIcon('menuFeed')")
+				img(:src="$route.name==='feed'?images.feedActive:images.feed" ref="menuFeed")
+				span Главная
 		router-link(to="/search")
-			img(v-if="$route.name==='search'" src="../../assets/menuImg/searchActive.svg")
-			img(v-else src="../../assets/menuImg/search.svg")
-			span Поиск
+			div(@click="$_vtr_menu_aimationMenuIcon('menuSearch')")
+				img(:src="$route.name==='search'?images.searchActive:images.search" ref="menuSearch")
+				span Поиск
 		router-link(to="/add")
-			img(v-if="$route.name==='add'" src="../../assets/menuImg/addActive.svg")
-			img(v-else src="../../assets/menuImg/add.svg")
-			span Добавить
+			div(@click="$_vtr_menu_aimationMenuIcon('menuAdd')")
+				img(:src="$route.name==='add'?images.addActive:images.add" ref="menuAdd")
+				span Добавить
 		router-link(to="/chat")
-			img(v-if="$route.name==='chat'" src="../../assets/menuImg/chatActive.svg")
-			img(v-else src="../../assets/menuImg/chat.svg")
-			span Чат
+			div(@click="$_vtr_menu_aimationMenuIcon('menuChat')")
+				img(:src="$route.name==='chat'?images.chatActive:images.chat" ref="menuChat")
+				span Чат
 		router-link(to="/profile")
-			img(v-if="$route.name==='profile'" src="../../assets/menuImg/profileActive.svg")
-			img(v-else src="../../assets/menuImg/profile.svg")
-			span Профиль
+			div(@click="$_vtr_menu_aimationMenuIcon('menuProfile')")
+				img(:src="$route.name==='profile'?images.profileActive:images.profile" ref="menuProfile")
+				span Профиль
 </template>
 
 <script>
+	import feed from '../../assets/menuImg/feed.svg'
+	import feedActive from '../../assets/menuImg/feedActive.svg'
+	import search from '../../assets/menuImg/search.svg'
+	import searchActive from '../../assets/menuImg/searchActive.svg'
+	import add from '../../assets/menuImg/add.svg'
+	import addActive from '../../assets/menuImg/addActive.svg'
+	import chat from '../../assets/menuImg/chat.svg'
+	import chatActive from '../../assets/menuImg/chatActive.svg'
+	import profile from '../../assets/menuImg/profile.svg'
+	import profileActive from '../../assets/menuImg/profileActive.svg'
 	export default {
-
+		data(){
+			return{
+				images:{
+					feed: feed,
+					feedActive:feedActive,
+					search:search,
+					searchActive:searchActive,
+					add:add,
+					addActive:addActive,
+					chat:chat,
+					chatActive:chatActive,
+					profile:profile,
+					profileActive:profileActive
+				}
+			}
+		},
+		methods:{
+			$_vtr_menu_aimationMenuIcon(e){
+				this.$refs[e].classList.add('sizeImgBtn');
+				setTimeout(()=> {this.$refs[e].classList.remove('sizeImgBtn')}, 700);
+			},
+		}
 	}
 </script>
 
 <style scoped>
+	.sizeImgBtn{
+		animation: sizeimg .8s;
+	}
+	@keyframes sizeimg {
+		0% {
+			transform: scale(.7);
+
+		}
+		50% {
+			transform: scale(1.2);
+
+		}
+
+		100% {
+			transform: scale(1);
+
+		}
+	}
 	.mainBlockMenu{
 		position: fixed;
 		bottom: 0;

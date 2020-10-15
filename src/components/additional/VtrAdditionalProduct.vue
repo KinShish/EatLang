@@ -1,14 +1,13 @@
 <template lang="pug">
 	div
 		span.countSlider {{slideIndex}}/3
-		.likeGood
-			img(src="../../assets/goodsImg/likeActive.svg" @click="likeActive=false" v-if="likeActive")
-			img(src="../../assets/goodsImg/like.svg" @click="likeActive=true" v-else)
+		.likeGood(@click="$_vtr_product_like")
+			img(:src="likeActive?images.likeActive:images.like" ref="imageLike")
 		router-link.mainBlockGood(:to="{ path: hrefLink, query: { pageName: pageName }}")
 			.slider
 				agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex")
 					.blockImg(v-for="item in 3")
-						img(src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcScgwpR795aZ-GltGVR80A6aPAcUIo8kpYJ2g&usqp=CAU")
+						img(src="https://img01.flagma.ru/photo/uslugi-spectehniki-spectehnika-v-arendu-5114258_big.jpg")
 			.contentGood
 				.nameGood
 					span Японский мини трактор HINOMOTO N249D
@@ -19,6 +18,8 @@
 </template>
 
 <script>
+	import like from '../../assets/goodsImg/like.svg'
+	import likeActive from '../../assets/goodsImg/likeActive.svg'
 	import { VueAgile } from 'vue-agile'
 	export default {
 		props:{
@@ -27,6 +28,10 @@
 		},
 		data(){
 			return{
+				images:{
+					like:like,
+					likeActive:likeActive
+				},
 				likeActive:false,
 				sliderProduct: {
 					navButtons: false,
@@ -39,6 +44,11 @@
 			}
 		},
 		methods:{
+			$_vtr_product_like(){
+				this.likeActive=!this.likeActive
+				this.$refs.imageLike.classList.add('sizeImgBtn');
+				setTimeout(()=> {this.$refs.imageLike.classList.remove('sizeImgBtn')}, 700);
+			},
 			$vtr_product_slideIndex(index){
 				this.slideIndex=index.currentSlide+1;
 			}
@@ -50,6 +60,24 @@
 </script>
 
 <style scoped>
+	.sizeImgBtn{
+		animation: sizeimg .8s;
+	}
+	@keyframes sizeimg {
+		0% {
+			transform: scale(1);
+
+		}
+		50% {
+			transform: scale(1.5);
+
+		}
+
+		100% {
+			transform: scale(1);
+
+		}
+	}
 	.slider{
 		position: relative;
 	}

@@ -5,31 +5,31 @@
 				img.back(src="../../assets/back.svg" @click="$router.go(-1)")
 				span Менеджеры
 			.mainBlock
-				p Всего менеджеров 5
-				.blockUser(v-for="item in 10")
+				p Всего менеджеров {{$store.state.user.managers.length}}
+				.blockUser(v-for="manager in $store.state.user.managers")
 					.blockImg
 						img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
-					span Ну это прям очень длинное имя вашего менеджера ага?
+					span {{manager.name}}
 					.btnEditManager
-						router-link(:to="'managers/edit/1'")
+						router-link(:to="'managers/edit/'+manager.id")
 							img(src="../../assets/edit.svg")
-						img(src="../../assets/delete.svg" @click="vtr_manager_deleteManager('Димка 228',true)")
+						img(src="../../assets/delete.svg" @click="vtr_manager_deleteManager(manager.name,true)")
 			.btnAddManagerMain
 				.btnAddManager
 					router-link(to="managers/add").btnRed Добавить нового менеджера
+			b-modal(hide-footer ref="deleteManager" centered no-close-on-backdrop)
+				template(slot="modal-header")
+					h4 Удалить
+					button.close(@click="vtr_manager_deleteManager('',false)")
+						span(aria-hidden="true") x
+				.container
+					p Вы действительно хотите удалить менеджера
+						span.redColor   {{managerName}}
+					.btnModal
+						span(@click="vtr_manager_deleteManager('',false)") Да
+						span(@click="vtr_manager_deleteManager('',false)") Нет
 		transition(name="opacity")
 			router-view
-		b-modal(hide-footer ref="deleteManager" centered no-close-on-backdrop)
-			template(slot="modal-header")
-				h4 Удалить
-				button.close(@click="vtr_manager_deleteManager('',false)")
-					span(aria-hidden="true") x
-			.container
-				p Вы действительно хотите удалить менеджера
-					span.redColor   {{managerName}}
-				.btnModal
-					span(@click="vtr_manager_deleteManager('',false)") Да
-					span(@click="vtr_manager_deleteManager('',false)") Нет
 </template>
 
 <script>
@@ -48,7 +48,7 @@
 					this.$refs.deleteManager.hide();
 				}
 			},
-		}
+		},
 	}
 </script>
 
