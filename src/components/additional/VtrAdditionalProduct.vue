@@ -60,24 +60,6 @@
 </script>
 
 <style scoped>
-	.sizeImgBtn{
-		animation: sizeimg .8s;
-	}
-	@keyframes sizeimg {
-		0% {
-			transform: scale(1);
-
-		}
-		50% {
-			transform: scale(1.5);
-
-		}
-
-		100% {
-			transform: scale(1);
-
-		}
-	}
 	.slider{
 		position: relative;
 	}
@@ -113,7 +95,6 @@
 		background: #DEDEDE;
 	}
 	.blockImg img{
-		max-height: 200px;
 		height: auto;
 		max-width: 100%;
 		top: 50%;

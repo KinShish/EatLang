@@ -7,7 +7,7 @@
 			label.loadLogoBlock(for="laodlogoinp" v-if="$store.state.user.admin")
 				img(src="../../assets/loadLogo.svg")
 				span Загрузите логотип компании
-				b-form-file#laodlogoinp.d-none(type="file" @input="vtr_profile_loadLogo(fileLogo)" v-model="fileLogo")
+				b-form-file#laodlogoinp.d-none(type="file" @input="$_vtr_profile_loadLogo(fileLogo)" v-model="fileLogo")
 			.loadLogoBlock(v-else)
 				img(src="../../assets/loadLogo.svg")
 				span Фото отсутствует
@@ -34,15 +34,18 @@
 			.customTabsProfile(v-if="$store.state.user.admin")
 				b-card(no-body)
 					b-tabs(pills card)
-						b-tab(title='АКТИВНЫЕ' active)
+						b-tab(title='АКТИВНЫЕ' active @click="$_vtr_profile_clickTab(1)")
 							.customTabContent
-								VtrAdditionalPrivateProduct(v-for="item in 10" :key="item" :hrefLink="'profile/good/'+item" :pageName="'Личный кабинет'")
-						b-tab(title='НА МОДЕРАЦИИ')
+								.noGoods(v-if="goodsActive.length===0") Тут пусто :(
+								VtrAdditionalPrivateProduct(v-else v-for="good in goodsActive" :key="good.id" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
+						b-tab(title='НА МОДЕРАЦИИ' @click="$_vtr_profile_clickTab(0)")
 							.customTabContent
-								.noGoods Тут пусто :(
-						b-tab(title='АРХИВ')
+								.noGoods(v-if="goodsModer.length===0") Тут пусто :(
+								VtrAdditionalPrivateProduct(v-else v-for="good in goodsModer" :key="good.id" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
+						b-tab(title='АРХИВ' @click="$_vtr_profile_clickTab(3)")
 							.customTabContent
-								.noGoods Тут пусто :(
+								.noGoods(v-if="goodsArch.length===3") Тут пусто :(
+								VtrAdditionalPrivateProduct(v-else v-for="good in goodsArch" :key="good.id" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
 			.whiteBlock(v-else)
 				.greyBlock
 					h4 Заявки
@@ -83,16 +86,99 @@
 		data(){
 			return{
 				fileLogo:[],
+
+				goodsActive:[],
+				goodsModer:[],
+				goodsArch:[],
+				goodsBlock:[],
+
+				numGoodsActive:1,
+				numGoodsModer:1,
+				numGoodsArch:1,
+				numGoodsBlock:1,
+
+				status:1,
+				load:true,
+				stopLoad:false,
 			}
 		},
 		components:{
 			'VtrAdditionalPrivateProduct':()=>import('../additional/VtrAdditionalPrivateProduct'),
 		},
+		created() {
+			if(this.$store.state.user.admin){
+				this.$_vtr_profile_loadGoods();
+			}
+			this.$root.$on('lazyLoad', (res)=>{
+				if(res&&this.load&&!this.stopLoad){
+					this.load=false;
+					this.$_vtr_profile_loadGoods()
+				}
+			});
+		},
 		methods:{
-			vtr_profile_loadLogo(file){
+			$_vtr_profile_clickTab(status){
+				if(this.status!==status){
+					this.status=status;
+					this.$_vtr_profile_loadGoods();
+					this.stopLoad=false;
+				}
+			},
+			$_vtr_profile_loadGoods:async function(){
+				if(this.$route.name==='profile'){
+					let number;
+					switch (this.status) {
+						case 1:{
+							number=this.numGoodsActive;
+							break
+						}
+						case 0:{
+							number=this.numGoodsModer;
+							break
+						}
+						case 3:{
+							number=this.numGoodsArch;
+							break
+						}
+						case 2:{
+							number=this.numGoodsBlock;
+							break
+						}
+					}
+					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/company/'+this.$store.state.user.data.id_company+'/'+this.status+'/'+number)
+					if(data){
+						this.load=true;
+						if(!data.err&&data.rights&&!this.stopLoad){
+							//активные
+							if(this.status===1){
+								this.goodsActive=this.goodsActive.concat(data.goods);
+								this.numGoodsActive++;
+							}
+							//модерация
+							if(this.status===0){
+								this.goodsModer=this.goodsModer.concat(data.goods);
+								this.numGoodsModer++;
+							}
+							//архив
+							if(this.status===3){
+								this.goodsArch=this.goodsArch.concat(data.goods);
+								this.numGoodsArch++;
+							}
+							//заблокированные
+							if(this.status===2){
+								this.goodsBlock=this.goodsBlock.concat(data.goods);
+								this.numGoodsBlock++;
+							}
+						}
+						this.stopLoad=(data.goods.length===0);
+					}
+					console.log(data)
+				}
+			},
+			$_vtr_profile_loadLogo(file){
 				if(file){
 					if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(file.name)) {
-						alert('Файл  '+file.name+'  не поддерживается')
+						this.$store.commit('notification',"Файл  "+file.name+"  не поддерживается")
 					}else{
 						let data = new FormData();
 						data.append('file', file);

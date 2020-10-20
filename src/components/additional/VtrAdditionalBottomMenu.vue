@@ -3,23 +3,23 @@
 		router-link(to="/feed")
 			div(@click="$_vtr_menu_aimationMenuIcon('menuFeed')")
 				img(:src="$route.name==='feed'?images.feedActive:images.feed" ref="menuFeed")
-				span Главная
+				span(:class="$route.name==='feed'?'redColor':''") Главная
 		router-link(to="/search")
 			div(@click="$_vtr_menu_aimationMenuIcon('menuSearch')")
 				img(:src="$route.name==='search'?images.searchActive:images.search" ref="menuSearch")
-				span Поиск
+				span(:class="$route.name==='search'?'redColor':''") Поиск
 		router-link(to="/add")
 			div(@click="$_vtr_menu_aimationMenuIcon('menuAdd')")
 				img(:src="$route.name==='add'?images.addActive:images.add" ref="menuAdd")
-				span Добавить
+				span(:class="$route.name==='add'?'redColor':''") Добавить
 		router-link(to="/chat")
 			div(@click="$_vtr_menu_aimationMenuIcon('menuChat')")
 				img(:src="$route.name==='chat'?images.chatActive:images.chat" ref="menuChat")
-				span Чат
+				span(:class="$route.name==='chat'?'redColor':''") Чат
 		router-link(to="/profile")
 			div(@click="$_vtr_menu_aimationMenuIcon('menuProfile')")
 				img(:src="$route.name==='profile'?images.profileActive:images.profile" ref="menuProfile")
-				span Профиль
+				span(:class="$route.name==='profile'?'redColor':''") Профиль
 </template>
 
 <script>
@@ -60,6 +60,10 @@
 </script>
 
 <style scoped>
+	.redColor{
+		color: red;
+		transition: .3s ease;
+	}
 	.sizeImgBtn{
 		animation: sizeimg .8s;
 	}

@@ -8,6 +8,7 @@ export const userVuex = {
 		token:null,
 		errAuth:false,
 		settings:settings,
+		notification:'',
 	},
 	mutations: {
 		firstAuth:async function (state,form){
@@ -18,10 +19,15 @@ export const userVuex = {
 						localStorage.setItem('token',res.data.token);
 						this.commit('auth');
 					}else{
-						alert(res.data.text);
+						this.commit('notification',res.data.text);
 					}
 
 				});
+			axios.interceptors.response.use(null, error=> {
+				if (error.response.status === 401) {
+					this.commit('notification','Не верный логин или пароль');
+				}
+			})
 		},
 		auth:async function (state){
 			let data=await this.getters.request('GET',state.settings.server+'user/profile');
@@ -40,7 +46,7 @@ export const userVuex = {
 			if(!data.err){
 				this.commit('clearAll')
 			}else{
-				alert('Произошла ошибка попробуйте позже')
+				this.commit('notification','Произошла ошибка попробуйте позже');
 			}
 		},
 		clearAll(state){
@@ -50,22 +56,27 @@ export const userVuex = {
 			state.data='-1';
 			state.managers=[];
 		},
+		notification(state,text){
+			state.notification=text;
+			setTimeout(()=>{state.notification=''},5000)
+		},
 	},
 	getters: {
 		request:state=>async (method,url,formData)=>{
-			state.token=localStorage.getItem('token')
+			state.token=localStorage.getItem('token');
 			if(state.token!==null){
 				if(formData===undefined){formData={}}
 				try {
-					const {data}= await axios({method, url, data: formData,headers:{Authorization: "Bearer " + state.token}})
+					const {data}= await axios({method, url, data: formData,withCredentials:method==='PUT'?true:false,headers:{Authorization: "Bearer " + state.token}})
 					if(!data.err) {
 						return data;
 					}else{
-						alert(data.text);
+						//this.commit('notification',data.text);
 						return false
 					}
 				}
 				catch (e) {
+					console.log(e)
 					return false
 				}
 			}

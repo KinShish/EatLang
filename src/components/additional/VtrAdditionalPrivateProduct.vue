@@ -1,10 +1,13 @@
 <template lang="pug">
 	router-link.mainBlockGood(:to="{ path: hrefLink, query: { pageName: pageName }}")
 		.slider
-			span.countSlider {{slideIndex}}/3
-			agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex")
-				.blockImg(v-for="item in 3")
+			span.countSlider(v-if="good.img[0]!==''") {{slideIndex}}/{{good.img.length}}
+			agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex" v-if="good.img[0]!==''")
+				.blockImg(v-for="item in good.img.length")
 					img(src="https://img01.flagma.ru/photo/uslugi-spectehniki-spectehnika-v-arendu-5114258_big.jpg")
+			.noPhoto(v-else)
+				img(src="../../assets/loadLogo.svg")
+				span Фото отсутствует
 		.contentGood
 			.statGoodsBlock
 				img(src="../../assets/goodsImg/eye.svg")
@@ -14,13 +17,13 @@
 				img(src="../../assets/goodsImg/heart.svg")
 				span 320
 			.nameGood
-				span Японский мини трактор HINOMOTO N249D
+				span {{good.name}}
 			.descriptionGood
-				p {{string.substr(0,100)}}
+				p {{good.description.substr(0,100)}}
 					span ... Подробнее
 			.priceBlock
-				span {{price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
-				span 20.09.2020 15:19
+				//span {{good.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
+				span {{good.createGoods}}
 </template>
 
 <script>
@@ -29,6 +32,7 @@
 		props:{
 			hrefLink:String,
 			pageName:String,
+			good:Object
 		},
 		data(){
 			return{
@@ -39,8 +43,6 @@
 					slidesToShow: 1,
 				},
 				slideIndex:0,
-				price:'600000',
-				string:'это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов. Lorem Ipsum не только успешно пережил без заметных изменений пять веков, но и перешагнул в электронный дизайн. Его популяризации в новое время послужили публикация листов Letraset с образцами Lorem Ipsum в 60-х годах и, в более недавнее время, программы электронной вёрстки типа Aldus PageMaker, в шаблонах которых используется Lorem Ipsum.'
 			}
 		},
 		methods:{
@@ -55,6 +57,20 @@
 </script>
 
 <style scoped>
+	.noPhoto{
+		padding: 30px 0;
+		color: #868686;
+		text-align: center;
+		background-color: white;
+		display: block;
+	}
+	.noPhoto span{
+		margin-top: 20px;
+		display: block;
+	}
+	.noPhoto img{
+		width: 70px;
+	}
 	.slider{
 		position: relative;
 	}
@@ -83,7 +99,6 @@
 		background: #DEDEDE;
 	}
 	.blockImg img{
-		max-height: 200px;
 		height: auto;
 		max-width: 100%;
 		top: 50%;

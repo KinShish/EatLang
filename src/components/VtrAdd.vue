@@ -2,31 +2,29 @@
 	div
 		.header
 			span Подать объявление
-		b-form.mainBlock(@submit.stop.prevent="")
+		b-form.mainBlock(@submit.stop.prevent="vtr_add_addGood")
 			b-form-group
-				label(for="inpCat") Выбирите категорию*
-				b-form-select#inpCat.borderInput(placholder="Категория" :options="options" v-model="form.cat")
-				label(for="inpSubCat") Выбирите подкатегорию*
-				b-form-select#inpSubCat.borderInput(placholder="Подкатегория" :options="options" v-model="form.subCat")
+				//label(for="inpCat") Выбирите категорию*
+				//b-form-select#inpCat.borderInput(placholder="Категория" :options="options" v-model="form.cat")
+				//label(for="inpSubCat") Выбирите подкатегорию*
+				//b-form-select#inpSubCat.borderInput(placholder="Подкатегория" :options="options" v-model="form.subCat")
 				label(for="nameInp") Название объявления
 				b-form-input#nameInp.borderInput(placeholder="Название" v-model="form.name")
 				label(for="priceInp") Цена
-				b-form-input#priceInp.borderInput(placeholder="Цена" v-model="form.price")
+				b-form-input#priceInp.borderInput(placeholder="Цена" v-model="form.price" type="number")
 				label(for="descInp") Описание
 				b-form-textarea#descInp.borderInput(placeholder="Описание" v-model="form.description")
 				label(for="fileInp") Изображения
 				b-form-file#fileInp.d-none(type="file" @input="vtr_add_loadimages(file)" v-model="file" multiple)
 				.blockImages
 					.image(v-for="item in 5")
-						img.close(src="../assets/close.svg" @click="vtr_delete_loadimages(item)")
+						img.close(src="../assets/close.svg" @click="vtr_add_delete_loadimages(item)")
 						img(src="https://farm2.staticflickr.com/1941/45523337912_db9847a02e_z.jpg")
 					label(for="fileInp")
 						.addImage
 							img(src="../assets/addPhoto.svg")
 				label(for="videoInp") Видео
-				b-form-input#videoInp.borderInput(placeholder="Ссылка" v-model="form.linkVideo")
-				label(for="inpCity") Город
-				b-form-select#inpCity.borderInput(placholder="Выбрать город" :options="options" v-model="form.city")
+				b-form-input#videoInp.borderInput(placeholder="Ссылка" v-model="form.video")
 			button.btnRed(type="submit") Добавить
 </template>
 
@@ -40,25 +38,34 @@
 				],
 				file:[],
 				form:{
-					cat:0,
-					subCat:0,
+					//cat:0,
+					//subCat:0,
 					name:'',
 					price:'',
 					description:'',
-					img:[],
-					linkVideo:'',
-					city:0,
+					img:[''],
+					video:'',
+					//geo:{lat:0,lng:0},
 				}
 			}
 		},
 		methods:{
-			vtr_delete_loadimages(index){
+			vtr_add_addGood:async function(){
+				this.form.price=this.form.price*1;
+				let data=await this.$store.getters.request('PUT',this.$store.state.user.settings.server+'goods',this.form)
+				console.log(data)
+				if(!data.err){
+					this.$store.commit('notification',data.text)
+					this.$router.replace({path: '/profile/good/'+data.id,query: { pageName: 'Назад' }})
+				}
+			},
+			vtr_add_delete_loadimages(index){
 				console.log(index)
 			},
 			vtr_add_loadimages(file){
 				file.forEach(image=>{
 					if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(image.name)) {
-						alert('Файл  '+image.name+'  не поддерживается')
+						this.$store.commit('notification',"Файл  "+image.name+"  не поддерживается")
 					}else{
 						let data = new FormData();
 						data.append('file', image);
@@ -69,12 +76,12 @@
 		},
 		validations:{
 			form:{
-				cat: {
+				/*cat: {
 					required,
 				},
 				subCat: {
 					required,
-				},
+				},*/
 				name: {
 					required,
 					maxLength:maxLength(100)
@@ -85,11 +92,9 @@
 				description: {
 					required,
 				},
-				linkVideo: {
+				video: {
 					required,
-				},
-				city: {
-					required,
+					maxLength:maxLength(100)
 				},
 			}
 		},

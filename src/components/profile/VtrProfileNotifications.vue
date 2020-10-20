@@ -21,7 +21,7 @@
 					console.log(data.push)
 					this.notifications=data.push;
 				}else{
-					alert('Произошла ошибка')
+					this.$store.commit('notification','Произошла ошибка')
 				}
 			}
 		},

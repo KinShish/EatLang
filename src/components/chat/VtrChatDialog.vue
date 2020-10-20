@@ -20,7 +20,11 @@
 
 <script>
 	export default {
-		name: "VtrChatDialog"
+		data(){
+			return{
+
+			}
+		}
 	}
 </script>
 

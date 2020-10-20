@@ -16,14 +16,16 @@
 				b-dropdown-item(href='#') Добавить в архив
 				b-dropdown-item(href='#') Поднять в списке
 				b-dropdown-item(href='#') Пожаловаться
-
 		.slider
-			span.countSlider {{slideIndex}}/3
-			img.likeGood(src="../../assets/goodsImg/likeActive.svg" v-if="likeActive" @click="likeActive=false")
-			img.likeGood(src="../../assets/goodsImg/like.svg" v-else  @click="likeActive=true")
-			agile(:options="sliderProduct" @after-change="$vtr_good_index_slideIndex")
-				.blockImg(v-for="item in 3")
+			span.countSlider(v-if="goods.length>0&&goods.img[0]!==''") {{slideIndex}}/{{goods.img.length}}
+			.likeGood(@click="$_vtr_good_like" v-if="$store.state.user.data.id_company!==goods.id_company")
+				img(:src="likeActive?images.likeActive:images.like" ref="imageLikeGood")
+			agile(:options="sliderProduct" @after-change="$vtr_good_index_slideIndex" v-if="goods.length>0&&goods.img[0]!==''")
+				.blockImg(v-for="item in goods.img")
 					img(src="https://os1.ru/article/24743-novye-4-gusenichnye-traktory-s-sharnirno-sochlenennoy-ramoy-dlya-agrariev-odin-traktor-chetyre-gusenitsy/01.jpg")
+			.noPhoto(v-else)
+				img(src="../../assets/loadLogo.svg")
+				span Фото отсутствует
 		.greyBlock
 			.statGoodsIndexBlock
 				div
@@ -34,16 +36,16 @@
 					img(src="../../assets/goodsImg/heart.svg")
 					span 320
 				div
-					span 20.09.2020 15:09
+					span {{goods.createGoods}}
 			.blockBorder
-				.nameIndexGood Японский мини трактор HINOMOTO N249D
-				.priceIndexGood Показать цену
-			.blockBorder
+				.nameIndexGood {{goods.name}}
+				.priceIndexGood(@click="$_vtr_good_loadPrice") {{price}}
+			//.blockBorder
 				span.watchGeoGood Показать местоположение
 			.blockBorder
 				.titleGoodSpan Описание
-				.descriptionGoodIndex Оперативно и грамотно с использованием оригинальных деталей и с применением современных технологий мы проведём экстренную диагностику и выполним любые ремонтные работы. У нас работают высококласнные профессионалы,которые найдут оптимальное решение любой задачи и в сжатые сроки устранят все возникшие неполадки.
-			.blockBorder
+				.descriptionGoodIndex {{goods.description}}
+			//.blockBorder
 				.titleGoodSpan Характеристики
 				.specifications
 					.lineSpec
@@ -73,20 +75,27 @@
 					.lineSpec
 						span Покраска
 						span покрашен
-			button.btnRed Добавить к сравнению
-			button.btnAuction Перейти в аукцион
+			//button.btnRed Добавить к сравнению
+			//button.btnAuction Перейти в аукцион
 		.fastBtnGood
 			.fastButtonBlock
 				button.fastButton Позвонить
 				button.fastButton Написать
-			//h1 {{$route.params.idGood}}
 </template>
 
 <script>
+	import like from '../../assets/goodsImg/like.svg'
+	import likeActive from '../../assets/goodsImg/likeActive.svg'
 	import { VueAgile } from 'vue-agile'
 	export default {
 		data(){
 			return{
+				price:'Показать цену',
+				goods:[],
+				images:{
+					like:like,
+					likeActive:likeActive
+				},
 				likeActive:false,
 				sliderProduct: {
 					navButtons: false,
@@ -96,7 +105,30 @@
 				slideIndex:0,
 			}
 		},
+		created() {
+			this.$_vtr_good_loadGood();
+		},
 		methods:{
+			$_vtr_good_loadPrice: async function(){
+				if(this.price==='Показать цену'){
+					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood+'/price')
+					if(!data.err){
+						this.price=data.price;
+					}
+				}
+			},
+			$_vtr_good_loadGood: async function(){
+				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood)
+				if(!data.err){
+					this.goods=data.good;
+					console.log(data)
+				}
+			},
+			$_vtr_good_like(){
+				this.likeActive=!this.likeActive
+				this.$refs.imageLikeGood.classList.add('sizeImgBtn');
+				setTimeout(()=> {this.$refs.imageLikeGood.classList.remove('sizeImgBtn')}, 700);
+			},
 			$vtr_good_index_slideIndex(index){
 				this.slideIndex=index.currentSlide+1;
 			}
@@ -108,6 +140,20 @@
 </script>
 
 <style scoped>
+	.noPhoto{
+		padding: 30px 0;
+		color: #868686;
+		text-align: center;
+		background-color: white;
+		display: block;
+	}
+	.noPhoto span{
+		margin-top: 20px;
+		display: block;
+	}
+	.noPhoto img{
+		width: 70px;
+	}
 	.header .back{
 		height: 100%;
 		display: block;

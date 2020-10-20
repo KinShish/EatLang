@@ -15,7 +15,7 @@
   "author": "ООО АЛНА <developer@alna.ru>",
   "license": "Apache-2.0",
   "dependencies": {
-    "cordova-ios": "^5.1.1",
+    "cordova-ios": "^6.1.1",
     "core-js": "^3.6.5",
     "ios-deploy": "^1.11.2",
     "jsonwebtoken": "^8.5.1",

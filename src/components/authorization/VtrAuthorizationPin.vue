@@ -39,7 +39,7 @@
 						this.$router.push('/feed')
 					}else{
 						this.pin='';
-						alert('Не правильный пин')
+						this.$store.commit('notification','Не правильный пин-код')
 					}
 				}
 			}
