@@ -30,20 +30,20 @@
 				.customTabsSearch
 					b-card(no-body)
 						b-tabs(pills card)
-							b-tab(title='Рекомендуемое' active)
+							b-tab(title='Рекомендуемое' active @click="$_vtr_search_clickTab(1)")
 								.customTabContent
-									div(v-for="item in 2" :key="item")
+									//div(v-for="item in 2" :key="item")
 										router-link.infoGoodUser(:to="'search/company/'+item")
 											img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
 											span Имя пользователя
 										VtrAdditionalProduct(:hrefLink="'search/good/'+item" :pageName="'Поиск'")
-							b-tab(title='Новые объявления')
+							b-tab(title='Новые объявления' @click="$_vtr_search_clickTab(2)")
 								.customTabContent
-									div(v-for="item in 2" :key="item")
-										router-link.infoGoodUser(:to="'search/company/'+item")
+									div(v-for="good in recommendationGoods" :key="good.id")
+										router-link.infoGoodUser(:to="'search/company/'+good.id_company")
 											img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
 											span Имя пользователя
-										VtrAdditionalProduct(:hrefLink="'search/good/'+item" :pageName="'Поиск'")
+										VtrAdditionalProduct(:good="good" :hrefLink="'search/good/'+good.id" :pageName="'Поиск'")
 			.activeSearch(v-if="searchActive" @click="searchActive=false")
 			b-sidebar#sidebarFilter(title='Уточнить' right no-header)
 				.whiteBlock
@@ -86,13 +86,57 @@
 					{text:'По дате',value:'1'},
 					{text:'Сначала подешевле',value:'2'},
 					{text:'Сначала подороже',value:'3'},
-				]
+				],
+				load:true,
+				stopLoad:false,
+				type:1,
+
+				recommendationGoods:[],
+				newGoods:[],
+
+				recommendationGoodsDate:1,
+				newGoodsDater:1
 			}
 		},
 		methods:{
-			test(e){
-				console.log(e)
-			}
+			$_vtr_search_clickTab(type){
+				if(this.type!==type){
+					this.type=type;
+					this.$_vtr_search_loadGoods();
+					this.stopLoad=false;
+				}
+			},
+			$_vtr_search_loadGoods:async function(){
+				if(this.$route.name==='search'){
+					switch (this.type) {
+						case 1:{
+							break
+						}
+						case 2:{
+							//рекомендуемое
+							let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/new/'+this.recommendationGoodsDate)
+							if(data){
+								this.load=true;
+								if(!data.err&&!this.stopLoad){
+									this.recommendationGoods=this.recommendationGoods.concat(data.goods);
+									this.recommendationGoodsDate=Date.parse(new Date(this.recommendationGoods[this.recommendationGoods.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+								}
+								this.stopLoad=(data.goods.length===0);
+							}
+							break
+						}
+					}
+				}
+			},
+		},
+		created() {
+			this.$_vtr_search_loadGoods();
+			this.$root.$on('lazyLoad', (res)=>{
+				if(res&&this.load&&!this.stopLoad){
+					this.load=false;
+					this.$_vtr_search_loadGoods()
+				}
+			});
 		},
 		watch:{
 			'searchActive'(){

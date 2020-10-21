@@ -4,17 +4,17 @@
 			img.back(src="../../assets/back.svg" @click="$router.go(-1)")
 			span.title {{$route.query.pageName}}
 			.buttonsGood
-				img(src="../../assets/goodsImg/share.svg")
-				img(src="../../assets/goodsImg/compare.svg")
-				img(src="../../assets/goodsImg/edit.svg")
+				//img(src="../../assets/goodsImg/share.svg") поделиться
+				//img(src="../../assets/goodsImg/compare.svg") сравнить
+				img(src="../../assets/goodsImg/edit.svg" v-if="$store.state.user.data.id_company===goods.id_company")
 			b-dropdown(no-caret right).hamburgerButtonDropDown
 				template(v-slot:button-content)
 					.hamburgerButton
 						span .
 						span .
 						span .
-				b-dropdown-item(href='#') Добавить в архив
-				b-dropdown-item(href='#') Поднять в списке
+				b-dropdown-item(href='#' v-if="$store.state.user.data.id_company===goods.id_company") Добавить в архив
+				b-dropdown-item(href='#' v-if="$store.state.user.data.id_company===goods.id_company") Поднять в списке
 				b-dropdown-item(href='#') Пожаловаться
 		.slider
 			span.countSlider(v-if="goods.length>0&&goods.img[0]!==''") {{slideIndex}}/{{goods.img.length}}
@@ -121,7 +121,6 @@
 				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood)
 				if(!data.err){
 					this.goods=data.good;
-					console.log(data)
 				}
 			},
 			$_vtr_good_like(){

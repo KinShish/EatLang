@@ -1,8 +1,10 @@
 import axios from 'axios'
 import settings from './settings.js'
+import JsSIP from 'jssip'
 export const userVuex = {
 	state: {
 		data: "-1",
+		ua: '',
 		managers:[],
 		admin:false,
 		token:null,
@@ -34,6 +36,7 @@ export const userVuex = {
 			if(data){
 				state.admin=data.admin;
 				state.errAuth=false;
+				state.company=data.company;
 				state.data=data.user;
 				state.managers=(data.managers!==undefined?data.managers:[]);
 			}else{
@@ -59,6 +62,40 @@ export const userVuex = {
 		notification(state,text){
 			state.notification=text;
 			setTimeout(()=>{state.notification=''},5000)
+		},
+		connectUser:async (state)=>{
+			let socket = new JsSIP.WebSocketInterface('ws://192.168.0.205:8080');
+			let configuration = {
+				sockets  : [ socket ],
+				uri      : 'sip:1000@192.168.0.205:5060',
+				password : 'A123456789'
+			};
+			state.ua=new JsSIP.UA(configuration);
+			console.log(await state.ua.start())
+			console.log(state.ua)
+			var eventHandlers = {
+				'progress': function() {
+					console.log('call is in progress');
+				},
+				'failed': function(e) {
+					console.log('call failed with cause: '+ e.data.cause);
+				},
+				'ended': function(e) {
+					console.log('call ended with cause: '+ e.data.cause);
+				},
+				'confirmed': function() {
+					console.log('call confirmed');
+				}
+			};
+
+			var options = {
+				'eventHandlers'    : eventHandlers,
+				'mediaConstraints' : { 'audio': true, 'video': true }
+			};
+
+			console.log(await state.ua.call('sip:1002@192.168.0.205:5060',options))
+			state.ua.sendMessage('sip:1002@192.168.0.205:5060', 'text');
+
 		},
 	},
 	getters: {

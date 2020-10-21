@@ -41,13 +41,6 @@
 				}
 			}
 		},
-		watch:{
-			'$store.state.user.data'(){
-				if(this.$store.state.user.data!=='-1'){
-					this.$router.push('/pin')
-				}
-			},
-		},
 	}
 </script>
 <style scoped>

@@ -5,6 +5,11 @@ let routes = {
 	component: () => import('../App'),
 	children: [
 		{
+			path: 'call',
+			component: () => import('../components/additional/VtrAdditionalCallUser'),
+			name: 'call',
+		},
+		{
 			path: 'login',
 			component: () => import('../components/authorization/VtrAuthorizationLogin'),
 			name: 'login',

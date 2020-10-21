@@ -2,7 +2,7 @@
 	div
 		div(v-if="$route.name==='profile'")
 			.header
-				span {{$store.state.user.data.name}}
+				span {{$store.state.user.company.name}}
 				img.exit(src="../../assets/exit.svg" @click="$store.commit('logout')")
 			label.loadLogoBlock(for="laodlogoinp" v-if="$store.state.user.admin")
 				img(src="../../assets/loadLogo.svg")
@@ -34,7 +34,7 @@
 			.customTabsProfile(v-if="$store.state.user.admin")
 				b-card(no-body)
 					b-tabs(pills card)
-						b-tab(title='АКТИВНЫЕ' active @click="$_vtr_profile_clickTab(1)")
+						b-tab(title='АКТИВНЫЕ' @click="$_vtr_profile_clickTab(1)")
 							.customTabContent
 								.noGoods(v-if="goodsActive.length===0") Тут пусто :(
 								VtrAdditionalPrivateProduct(v-else v-for="good in goodsActive" :key="good.id" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
@@ -44,7 +44,7 @@
 								VtrAdditionalPrivateProduct(v-else v-for="good in goodsModer" :key="good.id" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
 						b-tab(title='АРХИВ' @click="$_vtr_profile_clickTab(3)")
 							.customTabContent
-								.noGoods(v-if="goodsArch.length===3") Тут пусто :(
+								.noGoods(v-if="goodsArch.length===0") Тут пусто :(
 								VtrAdditionalPrivateProduct(v-else v-for="good in goodsArch" :key="good.id" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
 			.whiteBlock(v-else)
 				.greyBlock
@@ -92,10 +92,10 @@
 				goodsArch:[],
 				goodsBlock:[],
 
-				numGoodsActive:1,
-				numGoodsModer:1,
-				numGoodsArch:1,
-				numGoodsBlock:1,
+				dateGoodsActive:1,
+				dateGoodsModer:1,
+				dateGoodsArch:1,
+				dateGoodsBlock:1,
 
 				status:1,
 				load:true,
@@ -129,19 +129,19 @@
 					let number;
 					switch (this.status) {
 						case 1:{
-							number=this.numGoodsActive;
+							number=this.dateGoodsActive;
 							break
 						}
 						case 0:{
-							number=this.numGoodsModer;
+							number=this.dateGoodsModer;
 							break
 						}
 						case 3:{
-							number=this.numGoodsArch;
+							number=this.dateGoodsArch;
 							break
 						}
 						case 2:{
-							number=this.numGoodsBlock;
+							number=this.dateGoodsBlock;
 							break
 						}
 					}
@@ -152,27 +152,34 @@
 							//активные
 							if(this.status===1){
 								this.goodsActive=this.goodsActive.concat(data.goods);
-								this.numGoodsActive++;
+								if(data.goods.length>0){
+									this.dateGoodsActive=Date.parse(new Date(this.goodsActive[this.goodsActive.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+								}
 							}
 							//модерация
 							if(this.status===0){
 								this.goodsModer=this.goodsModer.concat(data.goods);
-								this.numGoodsModer++;
+								if(data.goods.length>0){
+									this.dateGoodsModer=Date.parse(new Date(this.dateGoodsModer[this.goodsModer.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+								}
 							}
 							//архив
 							if(this.status===3){
 								this.goodsArch=this.goodsArch.concat(data.goods);
-								this.numGoodsArch++;
+								if(data.goods.length>0){
+									this.dateGoodsArch=Date.parse(new Date(this.dateGoodsArch[this.goodsArch.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+								}
 							}
 							//заблокированные
 							if(this.status===2){
 								this.goodsBlock=this.goodsBlock.concat(data.goods);
-								this.numGoodsBlock++;
+								if(data.goods.length>0){
+									this.dateGoodsBlock=Date.parse(new Date(this.dateGoodsBlock[this.goodsBlock.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+								}
 							}
 						}
 						this.stopLoad=(data.goods.length===0);
 					}
-					console.log(data)
 				}
 			},
 			$_vtr_profile_loadLogo(file){

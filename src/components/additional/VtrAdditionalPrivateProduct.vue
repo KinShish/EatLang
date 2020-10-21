@@ -3,7 +3,7 @@
 		.slider
 			span.countSlider(v-if="good.img[0]!==''") {{slideIndex}}/{{good.img.length}}
 			agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex" v-if="good.img[0]!==''")
-				.blockImg(v-for="item in good.img.length")
+				.blockImg(v-for="item in good.img")
 					img(src="https://img01.flagma.ru/photo/uslugi-spectehniki-spectehnika-v-arendu-5114258_big.jpg")
 			.noPhoto(v-else)
 				img(src="../../assets/loadLogo.svg")
@@ -23,7 +23,7 @@
 					span ... Подробнее
 			.priceBlock
 				//span {{good.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
-				span {{good.createGoods}}
+				span {{good.date}}
 </template>
 
 <script>

@@ -17,6 +17,10 @@ body{
     border-radius: 3px;
     padding: 5px 50px;
     font-size: 16px;
+    transition: .3s ease;
+}
+.btnRed:focus{
+    outline: none;
 }
 /*Кнопки конец*/
 /*Табы в профиле начало*/

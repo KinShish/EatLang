@@ -1,20 +1,23 @@
 <template lang="pug">
 	div
-		span.countSlider {{slideIndex}}/3
+		span.countSlider(v-if="good.img[0]!==''") {{slideIndex}}/{{good.img.length}}
 		.likeGood(@click="$_vtr_product_like")
 			img(:src="likeActive?images.likeActive:images.like" ref="imageLike")
 		router-link.mainBlockGood(:to="{ path: hrefLink, query: { pageName: pageName }}")
 			.slider
-				agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex")
-					.blockImg(v-for="item in 3")
+				agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex"  v-if="good.img[0]!==''")
+					.blockImg(v-for="item in good.img")
 						img(src="https://img01.flagma.ru/photo/uslugi-spectehniki-spectehnika-v-arendu-5114258_big.jpg")
+				.noPhoto(v-else)
+					img(src="../../assets/loadLogo.svg")
+					span Фото отсутствует
 			.contentGood
 				.nameGood
-					span Японский мини трактор HINOMOTO N249D
+					span {{good.name}}
 				.descriptionGood
-					p {{string.substr(0,100)}}
+					p {{good.description.substr(0,100)}}
 						span ... Подробнее
-				.priceBlock 20.09.2020 15:19
+				.priceBlock {{good.date}}
 </template>
 
 <script>
@@ -25,6 +28,7 @@
 		props:{
 			hrefLink:String,
 			pageName:String,
+			good:Object
 		},
 		data(){
 			return{
@@ -60,6 +64,20 @@
 </script>
 
 <style scoped>
+	.noPhoto{
+		padding: 30px 0;
+		color: #868686;
+		text-align: center;
+		background-color: white;
+		display: block;
+	}
+	.noPhoto span{
+		margin-top: 20px;
+		display: block;
+	}
+	.noPhoto img{
+		width: 70px;
+	}
 	.slider{
 		position: relative;
 	}
