@@ -51,6 +51,7 @@
 				this.$_vtr_main_scroll();
 				this.$vtr_main_loadCats();
 			}
+			//this.$store.commit('connectUser')
 		},
 		watch:{
 			'$store.state.user.data'(){
