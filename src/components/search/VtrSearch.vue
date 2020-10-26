@@ -29,7 +29,7 @@
 											span Имя пользователя
 										VtrAdditionalProduct(:good="good" :hrefLink="'search/good/'+good.id" :pageName="'Поиск'")
 		transition(name="opacity")
-			router-view
+			router-view(:key="$route.fullPath")
 		transition(name="opacity")
 			div(v-if="searchActive")
 				.listSearch

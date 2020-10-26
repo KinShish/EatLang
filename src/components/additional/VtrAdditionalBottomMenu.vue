@@ -44,7 +44,7 @@
 	const socket =new JsSIP.WebSocketInterface('ws://192.168.0.205:8081');
 	const configuration = {
 		sockets: [socket],
-		uri: 'sip:1000@192.168.0.205',
+		uri: 'sip:1002@192.168.0.205',
 		password: 'A123456789',
 		session_timers: false
 	};
@@ -101,7 +101,7 @@
 					mediaConstraints : { audio: true, video: false }
 				};
 
-				const session = this.coolPhone.call('sip:1001@192.168.0.205', options);
+				const session = this.coolPhone.call('sip:1000@192.168.0.205', options);
 				console.log(session)
 			}
 		},

@@ -6,11 +6,11 @@
 		b-form.mainBlock(@submit.stop.prevent="$_vtr_add_addGood")
 			b-form-group
 				label(for="inpCat") Выбирите категорию*
-				b-form-select#inpCat.borderInput(placholder="Категория" :options="optionsCats" value-field="id" text-field="name" v-model="arrCats.cat" @change="$_vtr_add_load_selectCat(arrCats.cat,1)")
-				label(for="inpSubCat" v-if="optionsSubCats.length>1") Выбирите подкатегорию*
-				b-form-select#inpSubCat.borderInput(placholder="Подкатегория" :options="optionsSubCats" value-field="id" text-field="name" v-model="arrCats.subCat" @change="$_vtr_add_load_selectCat(arrCats.subCat,2)" v-if="optionsSubCats.length>1")
-				label(for="inpSubSubCat" v-if="optionsSubCats.length>1&&optionsSubSubCats.length>1") Выбирите подкатегорию*
-				b-form-select#inpSubSubCat.borderInput(placholder="Подкатегория" :options="optionsSubSubCats" value-field="id" text-field="name" v-model="arrCats.subSubCat" v-if="optionsSubCats.length>1&&optionsSubSubCats.length>1")
+				b-form-select#inpCat.borderInput( placholder="Категория" :options="options[0]" value-field="id" text-field="name" v-model="cats[0]" @change="$_vtr_add_load_selectCat(cats[0],1)")
+				label(for="inpSubCat" v-if="options[1].length>1") Выбирите подкатегорию*
+				b-form-select#inpSubCat.borderInput(placholder="Подкатегория" :options="options[1]" value-field="id" text-field="name" v-model="cats[1]" @change="$_vtr_add_load_selectCat(cats[1],2)" v-if="options[1].length>1")
+				label(for="inpSubSubCat" v-if="options[1].length>1&&options[2].length>1") Выбирите подкатегорию*
+				b-form-select#inpSubSubCat.borderInput(placholder="Подкатегория" :options="options[2]" value-field="id" text-field="name" v-model="cats[2]" v-if="options[1].length>1&&options[2].length>1")
 				label(for="nameInp") Название объявления
 				b-form-input#nameInp.borderInput(placeholder="Название" v-model="form.name")
 				label(for="priceInp") Цена
@@ -43,16 +43,13 @@
 					precision: 0,
 				},
 				file:[],
-
-				optionsCats: [{ id: null, name: 'Выберите' }],
-				optionsSubCats: [{ id: null, name: 'Выберите' }],
-				optionsSubSubCats: [{ id: null, name: 'Выберите' }],
-				allCats:[],
-				arrCats:{
-					cat:null,
-					subCat:null,
-					subSubCat:null,
+				options: {
+					'0':[{id: null, name: 'Выберите'}],
+					'1':[{id: null, name: 'Выберите'}],
+					'2':[{id: null, name: 'Выберите'}]
 				},
+				cats:{'0':null,'1':null,'2':null},
+				allCats:[],
 				form:{
 					name:'',
 					price:'',
@@ -66,7 +63,7 @@
 		},
 		methods:{
 			$_vtr_add_addGood:async function(){
-				if(!this.$v.form.$invalid&&!this.$v.arrCats.$invalid){
+				if(!this.$v.form.$invalid&&!this.$v.cats.$invalid){
 					this.$_vtr_add_getLastCat();
 					this.form.price=this.form.price.replace(/\s/g, '')*1;
 					if(this.$route.name==='edit'){
@@ -82,17 +79,13 @@
 				}
 			},
 			$_vtr_add_getLastCat(){
-				if(this.arrCats.cat!==null&&this.arrCats.subCat!==null&&this.arrCats.subSubCat!==null){
-					this.form.id_cat=this.arrCats.subSubCat;
-					return true;
-				}
-				if(this.arrCats.cat!==null&&this.arrCats.subCat!==null){
-					this.form.id_cat=this.arrCats.subCat;
-					return true;
-				}
-				if(this.arrCats.cat!==null){
-					this.form.id_cat=this.arrCats.cat;
-					return true;
+				// eslint-disable-next-line for-direction
+				for(let i=Object.keys(this.cats).length-1;i>0;i--){
+					if(this.cats[i]!==null){
+						console.log(this.cats[i],i)
+						this.form.id_cat=this.cats[i];
+						break
+					}
 				}
 			},
 			$_vtr_add_delete_loadimages(index){
@@ -111,20 +104,19 @@
 			},
 			$_vtr_add_loadGood:async function(){
 				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood)
-				let catsSelect=[data.good.id_cat];
-				catsSelect.push(this.allCats.filter(item=>item.id===catsSelect[0])[0].id_parent)
-				catsSelect.push(this.allCats.filter(item=>item.id===catsSelect[1])[0].id_parent)
-				if(catsSelect[2]!==0){
-					this.$_vtr_add_load_selectCat(catsSelect[2],1)
-					this.$_vtr_add_load_selectCat(catsSelect[1],2)
-					this.arrCats.subSubCat=catsSelect[0];
-					this.arrCats.subCat=catsSelect[1];
-					this.arrCats.cat=catsSelect[2];
-				}else{
-					this.$_vtr_add_load_selectCat(catsSelect[1],1)
-					this.$_vtr_add_load_selectCat(catsSelect[0],2)
-					this.arrCats.subCat=catsSelect[0];
-					this.arrCats.cat=catsSelect[1];
+				let catsSelect=[];
+				const getParentCats=(id)=>{
+					for(let cat of this.allCats){
+						if(cat.id===id){
+							catsSelect.push(cat.id)
+							getParentCats(cat.id_parent)
+							break
+						}
+					}
+				}
+				getParentCats(data.good.id_cat)
+				for(let i=1;i<=catsSelect.length;i++){
+					this.$_vtr_add_load_selectCat(catsSelect[catsSelect.length-i],i)
 				}
 				if(data&&!data.err){
 					this.form.name=data.good.name;
@@ -137,43 +129,19 @@
 					this.form.price=dataPrice.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ');
 				}
 			},
-			$_vtr_add_load_selectCat:async function(id,type){
-				if(id===null){
-					if(type===1){
-						this.optionsSubCats=[{ id: null, name: 'Выберите' }];
-						this.optionsSubSubCats=[{ id: null, name: 'Выберите' }];
-						this.arrCats.subCat=null;
-						this.arrCats.subSubCat=null;
-					}else{
-						this.optionsSubSubCats=[{ id: null, name: 'Выберите' }];
-						this.arrCats.subSubCat=null;
-					}
-					return
+			$_vtr_add_load_selectCat(id,type){
+				this.cats[type-1]=id;
+				for(let i=type;i<Object.keys(this.options).length;i++){
+					this.options[i]=[{ id: null, name: 'Выберите' }]
+					this.cats[i]=null
 				}
-				switch (type) {
-					case 1:{
-						this.optionsSubCats=[{ id: null, name: 'Выберите' }];
-						this.optionsSubSubCats=[{ id: null, name: 'Выберите' }];
-						this.arrCats.subCat=null;
-						this.subSubCat=null;
-						this.optionsSubCats=this.allCats.filter(item => item.id_parent===id)
-						this.optionsSubCats.unshift({ id: null, name: 'Выберите' })
-						break
-					}
-					case 2:{
-						this.optionsSubSubCats=[{ id: null, name: 'Выберите' }];
-						this.arrCats.subSubCat=null;
-						this.optionsSubSubCats=this.allCats.filter(item => item.id_parent===id);
-						this.optionsSubSubCats.unshift({ id: null, name: 'Выберите' })
-						break
-					}
-				}
+				this.options[type]=this.allCats.filter(item => item.id_parent===id);
+				this.options[type].unshift({ id: null, name: 'Выберите' })
 			},
 			$_vtr_add_loadAllCat: async function(){
 				this.allCats=this.$store.state.user.cats;
-				this.optionsCats=this.allCats.filter(item => item.id_parent===0)
-				this.optionsCats.unshift({ id: null, name: 'Выберите' })
-
+				this.options[0]=this.allCats.filter(item => item.id_parent===0)
+				this.options[0].unshift({ id: null, name: 'Выберите' })
 				if(this.$route.name==='edit'){
 					this.$_vtr_add_loadGood();
 				}
@@ -184,15 +152,15 @@
 		},
 		directives: {money: VMoney},
 		validations:{
-			arrCats:{
-				cat: {
+			cats:{
+				'0': {
 					required,
 				},
-				subCat: {
-					required:requiredIf(function() {return this.optionsSubCats.length>1})
+				'1': {
+					required:requiredIf(function() {return this.options[1].length>1})
 				},
-				subSubCat:{
-					required:requiredIf(function() {return this.optionsSubSubCats.length>1})
+				'2':{
+					required:requiredIf(function() {return this.options[2].length>1})
 				},
 			},
 			form:{

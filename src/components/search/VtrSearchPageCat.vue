@@ -35,26 +35,25 @@
 			},
 			$_vtr_search_cat_getCats:async function(){
 				this.catActive=this.$route.params.idCat*1;
-				let mainArray=[],array=[],array_id_cat=[];
-				mainArray=this.$store.state.user.cats.filter(item=>item.id_parent===this.$route.params.idCat*1)
-				mainArray.forEach(a=>{
-					array.push((this.$store.state.user.cats.filter(item=>item.id_parent===a.id)))
-				})
-				array.forEach(a=>{
-					mainArray=mainArray.concat(a)
-				})
-				mainArray.forEach(a=>{
-					array_id_cat.push(a.id)
-				})
-				if(array_id_cat.length===0){
-					array_id_cat.push(this.$route.params.idCat)
+				let arrayCats=this.$store.state.user.cats;
+				this.array_id_cat=[];
+				const getChildrenCat=(id)=>{
+					let flag=true;
+					arrayCats.forEach(cat=>{
+						if(cat.id_parent===id){
+							getChildrenCat(cat.id)
+							flag=false;
+						}
+					})
+					if(flag){this.array_id_cat.push(id)}
 				}
-				this.array_id_cat=array_id_cat;
+				getChildrenCat(this.catActive)
 				this.load=false;
 				this.$_vtr_search_cat_loadGood();
 			},
 			$_vtr_search_cat_loadGood:async function(){
 				if(this.$route.name==='searchPageCat'&&this.catActive!==this.$route.idCat&&!this.load){
+					console.log(this.$store.state.user.settings.server+'goods/cat/'+this.goodDate)
 					let data=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'goods/cat/'+this.goodDate, {array_id_cat:this.array_id_cat})
 					if(data&&!data.err){
 						this.load=true;
