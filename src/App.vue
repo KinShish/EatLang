@@ -44,6 +44,7 @@
 				this.$store.commit('auth')
 				this.$_vtr_main_scroll();
 			}
+			//this.$store.commit('connectUser')
 		},
 		watch:{
 			'$store.state.user.data'(){
