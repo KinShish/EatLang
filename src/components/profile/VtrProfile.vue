@@ -38,14 +38,17 @@
 							.customTabContent
 								.noGoods(v-if="goodsActive.length===0") Тут пусто :(
 								VtrAdditionalPrivateProduct(v-else v-for="good in goodsActive" :key="good.id" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
+								b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
 						b-tab(title='НА МОДЕРАЦИИ' @click="$_vtr_profile_clickTab(0)")
 							.customTabContent
 								.noGoods(v-if="goodsModer.length===0") Тут пусто :(
 								VtrAdditionalPrivateProduct(v-else v-for="good in goodsModer" :key="good.id" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
+								b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
 						b-tab(title='АРХИВ' @click="$_vtr_profile_clickTab(3)")
 							.customTabContent
 								.noGoods(v-if="goodsArch.length===0") Тут пусто :(
 								VtrAdditionalPrivateProduct(v-else v-for="good in goodsArch" :key="good.id" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
+								b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
 			.whiteBlock(v-else)
 				.greyBlock
 					h4 Заявки
@@ -160,21 +163,21 @@
 							if(this.status===0){
 								this.goodsModer=this.goodsModer.concat(data.goods);
 								if(data.goods.length>0){
-									this.dateGoodsModer=Date.parse(new Date(this.dateGoodsModer[this.goodsModer.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+									this.dateGoodsModer=Date.parse(new Date(this.goodsModer[this.goodsModer.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
 								}
 							}
 							//архив
 							if(this.status===3){
 								this.goodsArch=this.goodsArch.concat(data.goods);
 								if(data.goods.length>0){
-									this.dateGoodsArch=Date.parse(new Date(this.dateGoodsArch[this.goodsArch.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+									this.dateGoodsArch=Date.parse(new Date(this.goodsArch[this.goodsArch.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
 								}
 							}
 							//заблокированные
 							if(this.status===2){
 								this.goodsBlock=this.goodsBlock.concat(data.goods);
 								if(data.goods.length>0){
-									this.dateGoodsBlock=Date.parse(new Date(this.dateGoodsBlock[this.goodsBlock.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+									this.dateGoodsBlock=Date.parse(new Date(this.goodsBlock[this.goodsBlock.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
 								}
 							}
 						}

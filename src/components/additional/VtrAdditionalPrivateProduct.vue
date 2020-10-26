@@ -2,7 +2,7 @@
 	router-link.mainBlockGood(:to="{ path: hrefLink, query: { pageName: pageName }}")
 		.slider
 			span.countSlider(v-if="good.img[0]!==''") {{slideIndex}}/{{good.img.length}}
-			agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex" v-if="good.img[0]!==''")
+			agile(:options="sliderProduct" @after-change="$_vtr_product_slideIndex" v-if="good.img[0]!==''")
 				.blockImg(v-for="item in good.img")
 					img(src="https://img01.flagma.ru/photo/uslugi-spectehniki-spectehnika-v-arendu-5114258_big.jpg")
 			.noPhoto(v-else)
@@ -22,7 +22,7 @@
 				p {{good.description.substr(0,100)}}
 					span ... Подробнее
 			.priceBlock
-				//span {{good.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
+				span {{price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
 				span {{good.date}}
 </template>
 
@@ -37,6 +37,7 @@
 		data(){
 			return{
 				likeActive:false,
+				price:0,
 				sliderProduct: {
 					navButtons: false,
 					dots: false,
@@ -45,14 +46,23 @@
 				slideIndex:0,
 			}
 		},
-		methods:{
-			$vtr_product_slideIndex(index){
-				this.slideIndex=index.currentSlide+1;
-			}
-		},
 		components: {
 			agile: VueAgile
 		},
+		methods:{
+			$_vtr_product_slideIndex(index){
+				this.slideIndex=index.currentSlide+1;
+			},
+			$_vtr_product_loadPrice:async function(){
+				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.good.id+'/price')
+				if(!data.err){
+					this.price=data.price;
+				}
+			}
+		},
+		created() {
+			this.$_vtr_product_loadPrice();
+		}
 	}
 </script>
 

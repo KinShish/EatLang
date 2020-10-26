@@ -49,9 +49,28 @@ let routes = {
 			name: 'search',
 			children: [
 				{
-					path: 'searchPage/:key',
-					component: () => import('../components/search/VtrSearchPage'),
-					name: 'searchPage',
+					path: 'searchPageCat/:idCat',
+					component: () => import('../components/search/VtrSearchPageCat'),
+					name: 'searchPageCat',
+					children: [
+						{
+							path: 'good/:idGood',
+							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
+							name: 'searchPageGood',
+						},
+						{
+							path: 'company/:idComp',
+							component: () => import('../components/profile/VtrProfileCompany'),
+							name: 'searchPageCompany',
+							children: [
+								{
+									path: 'good/:idGood',
+									component: () => import('../components/additional/VtrAdditionalGoodIndex'),
+									name: 'searchPageCompanyGood',
+								},
+							]
+						}
+					]
 				},
 				{
 					path: 'good/:idGood',
@@ -76,6 +95,11 @@ let routes = {
 			path: 'add',
 			component: () => import('../components/VtrAdd'),
 			name: 'add',
+		},
+		{
+			path: 'edit/:idGood',
+			component: () => import('../components/VtrAdd'),
+			name: 'edit',
 		},
 		{
 			path: 'chat',

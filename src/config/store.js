@@ -11,6 +11,7 @@ export const userVuex = {
 		errAuth:false,
 		settings:settings,
 		notification:'',
+		cats:[],
 	},
 	mutations: {
 		firstAuth:async function (state,form){
@@ -62,6 +63,9 @@ export const userVuex = {
 		notification(state,text){
 			state.notification=text;
 			setTimeout(()=>{state.notification=''},5000)
+		},
+		loadCat(state,cats){
+			state.cats=cats
 		},
 		connectUser:async (state)=>{
 			let socket = new JsSIP.WebSocketInterface('ws://192.168.0.205:8080');

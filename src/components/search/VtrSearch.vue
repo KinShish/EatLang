@@ -1,36 +1,20 @@
 <template lang="pug">
 	div
-		div(v-if="$route.name==='search'")
-			.header
-				.borderInput(:class="searchActive?'noBorder':''" style="z-index:2")
+		.header(:class="searchActive?'headerActive':''" v-if="$route.name==='search'||$route.name==='searchPageCat'")
+			.borderInput(:class="searchActive?'noBorder':''")
+				transition(name="opacity")
 					img.back(src="../../assets/back.svg" @click="$router.go(-1)" v-if="$route.name!=='search'")
-					b-form-input#inputSearch(v-model="search" placeholder="Поиск" @focus="searchActive=true")
-					img.filterImg(src="../../assets/filter.svg" v-b-toggle.sidebarFilter v-if="!searchActive" @click="filterActive=true")
-					.searchBtn(@click="searchActive=false" v-else) Найти
-			.listSearch(v-if="searchActive")
-				div
-					span(@click="search='История 1'") История 1
-					span(@click="search='История 2'") История 2
-					span(@click="search='История 3'") История 3
-					span(@click="search='История 4'") История 4
+				b-form-input#inputSearch(v-model="search" placeholder="Поиск" @focus="searchActive=true")
+				img.filterImg(src="../../assets/filter.svg" v-b-toggle.sidebarFilter v-if="!searchActive" @click="filterActive=true")
+				.searchBtn(@click="$_vtr_search_goToSearchPage" v-else) Найти
+		div(v-if="$route.name==='search'")
 			.whiteBlock
 				.tabCat
-					span АВТОМОБИЛИ
-					span КВАДРОЦИКЛЫ
-					span СТРОИТЕЛЬНАЯ ТЕХНИКА
-					span АВТОМОБИЛИ
-					span АВТОМОБИЛИ
-					span КВАДРОЦИКЛЫ
-					span СТРОИТЕЛЬНАЯ ТЕХНИКА
-					span АВТОМОБИЛИ
-					span АВТОМОБИЛИ
-					span КВАДРОЦИКЛЫ
-					span СТРОИТЕЛЬНАЯ ТЕХНИКА
-					span АВТОМОБИЛИ
+					router-link(:to="'search/searchPageCat/'+cat.id" v-for="cat in cats" :key="cat.id") {{cat.name}}
 				.customTabsSearch
 					b-card(no-body)
-						b-tabs(pills card)
-							b-tab(title='Рекомендуемое' active @click="$_vtr_search_clickTab(1)")
+						b-tabs(pills card v-model="tabIndex")
+							b-tab(title='Рекомендуемое' @click="$_vtr_search_clickTab(1)")
 								.customTabContent
 									//div(v-for="item in 2" :key="item")
 										router-link.infoGoodUser(:to="'search/company/'+item")
@@ -44,39 +28,48 @@
 											img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
 											span Имя пользователя
 										VtrAdditionalProduct(:good="good" :hrefLink="'search/good/'+good.id" :pageName="'Поиск'")
-			.activeSearch(v-if="searchActive" @click="searchActive=false")
-			b-sidebar#sidebarFilter(title='Уточнить' right no-header)
-				.whiteBlock
-					.headerSidebar
-						img(src="../../assets/close.svg" v-b-toggle.sidebarFilter @click="filterActive=false")
-						h4  Уточнить
-					.blockFilter
-						.boxShadowFilter
-							.blockFilterCity
-								label(for="cityFilterInp") Город
-								input#cityFilterInp(placeholder="Славянск на кубани")
-						.boxShadowFilter
-							.priceFilterInputs
-								label(for="priceFilterInp") Цена
-								.priceFilterInputsContetn
-									div
-										span от
-										input#priceFilterInp
-									div
-										span до
-										input
-						.boxShadowFilter
-							b-form-radio-group.radioBtnFilter(
-								v-model="selectedFilter"
-								:options="optionsFilter")
-						button.btnRed Показать объявления
 		transition(name="opacity")
 			router-view
+		transition(name="opacity")
+			div(v-if="searchActive")
+				.listSearch
+					div
+						span(@click="search='История 1'") История 1
+						span(@click="search='История 2'") История 2
+						span(@click="search='История 3'") История 3
+						span(@click="search='История 4'") История 4
+				.activeSearch(@click="searchActive=false")
+		b-sidebar#sidebarFilter(title='Уточнить' right no-header)
+			.whiteBlock
+				.headerSidebar
+					img(src="../../assets/close.svg" v-b-toggle.sidebarFilter @click="filterActive=false")
+					h4  Уточнить
+				.blockFilter
+					.boxShadowFilter
+						.blockFilterCity
+							label(for="cityFilterInp") Город
+							input#cityFilterInp(placeholder="Славянск на кубани")
+					.boxShadowFilter
+						.priceFilterInputs
+							label(for="priceFilterInp") Цена
+							.priceFilterInputsContetn
+								div
+									span от
+									input#priceFilterInp
+								div
+									span до
+									input
+					.boxShadowFilter
+						b-form-radio-group.radioBtnFilter(
+							v-model="selectedFilter"
+							:options="optionsFilter")
+					button.btnRed Показать объявления
 </template>
 <script>
 	export default {
 		data(){
 			return{
+				tabIndex:1,
 				searchActive:false,
 				filterActive:false,
 				search:'',
@@ -87,6 +80,7 @@
 					{text:'Сначала подешевле',value:'2'},
 					{text:'Сначала подороже',value:'3'},
 				],
+				cats:[],
 				load:true,
 				stopLoad:false,
 				type:1,
@@ -99,6 +93,10 @@
 			}
 		},
 		methods:{
+			$_vtr_search_goToSearchPage(){
+				console.log(this.search)
+				this.searchActive=false
+			},
 			$_vtr_search_clickTab(type){
 				if(this.type!==type){
 					this.type=type;
@@ -107,7 +105,7 @@
 				}
 			},
 			$_vtr_search_loadGoods:async function(){
-				if(this.$route.name==='search'){
+				if(this.$route.name==='search'&&!this.load){
 					switch (this.type) {
 						case 1:{
 							break
@@ -121,7 +119,7 @@
 									this.recommendationGoods=this.recommendationGoods.concat(data.goods);
 									this.recommendationGoodsDate=Date.parse(new Date(this.recommendationGoods[this.recommendationGoods.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
 								}
-								this.stopLoad=(data.goods.length===0);
+								this.stopLoad=data.goods.length===0;
 							}
 							break
 						}
@@ -130,6 +128,8 @@
 			},
 		},
 		created() {
+			this.cats=this.$store.state.user.cats.filter(item=>item.id_parent===0);
+			this.load=false;
 			this.$_vtr_search_loadGoods();
 			this.$root.$on('lazyLoad', (res)=>{
 				if(res&&this.load&&!this.stopLoad){
@@ -176,7 +176,6 @@
 		top: 0;
 		width: 100%;
 		height: 100%;
-		z-index: 1;
 	}
 	.searchBtn{
 		background: #F64646;
@@ -192,10 +191,14 @@
 		line-height: 23px;
 	}
 	.noBorder{
-		border-color: rgba(0, 0, 0, 0);
+		border-color: #f7f7f7;
 		z-index: 2;
 		position: relative;
-		background: white;
+		background: #f7f7f7;
+	}
+	.headerActive{
+		background: rgba(0, 0, 0,0) !important;
+		position: unset !important;
 	}
 	.listSearch div{
 		background: white;
@@ -266,7 +269,7 @@
 		padding: 13px 0;
 		font-size: 14px;
 	}
-	.tabCat span{
+	.tabCat a{
 		background: #FFFFFF;
 		color: #F64646;
 		box-shadow: 0 3px 4px rgba(0, 0, 0, 0.11);
@@ -276,6 +279,8 @@
 		margin: 0 5px;
 		text-align: center;
 		white-space: nowrap;
+		line-height: 27px;
+		text-decoration: none;
 	}
 	.header{
 		padding: 5px;
@@ -299,6 +304,7 @@
 		box-shadow: none;
 		outline: none;
 		background: #f7f7f7;
+		padding-left: 0;
 	}
 	.filterImg{
 		padding: 6px 0;

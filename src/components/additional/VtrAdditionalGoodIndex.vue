@@ -4,9 +4,10 @@
 			img.back(src="../../assets/back.svg" @click="$router.go(-1)")
 			span.title {{$route.query.pageName}}
 			.buttonsGood
-				//img(src="../../assets/goodsImg/share.svg") поделиться
-				//img(src="../../assets/goodsImg/compare.svg") сравнить
-				img(src="../../assets/goodsImg/edit.svg" v-if="$store.state.user.data.id_company===goods.id_company")
+				img(src="../../assets/goodsImg/share.svg")
+				//img(src="../../assets/goodsImg/compare.svg")
+				router-link(:to="'/edit/'+$route.params.idGood" v-if="$store.state.user.data.id_company===goods.id_company" replace)
+					img(src="../../assets/goodsImg/edit.svg")
 			b-dropdown(no-caret right).hamburgerButtonDropDown
 				template(v-slot:button-content)
 					.hamburgerButton
@@ -36,10 +37,10 @@
 					img(src="../../assets/goodsImg/heart.svg")
 					span 320
 				div
-					span {{goods.createGoods}}
+					span {{goods.date}}
 			.blockBorder
 				.nameIndexGood {{goods.name}}
-				.priceIndexGood(@click="$_vtr_good_loadPrice") {{price}}
+				.priceIndexGood(@click="$_vtr_good_loadPrice") {{price==='Показать цену'?price:price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
 			//.blockBorder
 				span.watchGeoGood Показать местоположение
 			.blockBorder
@@ -175,8 +176,11 @@
 		float: right;
 		height: 50px;
 	}
-	.buttonsGood img:nth-child(2){
-		margin: 0 12px;
+	.buttonsGood a{
+		display: flex;
+	}
+	.buttonsGood img{
+		margin: 0 5px;
 	}
 	.hamburgerButton{
 		display: block;

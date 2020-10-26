@@ -12,6 +12,7 @@
 			.title Объявления пользователя
 			.noGoods(v-if="goods.length===0") Тут пусто :(
 			VtrAdditionalProduct(v-else v-for="good in goods" :key="good.id+'company'" :good="good" :hrefLink="$route.params.idComp+'/good/'+good.id" :pageName="'Название компании'")
+			b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
 		transition(name="opacity")
 			router-view
 </template>
@@ -41,7 +42,7 @@
 				}
 			},
 			$_vtr_profile_company_loadGoods:async function(){
-				if(this.$route.name.slice(-7)==='Company'){
+				if(this.$route.name.slice(-7)==='Company'&&!this.load){
 					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/company/'+this.$route.params.idComp+'/1/'+this.number)
 					if(data&&!data.err){
 						this.load=true;
@@ -63,6 +64,7 @@
 			}
 		},
 		created() {
+			this.load=false;
 			this.$_vtr_profile_company_loadCompany();
 			this.$_vtr_profile_company_loadGoods();
 			this.$root.$on('lazyLoad', (res)=>{

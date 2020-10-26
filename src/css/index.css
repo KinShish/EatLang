@@ -31,7 +31,8 @@ body{
     min-height: 300px;
 }
 .customTabsProfile .nav-pills .nav-link.active, .nav-pills .show > .nav-link{
-    color: #757575;
+    background: #F64646;
+    color: white;
 }
 .customTabsProfile .nav-pills .nav-link{
     background: white;
@@ -40,6 +41,7 @@ body{
     box-shadow: 0 3px 4px rgba(0, 0, 0, 0.11);
     padding: 7px;
     margin: 0 3px;
+    transition: .3s ease;
 }
 .customTabsProfile .card-header{
     border: none;
@@ -232,6 +234,10 @@ body{
     height: 70px;
     transform:translateY(70px);
     bottom: 0;
+}
+.customSpiner{
+    margin: 0 auto;
+    display: block;
 }
 /*Дополнительно конец*/
 /*Анимация лайка начало*/

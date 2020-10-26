@@ -87,11 +87,11 @@
 		bottom: 0;
 		width: 100%;
 		background: white;
-		height: 50px;
-		padding-top: 7px;
+		height: 60px;
 		display: flex;
 		box-shadow: 0 -4px 4px rgba(0, 0, 0, 0.1);
 		z-index: 1000;
+		padding-top: 10px;
 	}
 	.mainBlockMenu a{
 		flex: 1;

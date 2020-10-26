@@ -1,16 +1,15 @@
 <template lang="pug">
-	div
+	div.slider
 		span.countSlider(v-if="good.img[0]!==''") {{slideIndex}}/{{good.img.length}}
 		.likeGood(@click="$_vtr_product_like")
 			img(:src="likeActive?images.likeActive:images.like" ref="imageLike")
 		router-link.mainBlockGood(:to="{ path: hrefLink, query: { pageName: pageName }}")
-			.slider
-				agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex"  v-if="good.img[0]!==''")
-					.blockImg(v-for="item in good.img")
-						img(src="https://img01.flagma.ru/photo/uslugi-spectehniki-spectehnika-v-arendu-5114258_big.jpg")
-				.noPhoto(v-else)
-					img(src="../../assets/loadLogo.svg")
-					span Фото отсутствует
+			agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex"  v-if="good.img[0]!==''")
+				.blockImg(v-for="item in good.img")
+					img(src="https://img01.flagma.ru/photo/uslugi-spectehniki-spectehnika-v-arendu-5114258_big.jpg")
+			.noPhoto(v-else)
+				img(src="../../assets/loadLogo.svg")
+				span Фото отсутствует
 			.contentGood
 				.nameGood
 					span {{good.name}}
