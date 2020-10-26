@@ -79,10 +79,8 @@
 				}
 			},
 			$_vtr_add_getLastCat(){
-				// eslint-disable-next-line for-direction
 				for(let i=Object.keys(this.cats).length-1;i>0;i--){
 					if(this.cats[i]!==null){
-						console.log(this.cats[i],i)
 						this.form.id_cat=this.cats[i];
 						break
 					}

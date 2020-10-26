@@ -193,7 +193,6 @@
 						let data = new FormData();
 						data.append('file', file);
 						console.log(this.$store.getters.request('POST',this.$store.state.user.settings.server+'company/logo',data))
-						//cd функцию у гетера попробуй сдлать
 					}
 				}
 			}

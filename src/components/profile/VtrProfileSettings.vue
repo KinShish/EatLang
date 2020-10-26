@@ -25,6 +25,9 @@
 				console.log(this.form)
 			}
 		},
+		created() {
+			this.form.name=this.$store.state.user.company.name
+		},
 		validations:{
 			form:{
 				name: {

@@ -287,7 +287,6 @@
 	}
 	.borderInput{
 		margin: 5px auto;
-		width: 95%;
 		height: 30px;
 		line-height: 30px;
 		font-size: 14px;

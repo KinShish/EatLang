@@ -2,9 +2,12 @@
 	div
 		.header
 			img.back(src="../../assets/back.svg" @click="$router.go(-1)")
-			span Последнии изменения
+			span Последние изменения
 		.mainBlock
-			| {{notifications}}
+			div(v-for="item in notifications" :class="item.type")
+				span {{item.description}}
+				span    {{item.datetime}}
+				br
 </template>
 
 <script>
@@ -18,8 +21,8 @@
 			vtr_load_notifications:async function(){
 				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'user/push');
 				if(!data.err){
-					console.log(data.push)
 					this.notifications=data.push;
+					console.log(this.notifications)
 				}else{
 					this.$store.commit('notification','Произошла ошибка')
 				}
@@ -32,7 +35,17 @@
 </script>
 
 <style scoped>
+	.auth{
+		color: #757575;
+	}
+	.goods{
+		color: #26C281;
+	}
+	.subscription{
+		color: #F64646;
+	}
 	.mainBlock {
-		margin: 13px 30px 0 30px;
+		margin: 13px 15px 0 15px;
+		font-size: 14px;
 	}
 </style>

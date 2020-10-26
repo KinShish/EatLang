@@ -2,11 +2,11 @@
 	div
 		div(v-if="$route.name==='searchPageCat'")
 			.activeCat
-				span {{$store.state.user.cats.filter(item=>item.id===catActive)[0].name}}
+				span {{allCats.filter(item=>item.id===catActive)[0].name}}
 				router-link(to="/search")
 					img(src="../../assets/close.svg")
 			.tabCat
-				router-link(:to="''+cat.id" v-for="cat in $store.state.user.cats.filter(item=>item.id_parent===this.$route.params.idCat*1)" :key="cat.id") {{cat.name}}
+				router-link(:to="''+cat.id" v-for="cat in allCats.filter(item=>item.id_parent===this.$route.params.idCat*1)" :key="cat.id") {{cat.name}}
 			div(v-for="good in arrayGood" :key="good.id")
 				router-link.infoGoodUser(:to="'search/company/'+good.id_company")
 					img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
@@ -14,13 +14,14 @@
 				VtrAdditionalProduct(:good="good" :hrefLink="'searchPageCat/good/'+good.id" :pageName="'Поиск'")
 			b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
 		transition(name="opacity")
-			router-view
+			router-view(:key="$route.fullPath")
 </template>
 
 <script>
 	export default {
 		data(){
 			return{
+				allCats:[],
 				arrayGood:[],
 				goodDate:1,
 				catActive:0,
@@ -35,11 +36,10 @@
 			},
 			$_vtr_search_cat_getCats:async function(){
 				this.catActive=this.$route.params.idCat*1;
-				let arrayCats=this.$store.state.user.cats;
 				this.array_id_cat=[];
 				const getChildrenCat=(id)=>{
 					let flag=true;
-					arrayCats.forEach(cat=>{
+					this.allCats.forEach(cat=>{
 						if(cat.id_parent===id){
 							getChildrenCat(cat.id)
 							flag=false;
@@ -67,6 +67,7 @@
 			}
 		},
 		created() {
+			this.allCats=this.$store.state.user.cats;
 			this.$_vtr_search_cat_getCats();
 			this.$root.$on('lazyLoad', (res)=>{
 				if(res&&this.load&&!this.stopLoad){

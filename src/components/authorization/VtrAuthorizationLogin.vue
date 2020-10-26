@@ -8,7 +8,8 @@
 						type="tel"
 						v-mask="'+7(###) ###-##-##'"
 						v-model="$v.formLogin.phone.$model"
-						placeholder="+7 (___) __-__-___")
+						placeholder="+7 (___) __-__-___"
+						@input="$_vtr_login_phone")
 					b-form-input(
 						required
 						v-model="$v.formLogin.password.$model"
@@ -27,6 +28,13 @@
 					phone: '',
 					password: '',
 				},
+			}
+		},
+		methods:{
+			$_vtr_login_phone(){
+				if(this.formLogin.phone==='+7(8'){
+					this.formLogin.phone='+7'
+				}
 			}
 		},
 		validations:{
