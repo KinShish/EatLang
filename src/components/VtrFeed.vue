@@ -59,6 +59,6 @@
 
 <style scoped>
 	.whiteBlock{
-		margin-bottom: 15px;
+		margin: 15px 0;
 	}
 </style>

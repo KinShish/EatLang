@@ -24,7 +24,7 @@
 					router-link.socBlock(to="/profile/favorites")
 						div
 							img(src="../../assets/favorits.svg")
-							span ∞
+							span {{$store.state.user.favorites.length}}
 						p Избранное
 					router-link.socBlock(:to="$store.state.user.admin?'/profile/managers':'/profile/companyGoods'")
 						div

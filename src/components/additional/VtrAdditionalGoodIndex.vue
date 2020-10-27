@@ -108,6 +108,7 @@
 		},
 		created() {
 			this.$_vtr_good_loadGood();
+			this.$store.getters.watchFavoritGood('1')
 		},
 		methods:{
 			$_vtr_good_loadPrice: async function(){
@@ -122,13 +123,17 @@
 				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood)
 				if(!data.err){
 					this.goods=data.good;
-					console.log(this.goods)
+					this.likeActive=this.$store.getters.watchFavoritGood(this.goods.id)
 				}
 			},
-			$_vtr_good_like(){
-				this.likeActive=!this.likeActive
-				this.$refs.imageLikeGood.classList.add('sizeImgBtn');
-				setTimeout(()=> {this.$refs.imageLikeGood.classList.remove('sizeImgBtn')}, 700);
+			$_vtr_good_like:async function(){
+				let data=await this.$store.getters.request('PUT',this.$store.state.user.settings.server+'goods/favorites',{id:this.goods.id})
+				if(data&&!data.err){
+					this.likeActive=!this.likeActive
+					this.$store.commit('editFavorits',this.goods.id);
+					this.$refs.imageLikeGood.classList.add('sizeImgBtn');
+					setTimeout(()=> {this.$refs.imageLikeGood.classList.remove('sizeImgBtn')}, 700);
+				}
 			},
 			$vtr_good_index_slideIndex(index){
 				this.slideIndex=index.currentSlide+1;

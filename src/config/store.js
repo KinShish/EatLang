@@ -12,6 +12,7 @@ export const userVuex = {
 		settings:settings,
 		notification:'',
 		cats:[],
+		favorites:[]
 	},
 	mutations: {
 		firstAuth:async function (state,form){
@@ -35,10 +36,12 @@ export const userVuex = {
 		auth:async function (state){
 			let data=await this.getters.request('GET',state.settings.server+'user/profile');
 			if(data){
+				console.log(data)
 				state.admin=data.admin;
 				state.errAuth=false;
 				state.company=data.company;
 				state.data=data.user;
+				state.favorites=data.favorites
 				state.managers=(data.managers!==undefined?data.managers:[]);
 				this.commit('loadCat')
 			}else{
@@ -72,6 +75,14 @@ export const userVuex = {
 			let data=await this.getters.request('GET',state.settings.server+'cat')
 			if(data&&!data.err){
 				state.cats=data.cats
+			}
+		},
+		editFavorits(state,id){
+			let index=state.favorites.indexOf(id);
+			if(index===-1){
+				state.favorites.push(id)
+			}else{
+				state.favorites.splice(index, 1)
 			}
 		},
 		connectUser:async (state)=>{
@@ -128,6 +139,9 @@ export const userVuex = {
 					return false
 				}
 			}
-		}
+		},
+		watchFavoritGood:state=>(id)=>{
+			return state.favorites.indexOf(id)!==-1
+		},
 	},
 };

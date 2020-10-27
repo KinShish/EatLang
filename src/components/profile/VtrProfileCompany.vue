@@ -11,7 +11,7 @@
 			button.btnRed Контакты компании
 			.title Объявления пользователя
 			.noGoods(v-if="goods.length===0") Тут пусто :(
-			VtrAdditionalProduct(v-else v-for="good in goods" :key="good.id+'company'" :good="good" :hrefLink="$route.params.idComp+'/good/'+good.id" :pageName="'Название компании'")
+			VtrAdditionalProduct(v-else v-for="good in goods" :key="good.id+'company'" :good="good" :hrefLink="$route.params.idComp+'/good/'+good.id" :pageName="good.company.name")
 			b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
 		transition(name="opacity")
 			router-view
