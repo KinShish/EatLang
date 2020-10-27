@@ -6,7 +6,7 @@
 		.mainBlock
 			div(v-for="item in notifications" :class="item.type")
 				span {{item.description}}
-				span    {{item.datetime}}
+				span    {{item.date}}
 				br
 </template>
 

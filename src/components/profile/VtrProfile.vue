@@ -4,13 +4,21 @@
 			.header
 				span {{$store.state.user.company.name}}
 				img.exit(src="../../assets/exit.svg" @click="$store.commit('logout')")
+			//фото начало ******************************
+			b-spinner.customSpiner.loadLogoSpiner(variant="danger" v-if="downloadLogo")
 			label.loadLogoBlock(for="laodlogoinp" v-if="$store.state.user.admin")
-				img(src="../../assets/loadLogo.svg")
-				span Загрузите логотип компании
+				div(v-if="!$store.state.user.company.logo")
+					img(src="../../assets/loadLogo.svg")
+					span Загрузите логотип компании
+				img.logo(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/logo.jpg?key='+keyLogo" v-else-if="$store.state.user.data.id_company")
 				b-form-file#laodlogoinp.d-none(type="file" @input="$_vtr_profile_loadLogo(fileLogo)" v-model="fileLogo")
-			.loadLogoBlock(v-else)
+			.loadLogoBlock(v-else-if="$store.state.user.company.logo")
+				img.logo(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/logo.jpg?key='+keyLogo" v-if="$store.state.user.data.id_company")
+			.loadLogoBlock(v-else-if="!$store.state.user.company.logo")
+				div
 				img(src="../../assets/loadLogo.svg")
 				span Фото отсутствует
+			//фото конец ******************************
 			.blockBtnProfile
 				.socialBlocks
 					router-link.socBlock(to="/profile/favorites")
@@ -33,21 +41,21 @@
 				h4 Мои объявления
 			.customTabsProfile(v-if="$store.state.user.admin")
 				b-card(no-body)
-					b-tabs(pills card)
+					b-tabs(pills card v-model="tabIndex")
 						b-tab(title='АКТИВНЫЕ' @click="$_vtr_profile_clickTab(1)")
 							.customTabContent
 								.noGoods(v-if="goodsActive.length===0") Тут пусто :(
-								VtrAdditionalPrivateProduct(v-else v-for="good in goodsActive" :key="good.id" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
+								VtrAdditionalPrivateProduct(v-else v-for="good in goodsActive" :key="good.id+'active'" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
 								b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
 						b-tab(title='НА МОДЕРАЦИИ' @click="$_vtr_profile_clickTab(0)")
 							.customTabContent
 								.noGoods(v-if="goodsModer.length===0") Тут пусто :(
-								VtrAdditionalPrivateProduct(v-else v-for="good in goodsModer" :key="good.id" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
+								VtrAdditionalPrivateProduct(v-else v-for="good in goodsModer" :key="good.id+'moder'" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
 								b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
 						b-tab(title='АРХИВ' @click="$_vtr_profile_clickTab(3)")
 							.customTabContent
 								.noGoods(v-if="goodsArch.length===0") Тут пусто :(
-								VtrAdditionalPrivateProduct(v-else v-for="good in goodsArch" :key="good.id" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
+								VtrAdditionalPrivateProduct(v-else v-for="good in goodsArch" :key="good.id+'arch'" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
 								b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
 			.whiteBlock(v-else)
 				.greyBlock
@@ -103,6 +111,9 @@
 				status:1,
 				load:true,
 				stopLoad:false,
+				keyLogo:new Date().valueOf(),
+				downloadLogo:false,
+				tabIndex:0,
 			}
 		},
 		components:{
@@ -128,7 +139,7 @@
 				}
 			},
 			$_vtr_profile_loadGoods:async function(){
-				if(this.$route.name==='profile'){
+				if(this.$route.name==='profile'&&!this.load){
 					let number;
 					switch (this.status) {
 						case 1:{
@@ -185,14 +196,24 @@
 					}
 				}
 			},
-			$_vtr_profile_loadLogo(file){
+			$_vtr_profile_loadLogo:async function(file){
 				if(file){
 					if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(file.name)) {
 						this.$store.commit('notification',"Файл  "+file.name+"  не поддерживается")
 					}else{
+						console.log(file)
+						this.downloadLogo=true;
 						let data = new FormData();
 						data.append('file', file);
-						console.log(this.$store.getters.request('POST',this.$store.state.user.settings.server+'company/logo',data))
+						let logo=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'company/logo',data)
+						if(logo&&!logo.err){
+							this.$store.commit('updateLogoCompany',1)
+							setTimeout(()=>{this.keyLogo=new Date().valueOf()},1000)
+						}else{
+							this.$store.commit('notification',"Произошла ошибка, попробуйте позже")
+						}
+						setTimeout(()=>{this.downloadLogo=false;},1000)
+
 					}
 				}
 			}
@@ -201,6 +222,18 @@
 </script>
 
 <style scoped>
+	.loadLogoSpiner{
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 140px;
+	}
+	.logo{
+		width: 100% !important;
+		max-height: 250px;
+		height: auto;
+		margin-top: -30px;
+	}
 	.orderBorder{
 		border: 1px dashed #757575;
 	}
@@ -289,7 +322,9 @@
 		color: #868686;
 		text-align: center;
 		background-color: white;
-		display: block;
+		display: grid;
+		height: 280px;
+		place-content: center;
 	}
 	.loadLogoBlock span{
 		margin-top: 20px;

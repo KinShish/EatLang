@@ -8,9 +8,10 @@
 			.tabCat
 				router-link(:to="''+cat.id" v-for="cat in allCats.filter(item=>item.id_parent===this.$route.params.idCat*1)" :key="cat.id") {{cat.name}}
 			div(v-for="good in arrayGood" :key="good.id")
-				router-link.infoGoodUser(:to="'search/company/'+good.id_company")
-					img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
-					span Имя пользователя
+				router-link.infoGoodUser(:to="'search/company/'+good.company.id")
+					img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/logo.jpg'" v-if="good.company.logo")
+					span.logoName(v-else) {{good.company.name[0]}}
+					span {{good.company.name}}
 				VtrAdditionalProduct(:good="good" :hrefLink="'searchPageCat/good/'+good.id" :pageName="'Поиск'")
 			b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
 		transition(name="opacity")
@@ -34,7 +35,7 @@
 			$_vtr_search_goToSearchPage(){
 				this.$parent.searchActive=false
 			},
-			$_vtr_search_cat_getCats:async function(){
+			$_vtr_search_cat_getCats(){
 				this.catActive=this.$route.params.idCat*1;
 				this.array_id_cat=[];
 				const getChildrenCat=(id)=>{

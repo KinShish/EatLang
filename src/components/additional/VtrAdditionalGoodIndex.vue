@@ -1,5 +1,5 @@
 <template lang="pug">
-	div
+	div(v-if="goods.length!==0")
 		.header
 			img.back(src="../../assets/back.svg" @click="$router.go(-1)")
 			span.title {{$route.query.pageName}}
@@ -18,12 +18,12 @@
 				b-dropdown-item(href='#' v-if="$store.state.user.data.id_company===goods.id_company") Поднять в списке
 				b-dropdown-item(href='#') Пожаловаться
 		.slider
-			span.countSlider(v-if="goods.length>0&&goods.img[0]!==''") {{slideIndex}}/{{goods.img.length}}
+			span.countSlider(v-if="goods.img.length>0") {{slideIndex}}/{{goods.img.length}}
 			.likeGood(@click="$_vtr_good_like" v-if="$store.state.user.data.id_company!==goods.id_company")
 				img(:src="likeActive?images.likeActive:images.like" ref="imageLikeGood")
-			agile(:options="sliderProduct" @after-change="$vtr_good_index_slideIndex" v-if="goods.length>0&&goods.img[0]!==''")
-				.blockImg(v-for="item in goods.img")
-					img(src="https://os1.ru/article/24743-novye-4-gusenichnye-traktory-s-sharnirno-sochlenennoy-ramoy-dlya-agrariev-odin-traktor-chetyre-gusenitsy/01.jpg")
+			agile(:options="sliderProduct" @after-change="$vtr_good_index_slideIndex" v-if="goods.img.length>0")
+				.blockImg(v-for="img in goods.img")
+					img(:src="$store.state.user.settings.server+'company/'+goods.id_company+'/up/goods/'+img")
 			.noPhoto(v-else)
 				img(src="../../assets/loadLogo.svg")
 				span Фото отсутствует
@@ -122,6 +122,7 @@
 				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood)
 				if(!data.err){
 					this.goods=data.good;
+					console.log(this.goods)
 				}
 			},
 			$_vtr_good_like(){

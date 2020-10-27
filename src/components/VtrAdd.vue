@@ -18,14 +18,15 @@
 				label(for="descInp") Описание
 				b-form-textarea#descInp.borderInput(placeholder="Описание" v-model="form.description")
 				label(for="fileInp") Изображения
-				b-form-file#fileInp.d-none(type="file" @input="$_vtr_add_loadimages(file)" v-model="file" multiple)
+				b-form-file#fileInp.d-none(type="file" @input="$_vtr_add_loadimages()" v-model="file" multiple)
 				.blockImages
-					.image(v-for="item in 5")
-						img.close(src="../assets/close.svg" @click="$_vtr_add_delete_loadimages(item)")
-						img(src="https://farm2.staticflickr.com/1941/45523337912_db9847a02e_z.jpg")
+					.image(v-for="(img,index) in form.img")
+						img.close(src="../assets/close.svg" @click="$_vtr_add_delete_loadimages(img,index)")
+						img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+img")
 					label(for="fileInp")
 						.addImage
-							img(src="../assets/addPhoto.svg")
+							img(src="../assets/addPhoto.svg" v-if="loadImgActive")
+							b-spinner.customSpiner(variant="danger" v-else)
 				label(for="videoInp") Видео
 				b-form-input#videoInp.borderInput(placeholder="Ссылка" v-model="form.video")
 			button.btnRed(type="submit") {{$route.name==='edit'?'Редактировать':'Добавить'}}
@@ -54,11 +55,12 @@
 					name:'',
 					price:'',
 					description:'',
-					img:[''],
+					img:[],
 					video:'',
 					id_cat:0,
 					//geo:{lat:0,lng:0},
-				}
+				},
+				loadImgActive:true
 			}
 		},
 		methods:{
@@ -85,20 +87,6 @@
 						break
 					}
 				}
-			},
-			$_vtr_add_delete_loadimages(index){
-				console.log(index)
-			},
-			$_vtr_add_loadimages(file){
-				file.forEach(image=>{
-					if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(image.name)) {
-						this.$store.commit('notification',"Файл  "+image.name+"  не поддерживается")
-					}else{
-						let data = new FormData();
-						data.append('file', image);
-						console.log(data)//отправка фоток
-					}
-				})
 			},
 			$_vtr_add_loadGood:async function(){
 				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood)
@@ -136,13 +124,36 @@
 				this.options[type]=this.allCats.filter(item => item.id_parent===id);
 				this.options[type].unshift({ id: null, name: 'Выберите' })
 			},
-			$_vtr_add_loadAllCat: async function(){
+			$_vtr_add_loadAllCat(){
 				this.allCats=this.$store.state.user.cats;
 				this.options[0]=this.allCats.filter(item => item.id_parent===0)
 				this.options[0].unshift({ id: null, name: 'Выберите' })
 				if(this.$route.name==='edit'){
 					this.$_vtr_add_loadGood();
 				}
+			},
+			$_vtr_add_delete_loadimages:async function(img,index){
+				let photo=await this.$store.getters.request('DELETE',this.$store.state.user.settings.server+'goods/photo/'+img)
+				if(photo&&!photo.err){
+					this.form.img.splice(index,1)
+				}
+			},
+			$_vtr_add_loadimages: async function(){
+				this.loadImgActive=false;
+				let data = new FormData();
+				this.file.forEach((image,index)=>{
+					if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(image.name)) {
+					this.$store.commit('notification',"Файл  "+image.name+"  не поддерживается")
+					this.file.splice(index,1)
+					}else{
+						data.append('file', image);
+					}
+				})
+				let photo=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'goods/photo/'+this.file.length,data)
+				if(photo&&!photo.err){
+					setTimeout(()=>{this.form.img=this.form.img.concat(photo.array_name)},1000)
+				}
+				setTimeout(()=>{this.loadImgActive=true},1000)
 			}
 		},
 		created() {
@@ -201,6 +212,9 @@
 		display: inline-flex;
 		flex-wrap: wrap;
 	}
+	.addImage img{
+		width: 35px;
+	}
 	.addImage{
 		display: grid;
 		place-items: center;
@@ -222,7 +236,7 @@
 	}
 	.image img{
 		height: 100%;
-		width: 100%;
+		width: auto;
 		border-radius: 3px;
 	}
 	.image .close{

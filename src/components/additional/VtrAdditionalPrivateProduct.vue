@@ -1,10 +1,10 @@
 <template lang="pug">
 	router-link.mainBlockGood(:to="{ path: hrefLink, query: { pageName: pageName }}")
 		.slider
-			span.countSlider(v-if="good.img[0]!==''") {{slideIndex}}/{{good.img.length}}
-			agile(:options="sliderProduct" @after-change="$_vtr_product_slideIndex" v-if="good.img[0]!==''")
-				.blockImg(v-for="item in good.img")
-					img(src="https://img01.flagma.ru/photo/uslugi-spectehniki-spectehnika-v-arendu-5114258_big.jpg")
+			span.countSlider(v-if="good.img.length>0") {{slideIndex}}/{{good.img.length}}
+			agile(:options="sliderProduct" @after-change="$_vtr_product_slideIndex" v-if="good.img.length>0")
+				.blockImg(v-for="img in good.img")
+					img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/up/goods/'+img")
 			.noPhoto(v-else)
 				img(src="../../assets/loadLogo.svg")
 				span Фото отсутствует
@@ -109,8 +109,8 @@
 		background: #DEDEDE;
 	}
 	.blockImg img{
-		height: auto;
-		max-width: 100%;
+		height: 200px;
+		width: auto;
 		top: 50%;
 		position: relative;
 		transform: translate(0, -50%);

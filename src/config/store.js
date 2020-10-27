@@ -40,6 +40,7 @@ export const userVuex = {
 				state.company=data.company;
 				state.data=data.user;
 				state.managers=(data.managers!==undefined?data.managers:[]);
+				this.commit('loadCat')
 			}else{
 				state.errAuth=true;
 				this.commit('clearAll');
@@ -64,8 +65,14 @@ export const userVuex = {
 			state.notification=text;
 			setTimeout(()=>{state.notification=''},5000)
 		},
-		loadCat(state,cats){
-			state.cats=cats
+		updateLogoCompany(state,value){
+			state.company.logo=value
+		},
+		loadCat:async function (state){
+			let data=await this.getters.request('GET',state.settings.server+'cat')
+			if(data&&!data.err){
+				state.cats=data.cats
+			}
 		},
 		connectUser:async (state)=>{
 			let socket = new JsSIP.WebSocketInterface('ws://192.168.0.205:8080');
@@ -78,7 +85,7 @@ export const userVuex = {
 			console.log(await state.ua.start())
 			console.log(state.ua)
 			var eventHandlers = {
-				'progress': function() {
+				'progress': function() {11
 					console.log('call is in progress');
 				},
 				'failed': function(e) {
@@ -108,7 +115,7 @@ export const userVuex = {
 			if(state.token!==null){
 				if(formData===undefined){formData={}}
 				try {
-					const {data}= await axios({method, url, data: formData,withCredentials:method==='PUT'?true:false,headers:{Authorization: "Bearer " + state.token}})
+					const {data}= await axios({method, url, data: formData,headers:{Authorization: "Bearer " + state.token}})
 					if(!data.err) {
 						return data;
 					}else{

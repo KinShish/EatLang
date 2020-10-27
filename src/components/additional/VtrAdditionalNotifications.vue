@@ -1,4 +1,4 @@
-<template lang="pug" f>
+<template lang="pug">
 	transition-group(name="notif" tag="span")
 		div.notification(v-if="$store.state.user.notification!==''" :key="1")
 			span {{$store.state.user.notification}}
@@ -16,7 +16,7 @@
 		transform: translateY(-100%);
 	}
 	.notification{
-		position: absolute;
+		position: fixed;
 		width: 100%;
 		min-height: 30px;
 		background: #f54646;

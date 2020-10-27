@@ -36,20 +36,16 @@
 					this.$root.$emit('lazyLoad', this.$_vtr_main_lazyLoad());
 				};
 			},
-			$vtr_main_loadCats:async function(){
-				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'cat')
-				if(data&&!data.err){
-					this.$store.commit('loadCat',data.cats)
-				}
-			}
 		},
 		created() {
+			/*this.$root.$on('bv::modal::show', (res) => {
+				console.log(res) //события модального окна
+			})*/
 			if(localStorage.getItem('token')===null||localStorage.getItem('token')===''){
 				this.$router.push('/login')
 			}else{
 				this.$store.commit('auth')
 				this.$_vtr_main_scroll();
-				this.$vtr_main_loadCats();
 			}
 			//this.$store.commit('connectUser')
 		},
