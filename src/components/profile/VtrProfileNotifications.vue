@@ -4,7 +4,7 @@
 			img.back(src="../../assets/back.svg" @click="$router.go(-1)")
 			span Последние изменения
 		.mainBlock
-			div(v-for="item in notifications" :class="item.type")
+			div(v-for="item in notifications.filter(item=>item.type!=='error')" :class="item.type")
 				span {{item.description}}
 				span    {{item.date}}
 				br
