@@ -36,10 +36,11 @@
 					this.$router.push('/feed')
 				}else{
 					if(localStorage.getItem('pin')===this.pin){
-						this.$router.push('/feed')
+						this.pin='';
+						this.$router.push('/feed');
 					}else{
 						this.pin='';
-						this.$store.commit('notification','Не правильный пин-код')
+						this.$store.commit('notification','Не правильный пин-код');
 					}
 				}
 			}
