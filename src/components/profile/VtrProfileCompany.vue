@@ -1,6 +1,6 @@
 <template lang="pug">
 	div
-		div(v-if="$route.name.slice(-7)==='Company'")
+		div(v-if="$route.name==='company'")
 			.header
 				img.back(src="../../assets/back.svg" @click="$router.go(-1)")
 				span {{company.name}}
@@ -42,8 +42,8 @@
 				}
 			},
 			$_vtr_profile_company_loadGoods:async function(){
-				if(this.$route.name.slice(-7)==='Company'&&!this.load){
-					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/company/'+this.$route.params.idComp+'/1/'+this.number)
+				if(this.$route.name==='company'&&!this.load){
+					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'/company/'+this.$route.params.idComp+'/1/'+this.number)
 					if(data&&!data.err){
 						this.load=true;
 						if(!data.err&&!this.stopLoad){

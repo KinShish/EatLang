@@ -8,11 +8,11 @@
 			.tabCat
 				router-link(:to="''+cat.id" v-for="cat in allCats.filter(item=>item.id_parent===this.$route.params.idCat*1)" :key="cat.id") {{cat.name}}
 			div(v-for="good in arrayGood" :key="good.id")
-				router-link.infoGoodUser(:to="'search/company/'+good.company.id")
+				router-link.infoGoodUser(:to="'/company/'+good.company.id")
 					img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/logo.jpg'" v-if="good.company.logo")
 					span.logoName(v-else) {{good.company.name[0]}}
 					span {{good.company.name}}
-				VtrAdditionalProduct(:good="good" :hrefLink="'searchPageCat/good/'+good.id" :pageName="'Поиск'")
+				VtrAdditionalProduct(:good="good" :hrefLink="'/good/'+good.id" :pageName="'Поиск'")
 			b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
 		transition(name="opacity")
 			router-view(:key="$route.fullPath")
@@ -54,7 +54,6 @@
 			},
 			$_vtr_search_cat_loadGood:async function(){
 				if(this.$route.name==='searchPageCat'&&this.catActive!==this.$route.idCat&&!this.load){
-					console.log(this.$store.state.user.settings.server+'goods/cat/'+this.goodDate)
 					let data=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'goods/cat/'+this.goodDate, {array_id_cat:this.array_id_cat})
 					if(data&&!data.err){
 						this.load=true;

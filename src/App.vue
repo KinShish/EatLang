@@ -2,7 +2,8 @@
 	div
 		VtrAdditionalNotifications
 		transition(name="opacity")
-			router-view.mainContent
+			keep-alive
+				router-view.mainContent
 		VtrAdditionalBottomMenu(v-if="$store.state.user.data!=='-1'&&!($route.name==='pin'&&$route.name==='login')&&($route.name==='feed'||$route.name==='search'||$route.name==='add'||$route.name==='chat'||$route.name==='profile')")
 </template>
 
@@ -72,5 +73,9 @@
 		padding-bottom: 50px;
 		max-width: 600px;
 		margin: 0 auto;
+		position: absolute;
+		width: 100%;
+		right: 0;
+		left: 0;
 	}
 </style>

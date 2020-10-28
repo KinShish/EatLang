@@ -10,17 +10,17 @@
 						b-tab(title='АКТИВНЫЕ' active @click="$_vtr_profile_clickTab(1)")
 							.customTabContent
 								.noGoods(v-if="goodsActive.length===0") Тут пусто :(
-								VtrAdditionalPrivateProduct(v-else v-for="good in goodsActive" :key="good.id" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
+								VtrAdditionalPrivateProduct(v-else v-for="good in goodsActive" :key="good.id" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
 								b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
 						b-tab(title='НА МОДЕРАЦИИ' @click="$_vtr_profile_clickTab(0)")
 							.customTabContent
 								.noGoods(v-if="goodsModer.length===0") Тут пусто :(
-								VtrAdditionalPrivateProduct(v-else v-for="good in goodsModer" :key="good.id" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
+								VtrAdditionalPrivateProduct(v-else v-for="good in goodsModer" :key="good.id" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
 								b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
 						b-tab(title='АРХИВ' @click="$_vtr_profile_clickTab(3)")
 							.customTabContent
 								.noGoods(v-if="goodsArch.length===3") Тут пусто :(
-								VtrAdditionalPrivateProduct(v-else v-for="good in goodsArch" :key="good.id" :good="good" :hrefLink="'profile/good/'+good.id" :pageName="'Личный кабинет'")
+								VtrAdditionalPrivateProduct(v-else v-for="good in goodsArch" :key="good.id" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
 								b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
 		transition(name="opacity")
 			router-view

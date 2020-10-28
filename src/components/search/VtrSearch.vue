@@ -24,13 +24,14 @@
 							b-tab(title='Новые объявления' @click="$_vtr_search_clickTab(2)")
 								.customTabContent
 									div(v-for="good in recommendationGoods" :key="good.id")
-										router-link.infoGoodUser(:to="'search/company/'+good.company.id")
+										router-link.infoGoodUser(:to="'/company/'+good.company.id")
 											img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/logo.jpg'" v-if="good.company.logo")
 											span.logoName(v-else) {{good.company.name[0]}}
 											span {{good.company.name}}
-										VtrAdditionalProduct(:good="good" :hrefLink="'search/good/'+good.id" :pageName="'Поиск'")
+										VtrAdditionalProduct(:good="good" :hrefLink="'/good/'+good.id" :pageName="'Поиск'")
 		transition(name="opacity")
-			router-view(:key="$route.fullPath")
+			keep-alive
+				router-view
 		transition(name="opacity")
 			div(v-if="searchActive")
 				.listSearch

@@ -6,11 +6,11 @@
 				span Лента объявлений
 			.whiteBlock
 				div(v-for="good in goods" :key="good.id")
-					router-link.infoGoodUser(:to="'feed/company/'+good.company.id")
+					router-link.infoGoodUser(:to="'/company/'+good.company.id")
 						img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/logo.jpg'" v-if="good.company.logo")
 						span.logoName(v-else) {{good.company.name[0]}}
 						span {{good.company.name}}
-					VtrAdditionalProduct(:good="good" :hrefLink="'feed/good/'+good.id" :pageName="'Лента объявлений'")
+					VtrAdditionalProduct(:good="good" :hrefLink="'/good/'+good.id" :pageName="'Лента объявлений'")
 				b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
 		transition(name="opacity")
 			router-view
@@ -59,6 +59,6 @@
 
 <style scoped>
 	.whiteBlock{
-		margin: 15px 0;
+		margin: 0 0 15px 0;
 	}
 </style>

@@ -73,8 +73,8 @@
 					}
 					let data=await this.$store.getters.request('PUT',this.$store.state.user.settings.server+'goods',this.form)
 					if(data&&!data.err){
-						this.$store.commit('notification',data.text)
-						this.$router.replace({path: '/profile/good/'+data.id,query: { pageName: 'Назад' }})
+						this.$store.commit('notification','Успешно обновлено')
+						this.$router.replace({path: '/good/'+data.id,query: { pageName: 'Назад' }})
 					}else{
 						this.form.price=this.form.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')
 					}

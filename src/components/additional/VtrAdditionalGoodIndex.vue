@@ -78,10 +78,15 @@
 						span покрашен
 			//button.btnRed Добавить к сравнению
 			//button.btnAuction Перейти в аукцион
+		.userBlock
+			.fastButtonBlock
+				router-link(:to="'/company/'+goods.id_company") name company
 		.fastBtnGood
 			.fastButtonBlock
 				button.fastButton Позвонить
 				button.fastButton Написать
+		transition(name="opacity")
+			router-view
 </template>
 
 <script>
@@ -123,6 +128,7 @@
 				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood)
 				if(!data.err){
 					this.goods=data.good;
+					console.log(this.goods)
 					this.likeActive=this.$store.getters.watchFavoritGood(this.goods.id)
 				}
 			},
@@ -249,6 +255,16 @@
 		font-size: 16px;
 		margin: 0 auto;
 		width: 45%;
+	}
+	.userBlock{
+		position: fixed;
+		max-width: 600px;
+		margin: 0 auto;
+		width: 100%;
+		bottom: 90px;
+	}
+	.userBlock a{
+		color: black !important;
 	}
 	.fastBtnGood{
 		position: fixed;

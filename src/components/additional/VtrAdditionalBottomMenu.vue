@@ -6,7 +6,7 @@
 		//audio(:srcObject.prop="localMedia" autoplay)
 		//audio(:srcObject.prop="remoteMedia" autoplay)
 		//button(@click="$_vtr_answer") Поднять
-		button(@click="$_vtr_call") Позвонить
+		//button(@click="$_vtr_call") Позвонить
 		router-link(to="/feed")
 			div(@click="$_vtr_menu_aimationMenuIcon('menuFeed')")
 				img(:src="$route.name==='feed'?images.feedActive:images.feed" ref="menuFeed")

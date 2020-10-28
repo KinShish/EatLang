@@ -23,25 +23,6 @@ let routes = {
 			path: 'feed',
 			component: () => import('../components/VtrFeed'),
 			name: 'feed',
-			children: [
-				{
-					path: 'good/:idGood',
-					component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-					name: 'feedGood',
-				},
-				{
-					path: 'company/:idComp',
-					component: () => import('../components/profile/VtrProfileCompany'),
-					name: 'feedCompany',
-					children: [
-						{
-							path: 'good/:idGood',
-							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-							name: 'feedCompanyGood',
-						},
-					]
-				}
-			],
 		},
 		{
 			path: 'search',
@@ -52,43 +33,7 @@ let routes = {
 					path: 'searchPageCat/:idCat',
 					component: () => import('../components/search/VtrSearchPageCat'),
 					name: 'searchPageCat',
-					children: [
-						{
-							path: 'good/:idGood',
-							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-							name: 'searchPageGood',
-						},
-						{
-							path: 'company/:idComp',
-							component: () => import('../components/profile/VtrProfileCompany'),
-							name: 'searchPageCompany',
-							children: [
-								{
-									path: 'good/:idGood',
-									component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-									name: 'searchPageCompanyGood',
-								},
-							]
-						}
-					]
 				},
-				{
-					path: 'good/:idGood',
-					component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-					name: 'good',
-				},
-				{
-					path: 'company/:idComp',
-					component: () => import('../components/profile/VtrProfileCompany'),
-					name: 'searchCompany',
-					children: [
-						{
-							path: 'good/:idGood',
-							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-							name: 'searchCompanyGood',
-						},
-					]
-				}
 			]
 		},
 		{
@@ -133,48 +78,12 @@ let routes = {
 							component: () => import('../components/profile/VtrProfileEditManager'),
 							name: 'editManager',
 						},
-						{
-							path: 'good/:idGood',
-							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-							name: 'profileManagersGood',
-						},
-					]
-				},
-				{
-					path: 'companyGoods',
-					component: () => import('../components/profile/VtrProfileCompanyGoods'),
-					name: 'companyGoods',
-					children: [
-						{
-							path: 'good/:idGood',
-							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-							name: 'profileCompanyGoodsGood',
-						},
 					]
 				},
 				{
 					path: 'favorites',
 					component: () => import('../components/profile/VtrProfileFavorites'),
 					name: 'favorites',
-					children: [
-						{
-							path: 'good/:idGood',
-							component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-							name: 'favoritesGood',
-						},
-						{
-							path: 'company/:idComp',
-							component: () => import('../components/profile/VtrProfileCompany'),
-							name: 'favoritesCompany',
-							children: [
-								{
-									path: 'good/:idGood',
-									component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-									name: 'favoritesCompanyGood',
-								},
-							]
-						}
-					]
 				},
 				{
 					path: 'notifications',
@@ -186,13 +95,18 @@ let routes = {
 					component: () => import('../components/profile/VtrProfileSettings'),
 					name: 'settings',
 				},
-				{
-					path: 'good/:idGood',
-					component: () => import('../components/additional/VtrAdditionalGoodIndex'),
-					name: 'profileGood',
-				},
 			]
-		}
+		},
+		{
+			path: 'good/:idGood',
+			component: () => import('../components/additional/VtrAdditionalGoodIndex'),
+			name: 'good',
+		},
+		{
+			path: 'company/:idComp',
+			component: () => import('../components/profile/VtrProfileCompany'),
+			name: 'company',
+		},
 	]
 }
 export const router = new VueRouter({
