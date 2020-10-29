@@ -120,7 +120,7 @@
 		components:{
 			'VtrAdditionalPrivateProduct':()=>import('../additional/VtrAdditionalPrivateProduct'),
 		},
-		created() {
+		activated() {
 			if(this.$store.state.user.admin){
 				this.load=false;
 				this.$_vtr_profile_loadGoods();
@@ -334,6 +334,7 @@
 	}
 	.loadLogoBlock img{
 		width: 70px;
+		margin: 0 auto;
 	}
 	.socialBlocks{
 		display: flex;

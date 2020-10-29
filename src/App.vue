@@ -11,7 +11,7 @@
 	export default {
 		components:{
 			VtrAdditionalNotifications :()=>import('./components/additional/VtrAdditionalNotifications'),
-			'VtrAdditionalBottomMenu':()=>import('./components/additional/VtrAdditionalBottomMenu'),
+			VtrAdditionalBottomMenu:()=>import('./components/additional/VtrAdditionalBottomMenu'),
 		},
 		methods:{
 			$_vtr_main_lazyLoad() {

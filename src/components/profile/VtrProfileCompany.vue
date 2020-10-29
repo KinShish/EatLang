@@ -4,14 +4,16 @@
 			.header
 				img.back(src="../../assets/back.svg" @click="$router.go(-1)")
 				span {{company.name}}
-			.logoBlock
-				img(src="../../assets/loadLogo.svg")
-				span Фото отсутствует
-			button.btnRed(@click="$_vtr_profile_company_subscribe" :class="subActive?'subActive':''") {{subActive?'Вы подписаны':'Подписаться'}}
+			.logoBlock(v-if="company.id")
+				div(v-if="!company.logo")
+					img(src="../../assets/loadLogo.svg")
+					span Фото отсутствует
+				img.logo(:src="$store.state.user.settings.server+'company/'+company.id+'/up/logo.jpg'" v-else)
+			button.btnRed(@click="$_vtr_profile_company_subscribe" :class="subActive?'subActive':''" v-if="$store.state.user.data.id_company!==company.id") {{subActive?'Вы подписаны':'Подписаться'}}
 			button.btnRed Контакты компании
 			.title Объявления пользователя
 			.noGoods(v-if="goods.length===0") Тут пусто :(
-			VtrAdditionalProduct(v-else v-for="good in goods" :key="good.id+'company'" :good="good" :hrefLink="$route.params.idComp+'/good/'+good.id" :pageName="good.company.name")
+			VtrAdditionalProduct(v-else v-for="good in goods" :key="good.id+'company'" :good="good" :hrefLink="'/good/'+good.id" :pageName="good.company.name")
 			b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
 		transition(name="opacity")
 			router-view
@@ -43,14 +45,14 @@
 			},
 			$_vtr_profile_company_loadGoods:async function(){
 				if(this.$route.name==='company'&&!this.load){
-					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'/company/'+this.$route.params.idComp+'/1/'+this.number)
+					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/company/'+this.$route.params.idComp+'/1/'+this.number)
 					if(data&&!data.err){
 						this.load=true;
 						if(!data.err&&!this.stopLoad){
 							this.goods=this.goods.concat(data.goods)
 							this.number++;
 						}
-						this.stopLoad=(data.goods.length===0);
+						this.stopLoad=data.goods.length===0||this.goods.length<=10;
 					}
 				}
 			},
@@ -63,7 +65,7 @@
 				}
 			}
 		},
-		created() {
+		activated() {
 			this.load=false;
 			this.$_vtr_profile_company_loadCompany();
 			this.$_vtr_profile_company_loadGoods();
@@ -113,5 +115,11 @@
 	}
 	.logoBlock img{
 		width: 70px;
+	}
+	.logo{
+		width: 100% !important;
+		max-height: 250px;
+		height: auto;
+		margin: -30px 0;
 	}
 </style>

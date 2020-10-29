@@ -36,7 +36,6 @@ export const userVuex = {
 		auth:async function (state){
 			let data=await this.getters.request('GET',state.settings.server+'user/profile');
 			if(data){
-				console.log(data)
 				state.admin=data.admin;
 				state.errAuth=false;
 				state.company=data.company;

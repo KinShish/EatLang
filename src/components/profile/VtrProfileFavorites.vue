@@ -3,7 +3,7 @@
 		div(v-if="$route.name==='favorites'")
 			.header
 				img.back(src="../../assets/back.svg" @click="$router.go(-1)")
-				span Избранное
+				span(@click="$_vtr_favorites_loadGoods") Избранное
 			.greyBlock
 				div(v-for="good in goods" :key="good.id")
 					router-link.infoGoodUser(:to="'/company/'+good.company.id")
@@ -11,7 +11,7 @@
 						span.logoName(v-else) {{good.company.name[0]}}
 						span {{good.company.name}}
 					VtrAdditionalProduct(:good="good" :hrefLink="'/good/'+good.id" :pageName="'Избранное'")
-				b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
+				b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad&&!noFavorit")
 				.noGoods(v-if="noFavorit") Тут пусто :(
 		transition(name="opacity")
 			router-view
@@ -32,18 +32,30 @@
 			$_vtr_favorites_loadGoods:async function(){
 				if(this.$route.name==='favorites'&&!this.load){
 					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/favorites/'+this.dateGood)
+					console.log(data)
 					if(data&&!data.err){
 						this.load=true;
 						if(!data.err&&!this.stopLoad){
 							this.goods=this.goods.concat(data.goods);
-							this.dateGood=Date.parse(new Date(this.goods[this.goods.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+							this.noFavorit=this.goods.length===0&&data.goods.length===0
+							if(data.goods.length>0){
+								this.dateGood=Date.parse(new Date(this.goods[this.goods.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+							}
 						}
 						this.stopLoad=data.goods.length===0||this.goods.length<=10;
 					}
 				}
+			},
+			$_vtr_favorites_clearAll(){
+					this.load=true;
+					this.stopLoad=false;
+					this.dateGood=1;
+					this.goods=[];
+					this.noFavorit=false;
 			}
 		},
-		created() {
+		activated() {
+			this.$_vtr_favorites_clearAll()
 			this.load=false;
 			this.$_vtr_favorites_loadGoods();
 			this.$root.$on('lazyLoad', (res)=>{
@@ -55,7 +67,7 @@
 		},
 		components:{
 			'VtrAdditionalProduct':()=>import('../additional/VtrAdditionalProduct'),
-		}
+		},
 	}
 </script>
 

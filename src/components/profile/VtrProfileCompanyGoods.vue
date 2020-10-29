@@ -45,7 +45,7 @@
 				stopLoad:false,
 			}
 		},
-		created() {
+		activated() {
 			this.load=false;
 			this.vtr_profile_companyGoods_loadGoods();
 			this.$root.$on('lazyLoad', (res)=>{
@@ -91,27 +91,34 @@
 							//активные
 							if(this.status===1){
 								this.goodsActive=this.goodsActive.concat(data.goods);
-								this.numGoodsActive++;
+								if(data.goods.length>0){
+									this.numGoodsActive=Date.parse(new Date(this.goodsActive[this.goodsActive.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+								}
 							}
 							//модерация
 							if(this.status===0){
 								this.goodsModer=this.goodsModer.concat(data.goods);
-								this.numGoodsModer++;
+								if(data.goods.length>0){
+									this.numGoodsModer=Date.parse(new Date(this.goodsModer[this.goodsModer.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+								}
 							}
 							//архив
 							if(this.status===3){
 								this.goodsArch=this.goodsArch.concat(data.goods);
-								this.numGoodsArch++;
+								if(data.goods.length>0){
+									this.numGoodsArch=Date.parse(new Date(this.goodsArch[this.goodsArch.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+								}
 							}
 							//заблокированные
 							if(this.status===2){
 								this.goodsBlock=this.goodsBlock.concat(data.goods);
-								this.numGoodsBlock++;
+								if(data.goods.length>0){
+									this.numGoodsBlock=Date.parse(new Date(this.goodsBlock[this.goodsBlock.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+								}
 							}
 						}
 						this.stopLoad=(data.goods.length===0);
 					}
-					console.log(data)
 				}
 			}
 		},

@@ -6,7 +6,7 @@
 			.buttonsGood
 				img(src="../../assets/goodsImg/share.svg")
 				//img(src="../../assets/goodsImg/compare.svg")
-				router-link(:to="'/edit/'+$route.params.idGood" v-if="$store.state.user.data.id_company===goods.id_company" replace)
+				router-link(:to="'/edit/'+$route.params.idGood" v-if="$store.state.user.data.id_company===goods.company.id" replace)
 					img(src="../../assets/goodsImg/edit.svg")
 			b-dropdown(no-caret right).hamburgerButtonDropDown
 				template(v-slot:button-content)
@@ -14,16 +14,16 @@
 						span .
 						span .
 						span .
-				b-dropdown-item(href='#' v-if="$store.state.user.data.id_company===goods.id_company") Добавить в архив
-				b-dropdown-item(href='#' v-if="$store.state.user.data.id_company===goods.id_company") Поднять в списке
+				b-dropdown-item(href='#' v-if="$store.state.user.data.id_company===goods.company.id") Добавить в архив
+				b-dropdown-item(href='#' v-if="$store.state.user.data.id_company===goods.company.id") Поднять в списке
 				b-dropdown-item(href='#') Пожаловаться
 		.slider
 			span.countSlider(v-if="goods.img.length>0") {{slideIndex}}/{{goods.img.length}}
-			.likeGood(@click="$_vtr_good_like" v-if="$store.state.user.data.id_company!==goods.id_company")
+			.likeGood(@click="$_vtr_good_like" v-if="$store.state.user.data.id_company!==goods.company.id")
 				img(:src="likeActive?images.likeActive:images.like" ref="imageLikeGood")
 			agile(:options="sliderProduct" @after-change="$vtr_good_index_slideIndex" v-if="goods.img.length>0")
 				.blockImg(v-for="img in goods.img")
-					img(:src="$store.state.user.settings.server+'company/'+goods.id_company+'/up/goods/'+img")
+					img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/up/goods/'+img")
 			.noPhoto(v-else)
 				img(src="../../assets/loadLogo.svg")
 				span Фото отсутствует
@@ -78,10 +78,13 @@
 						span покрашен
 			//button.btnRed Добавить к сравнению
 			//button.btnAuction Перейти в аукцион
-		.userBlock
+		.userBlock(v-if="$store.state.user.data.id_company!==goods.company.id")
 			.fastButtonBlock
-				router-link(:to="'/company/'+goods.id_company") name company
-		.fastBtnGood
+				.imgUser(v-if="goods.company.logo")
+					img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/up/logo.jpg'")
+				span.logoName(v-else) {{goods.company.name[0]}}
+				router-link(:to="'/company/'+goods.company.id") {{goods.company.name}}
+		.fastBtnGood(v-if="$store.state.user.data.id_company!==goods.company.id")
 			.fastButtonBlock
 				button.fastButton Позвонить
 				button.fastButton Написать
@@ -126,10 +129,12 @@
 			},
 			$_vtr_good_loadGood: async function(){
 				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood)
-				if(!data.err){
+				if(data&&!data.err){
 					this.goods=data.good;
-					console.log(this.goods)
 					this.likeActive=this.$store.getters.watchFavoritGood(this.goods.id)
+				}else{
+					this.$router.go(-1);
+					this.$store.commit('notification','Прозошла ошибка, попробуйте позже')
 				}
 			},
 			$_vtr_good_like:async function(){
@@ -263,8 +268,33 @@
 		width: 100%;
 		bottom: 90px;
 	}
+	.userBlock .fastButtonBlock{
+		line-height: 60px;
+	}
+	.userBlock .logoName{
+		margin-left: 0;
+		width: 60px;
+		height: 60px;
+		display: grid;
+		place-content: center;
+		font-size: 40px;
+	}
 	.userBlock a{
-		color: black !important;
+		color: #757575 !important;
+	}
+	.imgUser{
+		width: 60px;
+		height: 60px;
+		display: grid;
+		place-content: center;
+		margin-right: 10px;
+		border-radius: 50%;
+		overflow: hidden;
+		background: #dedede;
+	}
+	.imgUser img{
+		width: 100%;
+		height: auto;
 	}
 	.fastBtnGood{
 		position: fixed;

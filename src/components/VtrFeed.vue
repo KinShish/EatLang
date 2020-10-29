@@ -37,7 +37,9 @@
 						this.load=true;
 						if(!data.err&&!this.stopLoad){
 							this.goods=this.goods.concat(data.goods);
-							this.dateGood=Date.parse(new Date(this.goods[this.goods.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+							if(data.goods.length>0){
+								this.dateGood=Date.parse(new Date(this.goods[this.goods.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+							}
 						}
 						this.stopLoad=data.goods.length===0;
 					}
