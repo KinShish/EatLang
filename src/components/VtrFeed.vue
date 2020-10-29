@@ -30,7 +30,7 @@
 			'VtrAdditionalProduct':()=>import('./additional/VtrAdditionalProduct'),
 		},
 		methods:{
-			$_vtr_feed_loadGoods:async function(){
+			async $_vtr_feed_loadGoods(){
 				if(this.$route.name==='feed'&&!this.load){
 					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/feed/'+this.dateGood)
 					if(data&&!data.err){

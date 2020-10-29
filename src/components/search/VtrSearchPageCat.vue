@@ -52,7 +52,7 @@
 				this.load=false;
 				this.$_vtr_search_cat_loadGood();
 			},
-			$_vtr_search_cat_loadGood:async function(){
+			async $_vtr_search_cat_loadGood(){
 				if(this.$route.name==='searchPageCat'&&this.catActive!==this.$route.idCat&&!this.load){
 					let data=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'goods/cat/'+this.goodDate, {array_id_cat:this.array_id_cat})
 					if(data&&!data.err){

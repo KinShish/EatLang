@@ -65,7 +65,7 @@ let routes = {
 			children:[
 				{
 					path: 'managers',
-					component: () => import('../components/profile/VtrProfileManagers'),
+					component: () => import('../components/profile/VtrProfileManagersCompany'),
 					name: 'managers',
 					children:[
 						{
@@ -77,6 +77,23 @@ let routes = {
 							path: 'edit/:id',
 							component: () => import('../components/profile/VtrProfileEditManager'),
 							name: 'editManager',
+						},
+						{
+							path: 'manager/:id',
+							component: () => import('../components/profile/VtrProfileManager'),
+							name: 'manager',
+							children:[
+								{
+									path: 'notification/:id',
+									component: () => import('../components/profile/VtrProfileManagerNotifications'),
+									name: 'notificationManager',
+								},
+								{
+									path: 'favorites/:id',
+									component: () => import('../components/profile/VtrProfileManagerFavorites'),
+									name: 'favoritesManager',
+								},
+							]
 						},
 					]
 				},

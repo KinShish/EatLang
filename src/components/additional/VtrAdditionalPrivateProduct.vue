@@ -53,7 +53,7 @@
 			$_vtr_product_slideIndex(index){
 				this.slideIndex=index.currentSlide+1;
 			},
-			$_vtr_product_loadPrice:async function(){
+			async $_vtr_product_loadPrice(){
 				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.good.id+'/price')
 				if(!data.err){
 					this.price=data.price;

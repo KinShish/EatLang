@@ -84,6 +84,14 @@ export const userVuex = {
 				state.favorites.splice(index, 1)
 			}
 		},
+		editManager(state,data){
+			for(let manager of state.managers){
+				if(manager.id===data.id){
+					manager.block=data.type
+					break
+				}
+			}
+		},
 		connectUser:async (state)=>{
 			let socket = new JsSIP.WebSocketInterface('ws://192.168.0.205:8080');
 			let configuration = {

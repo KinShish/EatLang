@@ -63,7 +63,7 @@
 					this.stopLoad=false;
 				}
 			},
-			vtr_profile_companyGoods_loadGoods:async function(){
+			async vtr_profile_companyGoods_loadGoods(){
 				if(this.$route.name==='companyGoods'&&this.load){
 					let number;
 					switch (this.status) {

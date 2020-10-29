@@ -105,7 +105,7 @@
 				console.log(session)
 			}
 		},
-        created:async function(){
+		async created(){
 			//JsSIP.debug.enable('JsSIP:*');
             await this.coolPhone.start();
 			this.coolPhone.on('newRTCSession', function(data) {

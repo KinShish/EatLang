@@ -64,7 +64,7 @@
 			}
 		},
 		methods:{
-			$_vtr_add_addGood:async function(){
+			async $_vtr_add_addGood(){
 				if(!this.$v.form.$invalid&&!this.$v.cats.$invalid){
 					this.$_vtr_add_getLastCat();
 					this.form.price=this.form.price.replace(/\s/g, '')*1;
@@ -88,7 +88,7 @@
 					}
 				}
 			},
-			$_vtr_add_loadGood:async function(){
+			async $_vtr_add_loadGood(){
 				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood)
 				let catsSelect=[];
 				const getParentCats=(id)=>{
@@ -132,13 +132,13 @@
 					this.$_vtr_add_loadGood();
 				}
 			},
-			$_vtr_add_delete_loadimages:async function(img,index){
+			async $_vtr_add_delete_loadimages(img,index){
 				let photo=await this.$store.getters.request('DELETE',this.$store.state.user.settings.server+'goods/photo/'+img)
 				if(photo&&!photo.err){
 					this.form.img.splice(index,1)
 				}
 			},
-			$_vtr_add_loadimages: async function(){
+			async $_vtr_add_loadimages(){
 				this.loadImgActive=false;
 				let data = new FormData();
 				this.file.forEach((image,index)=>{

@@ -4,7 +4,7 @@
 			img.back(src="../../assets/back.svg" @click="$router.go(-1)")
 			span.title {{$route.query.pageName}}
 			.buttonsGood
-				img(src="../../assets/goodsImg/share.svg")
+				//img(src="../../assets/goodsImg/share.svg")
 				//img(src="../../assets/goodsImg/compare.svg")
 				router-link(:to="'/edit/'+$route.params.idGood" v-if="$store.state.user.data.id_company===goods.company.id" replace)
 					img(src="../../assets/goodsImg/edit.svg")
@@ -119,7 +119,7 @@
 			this.$store.getters.watchFavoritGood('1')
 		},
 		methods:{
-			$_vtr_good_loadPrice: async function(){
+			async $_vtr_good_loadPrice(){
 				if(this.price==='Показать цену'){
 					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood+'/price')
 					if(!data.err){
@@ -127,7 +127,7 @@
 					}
 				}
 			},
-			$_vtr_good_loadGood: async function(){
+			async $_vtr_good_loadGood(){
 				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood)
 				if(data&&!data.err){
 					this.goods=data.good;
@@ -137,7 +137,7 @@
 					this.$store.commit('notification','Прозошла ошибка, попробуйте позже')
 				}
 			},
-			$_vtr_good_like:async function(){
+			async $_vtr_good_like(){
 				let data=await this.$store.getters.request('PUT',this.$store.state.user.settings.server+'goods/favorites',{id:this.goods.id})
 				if(data&&!data.err){
 					this.likeActive=!this.likeActive

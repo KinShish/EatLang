@@ -57,37 +57,55 @@
 								.noGoods(v-if="goodsArch.length===0") Тут пусто :(
 								VtrAdditionalPrivateProduct(v-else v-for="good in goodsArch" :key="good.id+'arch'" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
 								b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
-			.whiteBlock(v-else)
-				.greyBlock
-					h4 Заявки
-					p.noOrder Заявок нет
-				.mainOrderBlock(v-for="item in 5")
-					.orderManagerBlock
-						.orderBlockImg
-							img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg")
-						.orderBlockInfo
-							span Название объявления Название объявления
-							span Имя покупателя Имя покупателя
-						span.orderDate  12.08.20
-					.orderNumberAndPrice
-						span Заказ №12
-						span 600 000
-					hr.orderBorder
-				.greyBlock
-					h4 Заврешенные
-					p.noOrder Заявок нет
-				.mainOrderBlock(v-for="item in 5")
-					.orderManagerBlock
-						.orderBlockImg
-							img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg")
-						.orderBlockInfo
-							span Название объявления Название объявления
-							span Имя покупателя Имя покупателя
-						span.orderDate  12.08.20
-					.orderNumberAndPrice
-						span Заказ №12
-						span 600 000
-					hr.orderBorder
+			.customTabsProfile(v-else)
+				b-card(no-body)
+					b-tabs(pills card v-model="tabIndex")
+						b-tab(title='В ОЖИДАНИИ')
+							.customTabContent
+								.whiteBlock
+									.greyBlock
+										p.noOrder Заявок нет
+									.mainOrderBlock(v-for="item in 5")
+										.orderManagerBlock
+											.orderBlockImg
+												img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg")
+											.orderBlockInfo
+												span Название объявления
+												span Имя покупателя
+											span.orderDate  12.08.20
+										.orderNumberAndPrice
+											span Заказ №12
+											span 600 000
+						b-tab(title='АКТИВНЫЕ')
+							.customTabContent
+								.whiteBlock
+									.greyBlock
+										p.noOrder Заявок нет
+									.mainOrderBlock(v-for="item in 5")
+										.orderManagerBlock
+											.orderBlockImg
+												img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg")
+											.orderBlockInfo
+												span Название объявления
+												span Имя покупателя
+											span.orderDate  12.08.20
+										.orderNumberAndPrice
+											span Заказ №12
+						b-tab(title='ЗАВЕРШЕННЫЕ')
+							.customTabContent
+								.whiteBlock
+									.greyBlock
+										p.noOrder Заявок нет
+									.mainOrderBlock(v-for="item in 5")
+										.orderManagerBlock
+											.orderBlockImg
+												img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg")
+											.orderBlockInfo
+												span Название объявления
+												span Имя покупателя
+											span.orderDate  12.08.20
+										.orderNumberAndPrice
+											span Заказ №12
 		transition(name="opacity")
 			keep-alive
 				router-view
@@ -120,7 +138,7 @@
 		components:{
 			'VtrAdditionalPrivateProduct':()=>import('../additional/VtrAdditionalPrivateProduct'),
 		},
-		activated() {
+		created() {
 			if(this.$store.state.user.admin){
 				this.load=false;
 				this.$_vtr_profile_loadGoods();
@@ -140,7 +158,7 @@
 					this.stopLoad=false;
 				}
 			},
-			$_vtr_profile_loadGoods:async function(){
+			async $_vtr_profile_loadGoods(){
 				if(this.$route.name==='profile'&&!this.load){
 					let number;
 					switch (this.status) {
@@ -198,7 +216,7 @@
 					}
 				}
 			},
-			$_vtr_profile_loadLogo:async function(file){
+			async $_vtr_profile_loadLogo(file){
 				if(file){
 					if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(file.name)) {
 						this.$store.commit('notification',"Файл  "+file.name+"  не поддерживается")
@@ -231,7 +249,7 @@
 		top: 140px;
 	}
 	.logo{
-		width: 100% !important;
+		width: auto !important;
 		max-height: 250px;
 		height: auto;
 		margin-top: -30px;
@@ -351,6 +369,7 @@
 		padding: 7px;
 		color: black;
 		text-decoration: none;
+		overflow: hidden;
 	}
 	.socBlock div{
 		display: flex;

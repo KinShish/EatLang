@@ -50,7 +50,7 @@
 			this.likeActive=this.$store.getters.watchFavoritGood(this.good.id)
 		},
 		methods:{
-			$_vtr_product_like:async function(){
+			async $_vtr_product_like(){
 				let data=await this.$store.getters.request('PUT',this.$store.state.user.settings.server+'goods/favorites',{id:this.good.id})
 				if(data&&!data.err){
 					this.likeActive=!this.likeActive;

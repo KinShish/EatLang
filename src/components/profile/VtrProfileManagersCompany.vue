@@ -6,28 +6,29 @@
 				span Менеджеры
 			.mainBlock
 				p Всего менеджеров {{$store.state.user.managers.length}}
-				.blockUser(v-for="manager in $store.state.user.managers")
-					.blockImg
+				.blockUser(v-for="manager in $store.state.user.managers" :key="manager.name")
+					router-link.blockImg(:to="'managers/manager/'+manager.id")
 						img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
-					span {{manager.name}}
+					router-link(:to="'managers/manager/'+manager.id")
+						span {{manager.name}}
 					.btnEditManager
-						router-link(:to="'managers/edit/'+manager.id")
+						//router-link(:to="'managers/edit/'+manager.id")
 							img(src="../../assets/edit.svg")
-						img(src="../../assets/delete.svg" @click="vtr_manager_deleteManager(manager.name,true)")
-			.btnAddManagerMain
+						img(src="../../assets/delete.svg" @click="vtr_manager_banManagerModal(manager.name,true,manager.id,manager.block)" :class="manager.block?'banManager':''")
+			//.btnAddManagerMain
 				.btnAddManager
 					router-link(to="managers/add").btnRed Добавить нового менеджера
 			b-modal(hide-footer ref="deleteManager" centered no-close-on-backdrop)
 				template(slot="modal-header")
 					h4 Удалить
-					button.close(@click="vtr_manager_deleteManager('',false)")
+					button.close(@click="vtr_manager_banManagerModal('',false)")
 						span(aria-hidden="true") x
 				.container
-					p Вы действительно хотите удалить менеджера
-						span.redColor   {{managerName}}
+					p Вы действительно хотите {{blockManager===0?'заблокировать':'разблокировать'}} менеджера
+						span.redColor   {{manager.name}}?
 					.btnModal
-						span(@click="vtr_manager_deleteManager('',false)") Да
-						span(@click="vtr_manager_deleteManager('',false)") Нет
+						span(@click="vtr_manager_banManager") Да
+						span(@click="vtr_manager_banManagerModal('',false)") Нет
 		transition(name="opacity")
 			router-view
 </template>
@@ -36,23 +37,44 @@
 	export default {
 		data(){
 			return{
-				managerName:'',
+				manager: {name:'',id:0},
+				blockManager:0
 			}
 		},
 		methods:{
-			vtr_manager_deleteManager(name,type){
-				this.managerName=name;
+			vtr_manager_banManagerModal(name,type,id,block){
 				if(type){
+					this.manager.name=name;
+					this.manager.id=id;
+					this.blockManager=block;
 					this.$refs.deleteManager.show();
 				}else{
 					this.$refs.deleteManager.hide();
+					this.blockManager=0;
+					this.manager.name='';
+					this.manager.id=0;
 				}
 			},
+			async vtr_manager_banManager(){
+				let data=await this.$store.getters.request('PUT',this.$store.state.user.settings.server+'user/'+this.manager.id+'/block')
+				if(data&&!data.err){
+					if(data.block){
+						this.$store.commit('editManager',{id:this.manager.id,type:this.blockManager===0?this.blockManager+1:this.blockManager-1})
+						this.$store.commit('notification','Менеджер '+this.manager.name+(this.blockManager===0?'    заблокирован':'    разблокирован'))
+						this.manager={name:'',id:0};
+						this.blockManager=0;
+					}
+				}
+				this.$refs.deleteManager.hide();
+			}
 		},
 	}
 </script>
 
 <style scoped>
+	.banManager{
+		transform: rotate(45deg);
+	}
 	.mainBlock{
 		margin: 13px 15px 0 15px;
 		padding-bottom: 50px;
@@ -65,6 +87,19 @@
 		line-height: 60px;
 		display: flex;
 		margin-bottom: 15px;
+	}
+	.blockUser a:nth-child(2){
+		color: black !important;
+		text-decoration: none;
+		margin-left: 20px;
+		white-space: nowrap;
+		overflow: hidden;
+		padding-right: 5px;
+		flex: auto;
+		text-overflow: ellipsis;
+	}
+	.blockUser img{
+		transition: .3s ease;
 	}
 	.blockImg{
 		height: 60px;
@@ -101,15 +136,6 @@
 		width: 100%;
 		height: 100%;
 		display: block;
-	}
-	.blockUser span{
-		display: inline-block;
-		margin-left: 20px;
-		white-space: nowrap;
-		overflow: hidden;
-		padding-right: 5px;
-		flex: auto;
-		text-overflow: ellipsis;
 	}
 	.btnAddManagerMain{
 		position: fixed;

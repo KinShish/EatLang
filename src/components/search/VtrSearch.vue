@@ -47,7 +47,7 @@
 					img(src="../../assets/close.svg" v-b-toggle.sidebarFilter @click="filterActive=false")
 					h4  Уточнить
 				.blockFilter
-					.boxShadowFilter
+					//.boxShadowFilter
 						.blockFilterCity
 							label(for="cityFilterInp") Город
 							input#cityFilterInp(placeholder="Славянск на кубани")
@@ -106,7 +106,7 @@
 					this.stopLoad=false;
 				}
 			},
-			$_vtr_search_loadGoods:async function(){
+			async $_vtr_search_loadGoods(){
 				if(this.$route.name==='search'&&!this.load){
 					switch (this.type) {
 						case 1:{
@@ -143,9 +143,10 @@
 		watch:{
 			'searchActive'(){
 				if(this.searchActive){
-					document.body.style.cssText="overflow:hidden";
+					document.body.scrollIntoView(0)
+					document.body.style.text="overflow:hidden"
 				}else{
-					document.body.style.cssText="overflow:auto";
+					document.body.style.text="overflow:auto"
 				}
 			},
 			'filterActive'(){

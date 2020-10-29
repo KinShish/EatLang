@@ -19,7 +19,7 @@
 		},
 		methods:{
 			async vtr_load_notifications(){
-				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'user/push');
+				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'user/push/'+this.$route.params.id);
 				if(!data.err){
 					this.notifications=data.push;
 					console.log(this.notifications)

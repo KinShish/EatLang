@@ -1,6 +1,6 @@
 <template lang="pug">
 	div
-		div(v-if="$route.name==='favorites'")
+		div(v-if="$route.name==='favoritesManager'")
 			.header
 				img.back(src="../../assets/back.svg" @click="$router.go(-1)")
 				span(@click="$_vtr_favorites_loadGoods") Избранное
@@ -30,8 +30,8 @@
 		},
 		methods:{
 			async $_vtr_favorites_loadGoods(){
-				if(this.$route.name==='favorites'&&!this.load){
-					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/favorites/'+this.dateGood)
+				if(this.$route.name==='favoritesManager'&&!this.load){
+					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/favorites/'+this.dateGood+'/'+this.$route.params.id)
 					console.log(data)
 					if(data&&!data.err){
 						this.load=true;

@@ -36,14 +36,14 @@
 			'VtrAdditionalProduct':()=>import('../additional/VtrAdditionalProduct'),
 		},
 		methods:{
-			$_vtr_profile_company_subscribe:async function(){
+			async $_vtr_profile_company_subscribe(){
 				let data=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'subscription',{id:this.$route.params.idComp})
 				if(!data.err){
 					this.subActive=!this.subActive;
 					this.$store.commit('notification',data.text)
 				}
 			},
-			$_vtr_profile_company_loadGoods:async function(){
+			async $_vtr_profile_company_loadGoods(){
 				if(this.$route.name==='company'&&!this.load){
 					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/company/'+this.$route.params.idComp+'/1/'+this.number)
 					if(data&&!data.err){
@@ -56,7 +56,7 @@
 					}
 				}
 			},
-			$_vtr_profile_company_loadCompany:async function(){
+			async $_vtr_profile_company_loadCompany(){
 				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'company/'+this.$route.params.idComp)
 				if(data&&!data.err){
 					this.company=data.company;
@@ -117,7 +117,7 @@
 		width: 70px;
 	}
 	.logo{
-		width: 100% !important;
+		width: auto !important;
 		max-height: 250px;
 		height: auto;
 		margin: -30px 0;
