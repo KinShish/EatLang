@@ -31,7 +31,7 @@
 		methods:{
 			async $_vtr_favorites_loadGoods(){
 				if(this.$route.name==='favoritesManager'&&!this.load){
-					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/favorites/'+this.dateGood+'/'+this.$route.params.id)
+					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/favorites/'+this.dateGood+'/'+this.$route.params.managerId)
 					console.log(data)
 					if(data&&!data.err){
 						this.load=true;

@@ -84,12 +84,12 @@ let routes = {
 							name: 'manager',
 							children:[
 								{
-									path: 'notification/:id',
+									path: 'notification/:managerId',
 									component: () => import('../components/profile/VtrProfileManagerNotifications'),
 									name: 'notificationManager',
 								},
 								{
-									path: 'favorites/:id',
+									path: 'favorites/:managerId',
 									component: () => import('../components/profile/VtrProfileManagerFavorites'),
 									name: 'favoritesManager',
 								},

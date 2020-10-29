@@ -20,37 +20,41 @@
 						div
 							img(src="../../assets/notifications.svg")
 						p Уведомления
-			.whiteBlock
-				.greyBlock
-					h4 Заявки
-					p.noOrder Заявок нет
-				.mainOrderBlock(v-for="item in 5")
-					.orderManagerBlock
-						.orderBlockImg
-							img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg")
-						.orderBlockInfo
-							span Название объявления Название объявления
-							span Имя покупателя Имя покупателя
-						span.orderDate  12.08.20
-					.orderNumberAndPrice
-						span Заказ №12
-						span 600 000
-					hr.orderBorder
-				.greyBlock
-					h4 Заврешенные
-					p.noOrder Заявок нет
-				.mainOrderBlock(v-for="item in 5")
-					.orderManagerBlock
-						.orderBlockImg
-							img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg")
-						.orderBlockInfo
-							span Название объявления Название объявления
-							span Имя покупателя Имя покупателя
-						span.orderDate  12.08.20
-					.orderNumberAndPrice
-						span Заказ №12
-						span 600 000
-					hr.orderBorder
+			.customTabsProfile
+				b-card(no-body)
+					b-tabs(pills card)
+						b-tab(title='В ОЖИДАНИИ')
+							.customTabContent
+								.whiteBlock
+									.mainOrderBlock(v-for="item in 5")
+										.orderManagerBlock
+											.orderBlockImg
+												img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg")
+											.orderBlockInfo
+												span Название объявления
+												span Имя покупателя
+											span.orderDate  12.08.20
+										.orderNumberAndPrice
+											span Заказ №12
+											span 600 000
+						b-tab(title='АКТИВНЫЕ')
+							.customTabContent
+								.whiteBlock
+									.mainOrderBlock(v-for="item in 5")
+										.orderManagerBlock
+											.orderBlockImg
+												img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg")
+											.orderBlockInfo
+												span Название объявления
+												span Имя покупателя
+											span.orderDate  12.08.20
+										.orderNumberAndPrice
+											span Заказ №12
+						b-tab(title='ЗАВЕРШЕННЫЕ')
+							.customTabContent
+								.whiteBlock
+									.greyBlock
+										p.noOrder Заявок нет
 		transition(name="opacity")
 			keep-alive
 				router-view

@@ -59,7 +59,7 @@
 								b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
 			.customTabsProfile(v-else)
 				b-card(no-body)
-					b-tabs(pills card v-model="tabIndex")
+					b-tabs(pills card v-model="tabIndexManager")
 						b-tab(title='В ОЖИДАНИИ')
 							.customTabContent
 								.whiteBlock
@@ -133,6 +133,7 @@
 				keyLogo:new Date().valueOf(),
 				downloadLogo:false,
 				tabIndex:0,
+				tabIndexManager:0
 			}
 		},
 		components:{
@@ -253,9 +254,6 @@
 		max-height: 250px;
 		height: auto;
 		margin-top: -30px;
-	}
-	.orderBorder{
-		border: 1px dashed #757575;
 	}
 	.exit{
 		float: right;
