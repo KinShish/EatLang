@@ -60,9 +60,9 @@
 					let hash=makeid();
 					this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
 					const date=new Date().getTime();
-					this.roomMessages.push({text: this.textMessage, id_user: this.$store.state.user.data.id, datetime:date,hash})
+					this.roomMessages.push({text: this.textMessage, id_user: this.$store.state.user.data.id, dateTime:date,hash})
 					this.textMessage='';
-					this.$refs.blockChat.scrollIntoView();
+					this.$_vtr_dialogs_scrollBottom();
 					this.$store.getters.submitChat( {
 						hash,
 						text:this.textMessage,
@@ -76,6 +76,11 @@
 			$_vtr_dialogs_showTime(dateTime){
 				const d = new Date(dateTime);
 				return d.getHours().toString().padStart(2, '0')+':'+d.getMinutes().toString().padStart(2, '0');
+			},
+			$_vtr_dialogs_scrollBottom(){
+				this.$nextTick(()=>{
+					this.$refs.blockChat.scrollIntoView()
+				})
 			},
 			$_vtr_dialog_addPhoto(){
 				console.log(this.filePhoto)
@@ -93,11 +98,9 @@
 			next();
 		},
 		mounted() {
-			this.$nextTick(()=>{
-				this.room=this.$store.state.user.rooms.filter(room=>room.key===this.$route.params.key)
-				this.roomMessages=this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key)
-				this.$refs.asd.scrollIntoView()
-			})
+			this.room=this.$store.state.user.rooms.filter(room=>room.key===this.$route.params.key)
+			this.roomMessages=this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key)
+			this.$_vtr_dialogs_scrollBottom()
 			if(this.$route.query.type==='manager'){
 				this.$store.commit('loginChat',false)
 			}
