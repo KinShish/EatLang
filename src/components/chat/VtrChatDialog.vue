@@ -46,10 +46,8 @@
 		},
 		methods:{
 			$_vtr_dialog_sendMessage(){
-				console.log('отправил')
 				this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
 				if(this.textMessage){
-					console.log('отправил1')
 					const makeid=()=>{
 						let text = "";
 						const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -62,7 +60,6 @@
 					let hash=makeid();
 					this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
 					const date=new Date().getTime();
-					this.$_vtr_dialogs_scrollBottom();
 					this.$store.getters.submitChat( {
 						hash,
 						text:this.textMessage,
@@ -73,7 +70,9 @@
 					},()=>{
 						this.roomMessages.push({text: this.textMessage, id_user: this.$store.state.user.data.id, dateTime:date,hash})
 						this.textMessage='';
+
 					});
+					this.$_vtr_dialogs_scrollBottom();
 				}
 			},
 			$_vtr_dialogs_showTime(dateTime){
