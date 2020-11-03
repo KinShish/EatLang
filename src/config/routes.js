@@ -52,7 +52,7 @@ let routes = {
 			name: 'chat',
 			children:[
 				{
-					path: 'dialog/:id',
+					path: 'dialog/:key',
 					component: () => import('../components/chat/VtrChatDialog'),
 					name: 'dialog',
 				}
@@ -63,6 +63,16 @@ let routes = {
 			component: () => import('../components/profile/VtrProfile'),
 			name: 'profile',
 			children:[
+				{
+					path: 'order/:orderId',
+					component: () => import('../components/profile/VtrProfileOrder'),
+					name: 'order',
+				},
+				{
+					path: 'companyGoods',
+					component: () => import('../components/profile/VtrProfileCompanyGoods'),
+					name: 'companyGoods',
+				},
 				{
 					path: 'managers',
 					component: () => import('../components/profile/VtrProfileManagersCompany'),

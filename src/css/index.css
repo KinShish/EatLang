@@ -172,6 +172,12 @@ body{
 }
 /*Выпадающее меню в объявлении конец*/
 /*Дополнительно начало*/
+.spinerBlock{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-content: center;
+}
 .redColor{
     color: #F64646;
 }
@@ -223,6 +229,7 @@ body{
     color: white;
     text-align: center;
     line-height: 25px;
+    font-size: 16px;
 }
 .infoGoodUser:hover{
     color: black;

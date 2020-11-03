@@ -16,11 +16,13 @@
   "license": "Apache-2.0",
   "dependencies": {
     "cordova-plugin-splashscreen": "^6.0.0",
+    "cordova-plugin-statusbar": "^2.4.3",
     "core-js": "^3.6.5",
     "jsonwebtoken": "^8.5.1",
     "jssip": "^3.5.9",
     "pug-plain-loader": "^1.0.0",
     "sip.js": "^0.17.1",
+    "socket.io": "^2.3.0",
     "v-mask": "^2.2.3",
     "v-money": "^0.8.1",
     "vue": "^2.6.11",
@@ -66,7 +68,8 @@
   ],
   "cordova": {
     "plugins": {
-      "cordova-plugin-whitelist": {}
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-statusbar": {}
     },
     "platforms": [
       "ios"

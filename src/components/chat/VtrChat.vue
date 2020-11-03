@@ -2,19 +2,21 @@
 	div
 		div(v-if="$route.name==='chat'")
 			.header
-				b-input.borderInput(v-model="search" placeholder="Поиск по сообщениям")
-			.whiteBlock
-				router-link.mainChatBlock(v-for="item in 10" to="chat/dialog/1" :key="item")
+				b-input.borderInput(v-model="search" placeholder="Поиск по сообщениям" @input="$_vtr_chat_search")
+			.whiteBlock(v-if="rooms.length!==0")
+				router-link.mainChatBlock(v-for="room in rooms" :to="'chat/dialog/'+room.key" :key="room.key")
 					.chatBlock
 						.chatBlockImg
-							img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg")
+							img(:src="$store.state.user.settings.server+'company/'+room.id_company+'/up/goods/'+room.img" v-if="room.img")
+							img.noImg(src="../../assets/loadLogo.svg" v-else)
 						.chatBlockInfo
-							span Название объявления
+							span {{room.name}}
 							span Вы: Текст последнего сообщения
 						span.chatDate  12.08.20
 					.chatPrice
-						span 600 000
+						span {{room.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
 					hr.chatBorder
+			.noRooms(v-else) Диалогов еще нет :(
 		transition(name="opacity")
 			router-view
 </template>
@@ -24,12 +26,45 @@
 		data(){
 			return{
 				search:'',
+				rooms:[]
 			}
+		},
+		methods:{
+			$_vtr_chat_search(){
+				if(this.search.length>1){
+					this.rooms=this.rooms.filter(room=>room.name.toLowerCase().substr(0,this.search.length)===this.search.toLowerCase())
+				}else{
+					this.rooms=this.$store.state.user.rooms
+				}
+			}
+		},
+		watch:{
+			'$store.state.user.rooms'(){
+				this.rooms=this.$store.state.user.rooms
+			}
+		},
+		activated() {
+			this.rooms=this.$store.state.user.rooms
 		}
 	}
 </script>
 
 <style scoped>
+	.noRooms{
+		text-align: center;
+		font-size: 30px;
+		color: #f54646;
+		height: 100%;
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		display: grid;
+		place-content: center;
+		padding-bottom: 60px;
+	}
+	.noImg{
+		height: 30px !important;
+	}
 	.chatBorder{
 		border: 1px dashed #757575;
 	}
@@ -78,7 +113,8 @@
 	.chatBlockImg{
 		width: 50px;
 		height: 40px;
-		display: block;
+		display: grid;
+		place-content: center;
 		background: #DEDEDE;
 		line-height: 40px;
 		min-width: 50px;

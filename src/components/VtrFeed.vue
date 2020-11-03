@@ -11,7 +11,7 @@
 						span.logoName(v-else) {{good.company.name[0]}}
 						span {{good.company.name}}
 					VtrAdditionalProduct(:good="good" :hrefLink="'/good/'+good.id" :pageName="'Лента объявлений'")
-				b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
+				b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
 		transition(name="opacity")
 			router-view
 </template>
@@ -38,15 +38,27 @@
 						if(!data.err&&!this.stopLoad){
 							this.goods=this.goods.concat(data.goods);
 							if(data.goods.length>0){
-								this.dateGood=Date.parse(new Date(this.goods[this.goods.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+								this.dateGood=Date.parse(new Date(this.goods[this.goods.length - 1].update.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
 							}
 						}
-						this.stopLoad=data.goods.length===0;
+						this.stopLoad=data.goods.length===0||this.goods.length<=10;
+					}else{
+						this.stopLoad=true;
+						this.$store.commit('notification','Прозошла ошибка, попробуйте позже')
 					}
 				}
 			}
 		},
-		created() {
+		beforeRouteLeave(to, from, next){
+			if(!(to.name==='good'||to.name==='company')){
+				this.goods=[];
+				this.load=true;
+				this.stopLoad=false;
+				this.dateGood=1;
+			}
+			next();
+		},
+		activated() {
 			this.load=false;
 			this.$_vtr_feed_loadGoods();
 			this.$root.$on('lazyLoad', (res)=>{
@@ -61,6 +73,6 @@
 
 <style scoped>
 	.whiteBlock{
-		margin: 0 0 15px 0;
+		margin: 0 0 60px 0;
 	}
 </style>

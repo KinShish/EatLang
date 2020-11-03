@@ -1,12 +1,15 @@
 <template lang="pug">
 	div.slider
-		span.countSlider(v-if="good.img.length>0") {{slideIndex}}/{{good.img.length}}
+		span.countSlider(v-if="good.img.length>1") {{slideIndex}}/{{good.img.length}}
 		.likeGood(@click="$_vtr_product_like" v-if="good.company.id!==$store.state.user.data.id_company")
 			img(:src="likeActive?images.likeActive:images.like" ref="imageLike")
 		router-link.mainBlockGood(:to="{ path: hrefLink, query: { pageName: pageName }}")
-			agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex"  v-if="good.img.length>0")
-				.blockImg(v-for="img in good.img")
-					img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/up/goods/'+img")
+			div(v-if="good.img.length>0")
+				.blockImg( v-if="good.img.length===1")
+					img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/up/goods/'+good.img[0]")
+				agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex" v-else-if="good.img.length>1" ref="sliderProduct")
+					.blockImg(v-for="img in good.img")
+						img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/up/goods/'+img")
 			.noPhoto(v-else)
 				img(src="../../assets/loadLogo.svg")
 				span Фото отсутствует
@@ -44,6 +47,11 @@
 				slideIndex:0,
 				price:'600000',
 				string:'это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов. Lorem Ipsum не только успешно пережил без заметных изменений пять веков, но и перешагнул в электронный дизайн. Его популяризации в новое время послужили публикация листов Letraset с образцами Lorem Ipsum в 60-х годах и, в более недавнее время, программы электронной вёрстки типа Aldus PageMaker, в шаблонах которых используется Lorem Ipsum.'
+			}
+		},
+		activated() {
+			if(this.good.img.length>1){
+				this.$refs.sliderProduct.reload()
 			}
 		},
 		created() {
@@ -126,6 +134,7 @@
 		transform: translate(0, -50%);
 		margin: 0 auto;
 		display: block;
+		max-width: 100%;
 	}
 	.contentGood{
 		margin: 2px 15px;

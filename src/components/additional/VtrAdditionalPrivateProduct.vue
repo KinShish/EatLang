@@ -1,10 +1,13 @@
 <template lang="pug">
 	router-link.mainBlockGood(:to="{ path: hrefLink, query: { pageName: pageName }}")
 		.slider
-			span.countSlider(v-if="good.img.length>0") {{slideIndex}}/{{good.img.length}}
-			agile(:options="sliderProduct" @after-change="$_vtr_product_slideIndex" v-if="good.img.length>0")
-				.blockImg(v-for="img in good.img")
-					img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/up/goods/'+img")
+			span.countSlider(v-if="good.img.length>1") {{slideIndex}}/{{good.img.length}}
+			div(v-if="good.img.length>0")
+				.blockImg( v-if="good.img.length===1")
+					img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/up/goods/'+good.img[0]")
+				agile(:options="sliderProduct" @after-change="$_vtr_product_slideIndex" v-else-if="good.img.length>1" ref="sliderProductPrivate")
+					.blockImg(v-for="img in good.img")
+						img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/up/goods/'+img")
 			.noPhoto(v-else)
 				img(src="../../assets/loadLogo.svg")
 				span Фото отсутствует
@@ -48,6 +51,11 @@
 		},
 		components: {
 			agile: VueAgile
+		},
+		activated() {
+			if(this.good.img.length>1){
+				this.$refs.sliderProductPrivate.reload()
+			}
 		},
 		methods:{
 			$_vtr_product_slideIndex(index){
@@ -116,6 +124,7 @@
 		transform: translate(0, -50%);
 		margin: 0 auto;
 		display: block;
+		max-width: 100%;
 	}
 	.contentGood{
 		margin: 2px 15px 13px 15px;

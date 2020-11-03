@@ -3,7 +3,7 @@
 		.header
 			img.back(src="../assets/back.svg" @click="$router.go(-1)")
 			span {{$route.name==='edit'?'Редактировать объявление':'Подать объявление'}}
-		b-form.mainBlock(@submit.stop.prevent="$_vtr_add_addGood")
+		b-form.mainBlock(@submit.stop.prevent="$_vtr_add_addGood" v-if="$route.name==='add'||($route.name==='edit'&&loadGood)")
 			b-form-group
 				label(for="inpCat") Выбирите категорию*
 				b-form-select#inpCat.borderInput( placholder="Категория" :options="options[0]" value-field="id" text-field="name" v-model="cats[0]" @change="$_vtr_add_load_selectCat(cats[0],1)")
@@ -31,6 +31,8 @@
 				b-form-input#videoInp.borderInput(placeholder="Ссылка" v-model="form.video")
 			button.btnRed(type="submit") {{$route.name==='edit'?'Редактировать':'Добавить'}}
 			button.btnRed.noMarginTop(type="button" @click="$router.go(-1)" v-if="$route.name==='edit'") Отмена
+		.spinerBlock(v-else)
+			b-spinner.customSpiner(variant="danger")
 </template>
 
 <script>
@@ -60,7 +62,8 @@
 					id_cat:0,
 					//geo:{lat:0,lng:0},
 				},
-				loadImgActive:true
+				loadImgActive:true,
+				loadGood:false
 			}
 		},
 		methods:{
@@ -77,6 +80,7 @@
 						this.$router.replace({path: '/good/'+data.id,query: { pageName: 'Назад' }})
 					}else{
 						this.form.price=this.form.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')
+						this.$store.commit('notification','Прозошла ошибка, попробуйте позже')
 					}
 				}
 			},
@@ -90,29 +94,38 @@
 			},
 			async $_vtr_add_loadGood(){
 				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood)
-				let catsSelect=[];
-				const getParentCats=(id)=>{
-					for(let cat of this.allCats){
-						if(cat.id===id){
-							catsSelect.push(cat.id)
-							getParentCats(cat.id_parent)
-							break
+				if(data&&!data.err){
+					let catsSelect=[];
+					const getParentCats=(id)=>{
+						for(let cat of this.allCats){
+							if(cat.id===id){
+								catsSelect.push(cat.id)
+								getParentCats(cat.id_parent)
+								break
+							}
 						}
 					}
-				}
-				getParentCats(data.good.id_cat)
-				for(let i=1;i<=catsSelect.length;i++){
-					this.$_vtr_add_load_selectCat(catsSelect[catsSelect.length-i],i)
-				}
-				if(data&&!data.err){
-					this.form.name=data.good.name;
-					this.form.description=data.good.description;
-					this.form.img=data.good.img;
-					this.form.video=data.good.video;
-				}
-				let dataPrice=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood+'/price')
-				if(dataPrice&&!dataPrice.err){
-					this.form.price=dataPrice.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ');
+					getParentCats(data.good.id_cat)
+					for(let i=1;i<=catsSelect.length;i++){
+						this.$_vtr_add_load_selectCat(catsSelect[catsSelect.length-i],i)
+					}
+					if(data&&!data.err){
+						this.form.name=data.good.name;
+						this.form.description=data.good.description;
+						this.form.img=data.good.img;
+						this.form.video=data.good.video;
+					}
+					let dataPrice=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood+'/price')
+					if(dataPrice&&!dataPrice.err){
+						this.loadGood=true;
+						this.form.price=dataPrice.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ');
+					}else{
+						this.$router.go(-1);
+						this.$store.commit('notification','Прозошла ошибка, попробуйте позже')
+					}
+				}else{
+					this.$router.go(-1);
+					this.$store.commit('notification','Прозошла ошибка, попробуйте позже')
 				}
 			},
 			$_vtr_add_load_selectCat(id,type){
@@ -156,7 +169,7 @@
 				setTimeout(()=>{this.loadImgActive=true},1000)
 			}
 		},
-		created() {
+		activated() {
 			this.$_vtr_add_loadAllCat()
 		},
 		directives: {money: VMoney},
@@ -197,7 +210,7 @@
 		margin-top: 0;
 	}
 	.mainBlock {
-		margin: 13px 15px 0 15px;
+		margin: 13px 15px 100px 15px;
 		font-size: 14px !important;
 	}
 	label{
@@ -235,9 +248,10 @@
 		position: relative;
 	}
 	.image img{
-		height: 100%;
+		height: auto;
 		width: auto;
-		border-radius: 3px;
+		max-height: 80px;
+		max-width: 110px;
 	}
 	.image .close{
 		height: 20px;

@@ -3,25 +3,25 @@
 		div(v-if="$route.name==='companyGoods'")
 			.header
 				img.back(src="../../assets/back.svg" @click="$router.go(-1)")
-				span Объявления компании
+				span {{$store.state.user.company.name}}
 			.customTabsProfile
 				b-card(no-body)
 					b-tabs(pills card)
 						b-tab(title='АКТИВНЫЕ' active @click="$_vtr_profile_clickTab(1)")
 							.customTabContent
-								.noGoods(v-if="goodsActive.length===0") Тут пусто :(
-								VtrAdditionalPrivateProduct(v-else v-for="good in goodsActive" :key="good.id" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
-								b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
+								.noGoods(v-if="goodsArray.goods[1].length===0&&(load&&stopLoad)") Тут пусто :(
+								VtrAdditionalPrivateProduct(v-else v-for="good in goodsArray.goods[1]" :key="good.id+'active'" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
+								b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
 						b-tab(title='НА МОДЕРАЦИИ' @click="$_vtr_profile_clickTab(0)")
 							.customTabContent
-								.noGoods(v-if="goodsModer.length===0") Тут пусто :(
-								VtrAdditionalPrivateProduct(v-else v-for="good in goodsModer" :key="good.id" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
-								b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
+								.noGoods(v-if="goodsArray.goods[0].length===0&&(load&&stopLoad)") Тут пусто :(
+								VtrAdditionalPrivateProduct(v-else v-for="good in goodsArray.goods[0]" :key="good.id+'moder'" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
+								b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
 						b-tab(title='АРХИВ' @click="$_vtr_profile_clickTab(3)")
 							.customTabContent
-								.noGoods(v-if="goodsArch.length===3") Тут пусто :(
-								VtrAdditionalPrivateProduct(v-else v-for="good in goodsArch" :key="good.id" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
-								b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
+								.noGoods(v-if="goodsArray.goods[3].length===0&&(load&&stopLoad)") Тут пусто :(
+								VtrAdditionalPrivateProduct(v-else v-for="good in goodsArray.goods[3]" :key="good.id+'arch'" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
+								b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
 		transition(name="opacity")
 			router-view
 </template>
@@ -30,22 +30,27 @@
 	export default {
 		data(){
 			return{
-				goodsActive:[],
-				goodsModer:[],
-				goodsArch:[],
-				goodsBlock:[],
-
-				numGoodsActive:1,
-				numGoodsModer:1,
-				numGoodsArch:1,
-				numGoodsBlock:1,
+				goodsArray:{
+					goods:{
+						'0':[],
+						'1':[],
+						'2':[],
+						'3':[],
+					},
+					date:{
+						'0':1,
+						'1':1,
+						'2':1,
+						'3':1,
+					}
+				},
 
 				status:1,
 				load:true,
 				stopLoad:false,
 			}
 		},
-		activated() {
+		created() {
 			this.load=false;
 			this.vtr_profile_companyGoods_loadGoods();
 			this.$root.$on('lazyLoad', (res)=>{
@@ -59,62 +64,22 @@
 			$_vtr_profile_clickTab(status){
 				if(this.status!==status){
 					this.status=status;
+					this.load=false;
+					this.goodsArray.goods[status]=[];
+					this.goodsArray.date[status]=1;
 					this.vtr_profile_companyGoods_loadGoods();
 					this.stopLoad=false;
 				}
 			},
 			async vtr_profile_companyGoods_loadGoods(){
-				if(this.$route.name==='companyGoods'&&this.load){
-					let number;
-					switch (this.status) {
-						case 1:{
-							number=this.numGoodsActive;
-							break
-						}
-						case 0:{
-							number=this.numGoodsModer;
-							break
-						}
-						case 3:{
-							number=this.numGoodsArch;
-							break
-						}
-						case 2:{
-							number=this.numGoodsBlock;
-							break
-						}
-					}
-					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/company/'+this.$store.state.user.data.id_company+'/'+this.status+'/'+number)
+				if(this.$route.name==='companyGoods'&&!this.load){
+					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/company/'+this.$store.state.user.data.id_company+'/'+this.status+'/'+this.goodsArray.date[this.status])
 					if(data){
 						this.load=true;
 						if(!data.err&&data.rights&&!this.stopLoad){
-							//активные
-							if(this.status===1){
-								this.goodsActive=this.goodsActive.concat(data.goods);
-								if(data.goods.length>0){
-									this.numGoodsActive=Date.parse(new Date(this.goodsActive[this.goodsActive.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
-								}
-							}
-							//модерация
-							if(this.status===0){
-								this.goodsModer=this.goodsModer.concat(data.goods);
-								if(data.goods.length>0){
-									this.numGoodsModer=Date.parse(new Date(this.goodsModer[this.goodsModer.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
-								}
-							}
-							//архив
-							if(this.status===3){
-								this.goodsArch=this.goodsArch.concat(data.goods);
-								if(data.goods.length>0){
-									this.numGoodsArch=Date.parse(new Date(this.goodsArch[this.goodsArch.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
-								}
-							}
-							//заблокированные
-							if(this.status===2){
-								this.goodsBlock=this.goodsBlock.concat(data.goods);
-								if(data.goods.length>0){
-									this.numGoodsBlock=Date.parse(new Date(this.goodsBlock[this.goodsBlock.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
-								}
+							this.goodsArray.goods[this.status]=this.goodsArray.goods[this.status].concat(data.goods);
+							if(data.goods.length>0){
+								this.goodsArray.date[this.status]=Date.parse(new Date(this.goodsArray.goods[this.status][this.goodsArray.goods[this.status].length - 1].update.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
 							}
 						}
 						this.stopLoad=(data.goods.length===0);

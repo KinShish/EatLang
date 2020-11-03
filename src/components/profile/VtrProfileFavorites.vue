@@ -11,7 +11,7 @@
 						span.logoName(v-else) {{good.company.name[0]}}
 						span {{good.company.name}}
 					VtrAdditionalProduct(:good="good" :hrefLink="'/good/'+good.id" :pageName="'Избранное'")
-				b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad&&!noFavorit")
+				b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad&&!noFavorit")
 				.noGoods(v-if="noFavorit") Тут пусто :(
 		transition(name="opacity")
 			router-view
@@ -32,30 +32,30 @@
 			async $_vtr_favorites_loadGoods(){
 				if(this.$route.name==='favorites'&&!this.load){
 					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/favorites/'+this.dateGood)
-					console.log(data)
 					if(data&&!data.err){
 						this.load=true;
 						if(!data.err&&!this.stopLoad){
 							this.goods=this.goods.concat(data.goods);
 							this.noFavorit=this.goods.length===0&&data.goods.length===0
 							if(data.goods.length>0){
-								this.dateGood=Date.parse(new Date(this.goods[this.goods.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+								this.dateGood=Date.parse(new Date(this.goods[this.goods.length - 1].update.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
 							}
 						}
 						this.stopLoad=data.goods.length===0||this.goods.length<=10;
+					}else{
+						this.$router.go(-1);
+						this.$store.commit('notification','Прозошла ошибка, попробуйте позже')
 					}
 				}
 			},
-			$_vtr_favorites_clearAll(){
-					this.load=true;
-					this.stopLoad=false;
-					this.dateGood=1;
-					this.goods=[];
-					this.noFavorit=false;
-			}
 		},
-		activated() {
-			this.$_vtr_favorites_clearAll()
+		beforeRouteLeave(to,form,next) {
+			if(!(to.name==='good'||to.name==='company')){
+				this.$destroy()
+			}
+			next()
+		},
+		created() {
 			this.load=false;
 			this.$_vtr_favorites_loadGoods();
 			this.$root.$on('lazyLoad', (res)=>{

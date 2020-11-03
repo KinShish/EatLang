@@ -1,95 +1,101 @@
 <template lang="pug">
-	div(v-if="goods.length!==0")
-		.header
-			img.back(src="../../assets/back.svg" @click="$router.go(-1)")
-			span.title {{$route.query.pageName}}
-			.buttonsGood
-				//img(src="../../assets/goodsImg/share.svg")
-				//img(src="../../assets/goodsImg/compare.svg")
-				router-link(:to="'/edit/'+$route.params.idGood" v-if="$store.state.user.data.id_company===goods.company.id" replace)
-					img(src="../../assets/goodsImg/edit.svg")
-			b-dropdown(no-caret right).hamburgerButtonDropDown
-				template(v-slot:button-content)
-					.hamburgerButton
-						span .
-						span .
-						span .
-				b-dropdown-item(href='#' v-if="$store.state.user.data.id_company===goods.company.id") Добавить в архив
-				b-dropdown-item(href='#' v-if="$store.state.user.data.id_company===goods.company.id") Поднять в списке
-				b-dropdown-item(href='#') Пожаловаться
-		.slider
-			span.countSlider(v-if="goods.img.length>0") {{slideIndex}}/{{goods.img.length}}
-			.likeGood(@click="$_vtr_good_like" v-if="$store.state.user.data.id_company!==goods.company.id")
-				img(:src="likeActive?images.likeActive:images.like" ref="imageLikeGood")
-			agile(:options="sliderProduct" @after-change="$vtr_good_index_slideIndex" v-if="goods.img.length>0")
-				.blockImg(v-for="img in goods.img")
-					img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/up/goods/'+img")
-			.noPhoto(v-else)
-				img(src="../../assets/loadLogo.svg")
-				span Фото отсутствует
-		.greyBlock
-			.statGoodsIndexBlock
-				div
-					img(src="../../assets/goodsImg/eye.svg")
-					span 320
-					span +21
-				div
-					img(src="../../assets/goodsImg/heart.svg")
-					span 320
-				div
-					span {{goods.date}}
-			.blockBorder
-				.nameIndexGood {{goods.name}}
-				.priceIndexGood(@click="$_vtr_good_loadPrice") {{price==='Показать цену'?price:price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
-			//.blockBorder
-				span.watchGeoGood Показать местоположение
-			.blockBorder
-				.titleGoodSpan Описание
-				.descriptionGoodIndex {{goods.description}}
-			//.blockBorder
-				.titleGoodSpan Характеристики
-				.specifications
-					.lineSpec
-						span Страна производитель
-						span Япония
-					.lineSpec
-						span Марка
-						span Hinomoto
-					.lineSpec
-						span Тип привода
-						span колесный,4WD
-					.lineSpec
-						span Мощность
-						span 24 л.с.
-					.lineSpec
-						span Максимальная скорость
-						span 20 км\ч
-					.lineSpec
-						span Прочее
-						span фары,указатели поворотов
-					.lineSpec
-						span Минимальный радиус разворота
-						span 24 л.с.
-					.lineSpec
-						span Габариты
-						span 260*135*140 (длина*ширина*высота)
-					.lineSpec
-						span Покраска
-						span покрашен
-			//button.btnRed Добавить к сравнению
-			//button.btnAuction Перейти в аукцион
-		.userBlock(v-if="$store.state.user.data.id_company!==goods.company.id")
-			.fastButtonBlock
-				.imgUser(v-if="goods.company.logo")
-					img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/up/logo.jpg'")
-				span.logoName(v-else) {{goods.company.name[0]}}
-				router-link(:to="'/company/'+goods.company.id") {{goods.company.name}}
-		.fastBtnGood(v-if="$store.state.user.data.id_company!==goods.company.id")
-			.fastButtonBlock
-				button.fastButton Позвонить
-				button.fastButton Написать
-		transition(name="opacity")
-			router-view
+	div
+		div(v-if="goods.length!==0")
+			.header
+				img.back(src="../../assets/back.svg" @click="$router.go(-1)")
+				span.title {{$route.query.pageName}}
+				.buttonsGood
+					//img(src="../../assets/goodsImg/share.svg")
+					//img(src="../../assets/goodsImg/compare.svg")
+					router-link(:to="'/edit/'+$route.params.idGood" v-if="$store.state.user.data.id_company===goods.company.id")
+						img(src="../../assets/goodsImg/edit.svg")
+				//b-dropdown(no-caret right).hamburgerButtonDropDown
+					template(v-slot:button-content)
+						.hamburgerButton
+							span .
+							span .
+							span .
+					b-dropdown-item(href='#' v-if="$store.state.user.data.id_company===goods.company.id") Добавить в архив
+					b-dropdown-item(href='#' v-if="$store.state.user.data.id_company===goods.company.id") Поднять в списке
+					b-dropdown-item(href='#') Пожаловаться
+			.slider
+				span.countSlider(v-if="goods.img.length>1") {{slideIndex}}/{{goods.img.length}}
+				.likeGood(@click="$_vtr_good_like" v-if="$store.state.user.data.id_company!==goods.company.id")
+					img(:src="likeActive?images.likeActive:images.like" ref="imageLikeGood")
+				div(v-if="goods.img.length>0")
+					.blockImg(v-if="goods.img.length===1")
+						img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/up/goods/'+goods.img[0]")
+					agile(:options="sliderProduct" @after-change="$vtr_good_index_slideIndex" v-else-if="goods.img.length>1")
+						.blockImg(v-for="img in goods.img")
+							img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/up/goods/'+img")
+				.noPhoto(v-else)
+					img(src="../../assets/loadLogo.svg")
+					span Фото отсутствует
+			.greyBlock
+				.statGoodsIndexBlock
+					div
+						img(src="../../assets/goodsImg/eye.svg")
+						span 320
+						span +21
+					div
+						img(src="../../assets/goodsImg/heart.svg")
+						span 320
+					div
+						span {{goods.date}}
+				.blockBorder
+					.nameIndexGood {{goods.name}}
+					.priceIndexGood {{price==='Показать цену'?price:price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
+				//.blockBorder
+					span.watchGeoGood Показать местоположение
+				.blockBorder
+					.titleGoodSpan Описание
+					.descriptionGoodIndex {{goods.description}}
+				//.blockBorder
+					.titleGoodSpan Характеристики
+					.specifications
+						.lineSpec
+							span Страна производитель
+							span Япония
+						.lineSpec
+							span Марка
+							span Hinomoto
+						.lineSpec
+							span Тип привода
+							span колесный,4WD
+						.lineSpec
+							span Мощность
+							span 24 л.с.
+						.lineSpec
+							span Максимальная скорость
+							span 20 км\ч
+						.lineSpec
+							span Прочее
+							span фары,указатели поворотов
+						.lineSpec
+							span Минимальный радиус разворота
+							span 24 л.с.
+						.lineSpec
+							span Габариты
+							span 260*135*140 (длина*ширина*высота)
+						.lineSpec
+							span Покраска
+							span покрашен
+				//button.btnRed Добавить к сравнению
+				//button.btnAuction Перейти в аукцион
+			.userBlock(v-if="$store.state.user.data.id_company!==goods.company.id")
+				.fastButtonBlock
+					.imgUser(v-if="goods.company.logo")
+						img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/up/logo.jpg'")
+					span.logoName(v-else) {{goods.company.name[0]}}
+					router-link(:to="'/company/'+goods.company.id") {{goods.company.name}}
+			.fastBtnGood(v-if="$store.state.user.data.id_company!==goods.company.id")
+				.fastButtonBlock
+					button.fastButton Позвонить
+					button.fastButton(@click="$_vtr_good_message") Написать
+			transition(name="opacity")
+				router-view
+		.spinerBlock(v-else)
+			b-spinner.customSpiner(variant="danger")
 </template>
 
 <script>
@@ -114,11 +120,25 @@
 				slideIndex:0,
 			}
 		},
-		created() {
+		activated() {
 			this.$_vtr_good_loadGood();
-			this.$store.getters.watchFavoritGood('1')
 		},
 		methods:{
+			async $_vtr_good_message(){
+				this.$store.getters.createRoom({
+					goods:{
+						id:this.$route.params.idGood,
+						img:this.goods.img.length>0?this.goods.img[0]:'',
+						name:this.goods.name,
+						price:this.price,
+					},
+					id_company:this.goods.company.id,
+				},res=> {
+					if(!res.err){
+						this.$router.push('/chat/dialog/' + res.key)
+					}
+				})
+			},
 			async $_vtr_good_loadPrice(){
 				if(this.price==='Показать цену'){
 					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood+'/price')
@@ -136,6 +156,7 @@
 					this.$router.go(-1);
 					this.$store.commit('notification','Прозошла ошибка, попробуйте позже')
 				}
+				this.$_vtr_good_loadPrice();
 			},
 			async $_vtr_good_like(){
 				let data=await this.$store.getters.request('PUT',this.$store.state.user.settings.server+'goods/favorites',{id:this.goods.id})
@@ -227,6 +248,7 @@
 	}
 	.slider{
 		position: relative;
+		z-index: 0;
 	}
 	.likeGood{
 		position: absolute;
@@ -349,16 +371,13 @@
 		width: 100%;
 		height: 200px;
 		background: #DEDEDE;
+		display: grid;
+		place-content: center;
 	}
 	.blockImg img{
 		max-height: 200px;
 		height: auto;
 		max-width: 100%;
-		top: 50%;
-		position: relative;
-		transform: translate(0, -50%);
-		display: block;
-		margin: 0 auto;
 	}
 	.greyBlock{
 		margin: 0 15px;

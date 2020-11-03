@@ -7,13 +7,14 @@
 					img(src="../../assets/close.svg")
 			.tabCat
 				router-link(:to="''+cat.id" v-for="cat in allCats.filter(item=>item.id_parent===this.$route.params.idCat*1)" :key="cat.id") {{cat.name}}
-			div(v-for="good in arrayGood" :key="good.id")
+			div(v-for="good in arrayGood" :key="'searchPageCat'+good.id")
 				router-link.infoGoodUser(:to="'/company/'+good.company.id")
 					img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/logo.jpg'" v-if="good.company.logo")
 					span.logoName(v-else) {{good.company.name[0]}}
 					span {{good.company.name}}
 				VtrAdditionalProduct(:good="good" :hrefLink="'/good/'+good.id" :pageName="'Поиск'")
-			b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
+			b-spinner.customSpiner(variant="danger" v-if="!!load&&!stopLoad")
+			.noGoods(v-if="noGoods") Тут пусто :(
 		transition(name="opacity")
 			router-view(:key="$route.fullPath")
 </template>
@@ -29,6 +30,7 @@
 				load:true,
 				stopLoad:false,
 				array_id_cat:[],
+				noGoods:true
 			}
 		},
 		methods:{
@@ -59,14 +61,22 @@
 						this.load=true;
 						if(data.goods.length>0){
 							this.arrayGood=this.arrayGood.concat(data.goods);
-							this.goodDate=Date.parse(new Date(this.arrayGood[this.arrayGood.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+							this.noGoods=this.arrayGood.length===0&&data.goods.length===0;
+							this.goodDate=Date.parse(new Date(this.arrayGood[this.arrayGood.length - 1].update.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
 						}
 						this.stopLoad=data.goods.length===0;
 					}
 				}
 			}
 		},
+		beforeRouteLeave(to, from, next){
+			if(!(to.name==='good'||to.name==='company')){
+				this.$destroy()
+			}
+			next();
+		},
 		created() {
+			this.arrayGood=[];
 			this.allCats=this.$store.state.user.cats;
 			this.$_vtr_search_cat_getCats();
 			this.$root.$on('lazyLoad', (res)=>{
@@ -170,5 +180,11 @@
 		white-space: nowrap;
 		line-height: 27px;
 		text-decoration: none;
+	}
+	.noGoods{
+		text-align: center;
+		font-size: 30px;
+		line-height: 250px;
+		color: #f54646;
 	}
 </style>

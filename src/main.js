@@ -23,10 +23,11 @@ Vue.use(BootstrapVue);
 
 
 
-import {userVuex} from "./config/store";
+import {userVuex,chatVuex} from "./config/store";
 const store = new Vuex.Store({
 	modules: {
 	user: userVuex,
+	chat:chatVuex
 	}
 });
 import {router} from './config/routes';

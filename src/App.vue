@@ -3,7 +3,7 @@
 		VtrAdditionalNotifications
 		transition(name="opacity")
 			keep-alive
-				router-view.mainContent(:key="$route.fullPath")
+				router-view.mainContent
 		VtrAdditionalBottomMenu(v-if="$store.state.user.data!=='-1'&&!($route.name==='pin'&&$route.name==='login')&&($route.name==='feed'||$route.name==='search'||$route.name==='add'||$route.name==='chat'||$route.name==='profile')")
 </template>
 

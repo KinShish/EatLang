@@ -1,20 +1,21 @@
 <template lang="pug">
 	.mainPinBlock
-		h5 {{havePin?'Придумайте пин для входа в приложение':'Укажите пин для входа в приложение'}}
+		.paddingPin
+			h5 {{havePin?'Придумайте уникальный пин для входа в приложение':'Укажите пин'}}
 			.formPin
 				label(for="pinInput")
 					.blockPin(v-for="i in 4" :class="i<=pin.length?'blockPinActive':'blockPinDeActive'" :key="i")
 				input#pinInput(v-model="pin" maxlength="4" ref="pinInput")
-				span.forgotPin(@click="$refs.forgotPinModal.show()") Забыл пин?
+				span.forgotPin(@click="$refs.forgotPinModal.show()" v-if="!havePin") Забыли пин?
 				button.btnRed(@click="$_vtr_auth_pin_login" :disabled="pin.length!==4") {{havePin?'Создать':'Войти'}}
 		b-modal(hide-footer ref="forgotPinModal" centered no-close-on-backdrop)
 			template(slot="modal-header")
-				h4 балабалаблаба?
+				h4 Будет произведен выход из аккаунта.
 				button.close( @click="$refs.forgotPinModal.hide()")
 					span(aria-hidden="true") x
 			.container
-				p балаабалбалабблала бала бабулбабудап бап!
-				button.btnRed(@click="$store.commit('clearAll')") да?
+				p Для повторного входа обратитесь к администратору вашей компании.
+				button.btnRed(@click="$refs.forgotPinModal.hide(),$store.commit('clearAll')") Выйти
 </template>
 
 <script>
@@ -25,7 +26,7 @@
 				havePin:false,
 			}
 		},
-		mounted() {
+		activated() {
 			this.havePin=localStorage.getItem('pin')===null;
 			this.$refs.pinInput.focus();
 		},
@@ -34,14 +35,15 @@
 				if(this.havePin){
 					localStorage.setItem('pin',this.pin)
 					this.$router.push('/feed')
+					this.havePin=true;
 				}else{
 					if(localStorage.getItem('pin')===this.pin){
 						this.$router.push('/feed');
 					}else{
 						this.$store.commit('notification','Не правильный пин-код');
 					}
-					this.pin='';
 				}
+				this.pin='';
 			}
 		},
 		watch:{
@@ -55,6 +57,9 @@
 </script>
 
 <style scoped>
+	.paddingPin{
+		padding: 0 10px;
+	}
 	.mainPinBlock{
 		background: black;
 		width: 100%;

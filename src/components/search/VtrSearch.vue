@@ -14,7 +14,7 @@
 				.customTabsSearch
 					b-card(no-body)
 						b-tabs(pills card v-model="tabIndex")
-							b-tab(title='Рекомендуемое' @click="$_vtr_search_clickTab(1)")
+							b-tab(title='Рекомендуемое' @click="$_vtr_search_clickTab(1)" disabled)
 								.customTabContent
 									//div(v-for="item in 2" :key="item")
 										router-link.infoGoodUser(:to="'search/company/'+item")
@@ -71,7 +71,7 @@
 	export default {
 		data(){
 			return{
-				tabIndex:1,
+				tabIndex:2,
 				searchActive:false,
 				filterActive:false,
 				search:'',
@@ -119,7 +119,7 @@
 								this.load=true;
 								if(!data.err&&!this.stopLoad){
 									this.recommendationGoods=this.recommendationGoods.concat(data.goods);
-									this.recommendationGoodsDate=Date.parse(new Date(this.recommendationGoods[this.recommendationGoods.length - 1].updateGoods.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+									this.recommendationGoodsDate=Date.parse(new Date(this.recommendationGoods[this.recommendationGoods.length - 1].update.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
 								}
 								this.stopLoad=data.goods.length===0;
 							}
@@ -129,24 +129,32 @@
 				}
 			},
 		},
-		created() {
-			this.cats=this.$store.state.user.cats.filter(item=>item.id_parent===0);
-			this.load=false;
-			this.$_vtr_search_loadGoods();
-			this.$root.$on('lazyLoad', (res)=>{
-				if(res&&this.load&&!this.stopLoad){
-					this.load=false;
-					this.$_vtr_search_loadGoods()
-				}
-			});
+		beforeRouteLeave(to, from, next){
+			this.searchActive=false;
+			this.filterActive=false;
+			next();
+		},
+		activated() {
+			if(this.recommendationGoods.length===0){
+				this.cats=this.$store.state.user.cats.filter(item=>item.id_parent===0);
+				this.load=false;
+				this.type=2;//потом удалить когда появится рекомендуемое
+				this.$_vtr_search_loadGoods();
+				this.$root.$on('lazyLoad', (res)=>{
+					if(res&&this.load&&!this.stopLoad){
+						this.load=false;
+						this.$_vtr_search_loadGoods()
+					}
+				});
+			}
 		},
 		watch:{
 			'searchActive'(){
 				if(this.searchActive){
 					document.body.scrollIntoView(0)
-					document.body.style.text="overflow:hidden"
+					document.body.style.cssText="overflow:hidden";
 				}else{
-					document.body.style.text="overflow:auto"
+					document.body.style.cssText="overflow:auto";
 				}
 			},
 			'filterActive'(){
@@ -164,6 +172,9 @@
 </script>
 
 <style scoped>
+	.customTabContent{
+		margin-bottom: 70px;
+	}
 	.boxShadowFilter{
 		background: #F7F7F7;
 		box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);

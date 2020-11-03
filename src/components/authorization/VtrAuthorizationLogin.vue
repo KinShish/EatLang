@@ -1,7 +1,7 @@
 <template lang="pug">
 	.mainLoginBlock
 		h3 Авторизация
-			b-form.formLogin(@submit.stop.prevent="$store.commit('firstAuth',formLogin)")
+			b-form.formLogin(@submit.stop.prevent="$_vtr_login_submit" v-if="!load")
 				b-form-group
 					b-form-input(
 						required
@@ -16,7 +16,8 @@
 						type="password"
 						placeholder="Пароль")
 				button.btnRed(type="submit" :disabled="$v.formLogin.$invalid") Далее
-
+			.spinerBlock(v-else)
+				b-spinner.customSpiner(variant="danger")
 </template>
 
 <script>
@@ -28,6 +29,7 @@
 					phone: '',
 					password: '',
 				},
+				load:false
 			}
 		},
 		methods:{
@@ -35,7 +37,17 @@
 				if(this.formLogin.phone==='+7(8'){
 					this.formLogin.phone='+7'
 				}
+			},
+			$_vtr_login_submit(){
+				if(!this.$v.formLogin.$invalid){
+					this.$store.commit('firstAuth',this.formLogin)
+					this.load=true;
+				}
 			}
+		},
+		deactivated() {
+			this.formLogin={phone: '', password: '',};
+			this.load=false;
 		},
 		validations:{
 			formLogin:{
@@ -49,9 +61,24 @@
 				}
 			}
 		},
+		watch:{
+			'$store.state.user.errAuth'(){
+				if(this.$store.state.user.errAuth){
+					this.formLogin={
+						phone: '',
+						password: '',
+					};
+					this.load=false;
+				}
+			}
+		}
+
 	}
 </script>
 <style scoped>
+	.spinerBlock{
+		height: 260px;
+	}
 	.mainLoginBlock{
 		background: black;
 		width: 100%;

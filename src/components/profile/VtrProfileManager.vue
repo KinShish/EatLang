@@ -74,11 +74,14 @@
 				if(data&&!data.err){
 					this.user=data.user;
 					this.favorites=data.favorites;
+				}else{
+					this.$router.go(-1);
+					this.$store.commit('notification','Прозошла ошибка, попробуйте позже')
 				}
 			}
 		},
-		created() {
-				this.$_vtr_profile_manager_load();
+		activated() {
+			this.$_vtr_profile_manager_load();
 		}
 	}
 </script>

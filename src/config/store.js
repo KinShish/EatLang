@@ -1,6 +1,31 @@
 import axios from 'axios'
 import settings from './settings.js'
 import JsSIP from 'jssip'
+const io = require('../config/socket.io');
+let socket = '';
+window.onbeforeunload=(e=>{
+	if(userVuex.state.data!=='-1') socket.emit('exit')
+})
+export const chatVuex = {
+	getters:{
+		createRoom:()=>(data,cb)=>{
+			socket.emit('create room',data,(res)=>{
+				cb(res)
+			})
+		},
+		submitChat:()=>(data,cb)=> {
+			socket.emit('send message', data,(res)=>{
+				cb(res)
+			})
+
+		},
+		createOldRoom:()=>(data,cb)=>{
+			socket.emit('create old room',data,(res)=>{
+				cb(res)
+			})
+		},
+	}
+};
 export const userVuex = {
 	state: {
 		data: "-1",
@@ -8,32 +33,37 @@ export const userVuex = {
 		managers:[],
 		admin:false,
 		token:null,
-		errAuth:false,
+		errAuth:null,
 		settings:settings,
 		notification:'',
 		cats:[],
-		favorites:[]
+		favorites:[],
+		rooms:[],
+		messages:[]
 	},
 	mutations: {
-		firstAuth:async function (state,form){
+		async firstAuth(state,form){
 			axios
 				.post(state.settings.server+'user/sign',{phone:form.phone,password:form.password})
 				.then(res => {
 					if(!res.data.err) {
+						state.errAuth=false;
 						localStorage.setItem('token',res.data.token);
 						this.commit('auth');
 					}else{
+						state.errAuth=true;
 						this.commit('notification',res.data.text);
 					}
 
 				});
 			axios.interceptors.response.use(null, error=> {
 				if (error.response.status === 401) {
+					state.errAuth=true;
 					this.commit('notification','Не верный логин или пароль');
 				}
 			})
 		},
-		auth:async function (state){
+		async auth (state){
 			let data=await this.getters.request('GET',state.settings.server+'user/profile');
 			if(data){
 				state.admin=data.admin;
@@ -42,16 +72,37 @@ export const userVuex = {
 				state.data=data.user;
 				state.favorites=data.favorites
 				state.managers=(data.managers!==undefined?data.managers:[]);
+				socket = io(settings.server,{path:'/chat',query:{token:localStorage.getItem('token')}});
+				this.commit('loginChat',false)
 				this.commit('loadCat')
 			}else{
 				state.errAuth=true;
 				this.commit('clearAll');
 			}
 		},
-		logout:async function (state){
+		loginChat(state,f){
+			const emit=()=>{
+				socket.emit('user join',(rooms,messages)=>{
+					state.rooms=rooms;
+					state.messages=messages;
+					console.log(state)
+				});
+			}
+			if(f) emit();
+			else {
+				socket.emit('first join',(rooms,messages)=>{
+					state.rooms=rooms;
+					state.messages=messages;
+					console.log(state)
+				});
+				setInterval(emit, 5000)
+			}
+		},
+		async logout (state){
 			let data=await this.getters.request('POST',state.settings.server+'user/logout');
 			if(!data.err){
-				this.commit('clearAll')
+				socket.emit('exit');
+				this.commit('clearAll');
 			}else{
 				this.commit('notification','Произошла ошибка попробуйте позже');
 			}
@@ -59,7 +110,7 @@ export const userVuex = {
 		clearAll(state){
 			localStorage.clear();
 			state.admin=false
-			state.errAuth=false;
+			state.errAuth=true;
 			state.data='-1';
 			state.managers=[];
 		},
@@ -70,7 +121,7 @@ export const userVuex = {
 		updateLogoCompany(state,value){
 			state.company.logo=value
 		},
-		loadCat:async function (state){
+		async loadCat (state){
 			let data=await this.getters.request('GET',state.settings.server+'cat')
 			if(data&&!data.err){
 				state.cats=data.cats

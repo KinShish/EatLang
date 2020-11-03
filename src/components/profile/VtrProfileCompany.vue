@@ -10,11 +10,11 @@
 					span Фото отсутствует
 				img.logo(:src="$store.state.user.settings.server+'company/'+company.id+'/up/logo.jpg'" v-else)
 			button.btnRed(@click="$_vtr_profile_company_subscribe" :class="subActive?'subActive':''" v-if="$store.state.user.data.id_company!==company.id") {{subActive?'Вы подписаны':'Подписаться'}}
-			button.btnRed Контакты компании
+			//button.btnRed Контакты компании
 			.title Объявления пользователя
-			.noGoods(v-if="goods.length===0") Тут пусто :(
+			.noGoods(v-if="goods.length===0&&(load&&stopLoad)") Тут пусто :(
 			VtrAdditionalProduct(v-else v-for="good in goods" :key="good.id+'company'" :good="good" :hrefLink="'/good/'+good.id" :pageName="good.company.name")
-			b-spinner.customSpiner(variant="danger" v-if="load&&!stopLoad")
+			b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
 		transition(name="opacity")
 			router-view
 </template>
@@ -65,7 +65,15 @@
 				}
 			}
 		},
-		activated() {
+		beforeRouteLeave(to, from, next){
+			if(!(to.name==='good')){
+				console.log('dse')
+				this.$destroy()
+			}
+			console.log('dse1')
+			next();
+		},
+		created() {
 			this.load=false;
 			this.$_vtr_profile_company_loadCompany();
 			this.$_vtr_profile_company_loadGoods();
@@ -80,6 +88,9 @@
 </script>
 
 <style scoped>
+	.header{
+		margin-bottom: 5px;
+	}
 	.subActive{
 		background: white;
 		color: #F64646;
