@@ -87,7 +87,7 @@ export const userVuex = {
 		},
 		loginChat(state,f){
 			const emit=()=>{
-				socket.emit('user join',(rooms,messages)=>{
+				socket.emit('user join',(rooms)=>{
 					state.rooms=rooms;
 				});
 			}

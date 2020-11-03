@@ -9,12 +9,12 @@
 				img(:src="imgSrc")
 		.whiteBlock(:class="false?'paddingPhoto':''" ref="chatFeed")
 			//span.mainData 20 августа 2020
-			div(v-for="message in roomMessages" :class="message.id_user===$store.state.user.data.id?'blockMessageMe':'blockMessage'" :key="message.dateTime")
-				span.timeMessage(v-if="message.id_user===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
-				.logo(v-if="message.id_user!==$store.state.user.data.id")
+			div(v-for="message in roomMessages" :class="message.id===$store.state.user.data.id?'blockMessageMe':'blockMessage'" :key="message.dateTime+message.text")
+				span.timeMessage(v-if="message.id===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
+				.logo(v-if="message.id!==$store.state.user.data.id")
 					img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
 				span.text {{message.text}}
-				span.timeMessage(v-if="message.id_user!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
+				span.timeMessage(v-if="message.id!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
 			//.blockMessageMe
 				span.timeMessage 15:35
 				.photoBlock(@click="$_vtr_dialog_watchPhoto('https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg')")
@@ -68,11 +68,11 @@
 						dateTime:'',
 						key:this.$route.params.key
 					},()=>{
-						this.roomMessages.push({text: this.textMessage, id_user: this.$store.state.user.data.id, dateTime:date,hash})
+						this.roomMessages.push({text: this.textMessage, id: this.$store.state.user.data.id, dateTime:date,hash,id_recipient:this.room[0].id_company,})
 						this.textMessage='';
+						this.$_vtr_dialogs_scrollBottom();
 
 					});
-					this.$_vtr_dialogs_scrollBottom();
 				}
 			},
 			$_vtr_dialogs_showTime(dateTime){
