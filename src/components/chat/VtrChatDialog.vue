@@ -60,10 +60,7 @@
 					let hash=makeid();
 					this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
 					const date=new Date().getTime();
-					this.roomMessages.push({text: this.textMessage, id_user: this.$store.state.user.data.id, datetime:date,hash})
-					this.textMessage='';
 					this.$_vtr_dialogs_scrollBottom();
-					console.log(this.room[0].id_company)
 					this.$store.getters.submitChat( {
 						hash,
 						text:this.textMessage,
@@ -71,8 +68,9 @@
 						id_recipient:this.room[0].id_company,
 						datetime:'',
 						key:this.$route.params.key
-					},res=>{
-						console.log(res)
+					},()=>{
+						this.roomMessages.push({text: this.textMessage, id_user: this.$store.state.user.data.id, datetime:date,hash})
+						this.textMessage='';
 					});
 				}
 			},
