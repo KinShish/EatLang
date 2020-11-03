@@ -33,7 +33,6 @@
 </template>
 
 <script>
-	import {required} from "vuelidate/lib/validators";
 	export default {
 		data(){
 			return{
@@ -47,7 +46,8 @@
 		},
 		methods:{
 			$_vtr_dialog_sendMessage(){
-				if(!this.$v.textMessage.$invalid){
+				this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
+				if(this.textMessage){
 					const makeid=()=>{
 						let text = "";
 						const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -120,11 +120,6 @@
 					this.$refs.chatFeed.style.cssText="overflow:auto";
 				}
 			},
-		},
-		validations:{
-			textMessage:{
-				required
-			}
 		},
 	}
 </script>
