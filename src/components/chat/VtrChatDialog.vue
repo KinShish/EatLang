@@ -8,17 +8,18 @@
 			.modalPhoto(v-if="photoModal" @click="photoModal=false")
 				img(:src="imgSrc")
 		.whiteBlock(:class="false?'paddingPhoto':''" ref="chatFeed")
-			//span.mainData 20 августа 2020
-			div(v-for="message in roomMessages" :class="message.id===$store.state.user.data.id?'blockMessageMe':'blockMessage'" :key="message.dateTime+message.text")
-				span.timeMessage(v-if="message.id===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
-				.logo(v-if="message.id!==$store.state.user.data.id")
-					img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
-				span.text {{message.text}}
-				span.timeMessage(v-if="message.id!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
-			//.blockMessageMe
-				span.timeMessage 15:35
-				.photoBlock(@click="$_vtr_dialog_watchPhoto('https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg')")
-					img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
+			div(v-for="(message,index) in roomMessages" :key="message.dateTime+message.text")
+				span.mainData(v-if="$_vtr_dialogs_showDate(index,message.dateTime)") {{$_vtr_dialogs_showDate(index,message.dateTime)}}
+				div(:class="message.id===$store.state.user.data.id?'blockMessageMe':'blockMessage'")
+					span.timeMessage(v-if="message.id===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
+					.logo(v-if="message.id!==$store.state.user.data.id")
+						img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
+					span.text {{message.text}}
+					span.timeMessage(v-if="message.id!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
+				//.blockMessageMe
+					span.timeMessage 15:35
+					.photoBlock(@click="$_vtr_dialog_watchPhoto('https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg')")
+						img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
 		//.blockAddImg
 			.imgBlock(v-for="item in 10")
 				img.close(src="../../assets/close.svg" @click="$_vtr_dialog_deletePhoto(item)")
@@ -27,7 +28,8 @@
 			b-form-file#loadPhoto.d-none(type="file" @input="$_vtr_dialog_addPhoto" v-model="filePhoto")
 			label(for="loadPhoto")
 				img(src="../../assets/chat/chatImage.svg")
-			input(v-model="textMessage")
+			b-form(@submit.stop.prevent="$_vtr_dialog_sendMessage")
+				input(v-model="textMessage")
 			img(src="../../assets/chat/chatSend.svg" @click="$_vtr_dialog_sendMessage")
 		span(ref="blockChat")
 </template>
@@ -45,7 +47,7 @@
 			}
 		},
 		methods:{
-			$_vtr_dialog_sendMessage(){
+			async $_vtr_dialog_sendMessage(){
 				this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
 				if(this.textMessage){
 					const makeid=()=>{
@@ -60,7 +62,7 @@
 					let hash=makeid();
 					this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
 					const date=new Date().getTime();
-					this.$store.getters.submitChat( {
+					await this.$store.getters.submitChat( {
 						hash,
 						text:this.textMessage,
 						id:this.$store.state.user.data.id,
@@ -74,6 +76,18 @@
 
 					});
 				}
+			},
+			$_vtr_dialogs_showDate(index,dateTime){
+				const arrMonth = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
+				const date = new Date(dateTime);
+				const res = date.getDate().toString().padStart(2, '0') + ' ' + arrMonth[date.getMonth()];
+				let prevRes='';
+				if(index>0){
+					const now = new Date(this.roomMessages[index-1].dateTime);
+					prevRes = now.getDate().toString().padStart(2, '0') + ' ' + arrMonth[now.getMonth()];
+				}
+				if(res!==prevRes) return res
+				return false
 			},
 			$_vtr_dialogs_showTime(dateTime){
 				const d = new Date(dateTime);
@@ -299,9 +313,12 @@
 		display: flex;
 		box-shadow: 0 -4px 4px rgba(0, 0, 0, 0.1);
 		padding: 4px 8px;
+		max-width: 600px;
+	}
+	.blockSendMessage form{
+		flex: auto;
 	}
 	.blockSendMessage input{
-		flex: auto;
 		height: 30px;
 		margin-top: 6px;
 		border: none;
