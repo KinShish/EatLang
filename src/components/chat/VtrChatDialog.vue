@@ -63,13 +63,16 @@
 					this.roomMessages.push({text: this.textMessage, id_user: this.$store.state.user.data.id, datetime:date,hash})
 					this.textMessage='';
 					this.$_vtr_dialogs_scrollBottom();
+					console.log(this.room[0].id_company)
 					this.$store.getters.submitChat( {
 						hash,
 						text:this.textMessage,
 						id:this.$store.state.user.data.id,
-						id_recipient:this.room.id_company,
+						id_recipient:this.room[0].id_company,
 						datetime:'',
 						key:this.$route.params.key
+					},res=>{
+						console.log(res)
 					});
 				}
 			},
@@ -107,7 +110,8 @@
 		},
 		watch:{
 			'$store.state.user.messages'(){
-				this.roomMessages=this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key)
+				this.roomMessages=this.roomMessages.concat(this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key));
+				this.$_vtr_dialogs_scrollBottom();
 			},
 			'photoModal'(){
 				if(this.photoModal){
