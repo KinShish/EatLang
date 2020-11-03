@@ -73,6 +73,18 @@ export const userVuex = {
 				state.favorites=data.favorites
 				state.managers=(data.managers!==undefined?data.managers:[]);
 				socket = io(settings.server,{path:'/chat',query:{token:localStorage.getItem('token')}});
+				socket.on('room message',res=>{
+					if(userVuex.state.data!=='-1') {
+						if (res.id !== userVuex.state.data.id) {
+							console.log(res)
+						}else{
+							socket.emit('exit');
+						}
+						console.log(state.data.id,res.id)
+						if (res.message) socket.emit('message', {message: res.message, user: state.data.id === res.id});
+						state.messages.push(res);
+					}
+				});
 				this.commit('loginChat',false)
 				this.commit('loadCat')
 			}else{
@@ -84,8 +96,6 @@ export const userVuex = {
 			const emit=()=>{
 				socket.emit('user join',(rooms,messages)=>{
 					state.rooms=rooms;
-					state.messages=messages;
-					console.log(state)
 				});
 			}
 			if(f) emit();
@@ -93,7 +103,6 @@ export const userVuex = {
 				socket.emit('first join',(rooms,messages)=>{
 					state.rooms=rooms;
 					state.messages=messages;
-					console.log(state)
 				});
 				setInterval(emit, 5000)
 			}

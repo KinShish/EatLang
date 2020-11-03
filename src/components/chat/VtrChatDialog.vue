@@ -8,7 +8,9 @@
 			.modalPhoto(v-if="photoModal" @click="photoModal=false")
 				img(:src="imgSrc")
 		.whiteBlock(:class="false?'paddingPhoto':''" ref="chatFeed")
-			span.mainData 20 августа 2020
+			//span.mainData 20 августа 2020
+			div(v-for="message in roomMessages" :class="message.id_user===$store.state.user.data.id?'blockMessage':'blockMessage'")
+				|{{message}}
 			.blockMessage
 				.logo
 					img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
@@ -50,7 +52,7 @@
 				imgSrc:'',
 				photoModal:false,
 				room:[],
-				messages:[]
+				roomMessages:[]
 			}
 		},
 		methods:{
@@ -94,9 +96,10 @@
 			this.photoModal=false;
 			next();
 		},
-		activated() {
-			this.room=this.$store.state.user.rooms(room=>room.key===this.$route.params.key)
+		mounted() {
 			this.$nextTick(()=>{
+				this.room=this.$store.state.user.rooms.filter(room=>room.key===this.$route.params.key)
+				this.roomMessages=this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key)
 				this.$refs.asd.scrollIntoView()
 			})
 			if(this.$route.query.type==='manager'){
