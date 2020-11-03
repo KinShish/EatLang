@@ -10,6 +10,8 @@
 		.whiteBlock(:class="false?'paddingPhoto':''" ref="chatFeed")
 			//span.mainData 20 августа 2020
 			div(v-for="message in roomMessages" :class="message.id_user===$store.state.user.data.id?'blockMessage':'blockMessage'")
+				span.text {{message.text}}
+				span.timeMessage {{$_vtr_dialogs_showTime(message.datetime)}}
 				|{{message}}
 			.blockMessage
 				.logo
@@ -80,6 +82,10 @@
 					console.log(this.textMessage)
 					//this.textMessage='';
 				}
+			},
+			$_vtr_dialogs_showTime(dateTime){
+				const d = new Date(dateTime);
+				return d.getHours().toString().padStart(2, '0')+':'+d.getMinutes().toString().padStart(2, '0');
 			},
 			$_vtr_dialog_addPhoto(){
 				console.log(this.filePhoto)

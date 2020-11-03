@@ -84,6 +84,8 @@ export const userVuex = {
 						if (res.message) socket.emit('message', {message: res.message, user: state.data.id === res.id});
 						state.messages.push(res);
 					}
+					if (res.message) socket.emit('message', {message: res.message, user: state.data.id === res.id});
+					state.chat.push(res);
 				});
 				this.commit('loginChat',false)
 				this.commit('loadCat')
