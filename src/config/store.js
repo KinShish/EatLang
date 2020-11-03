@@ -15,6 +15,7 @@ export const chatVuex = {
 		},
 		submitChat:()=>(data,cb)=> {
 			socket.emit('send message', data,(res)=>{
+				socket.emit('message', {hash: data.hash, user: userVuex.state.data.id === data.id});
 				cb(res)
 			})
 
@@ -74,7 +75,6 @@ export const userVuex = {
 				state.managers=(data.managers!==undefined?data.managers:[]);
 				socket = io(settings.server,{path:'/chat',query:{token:localStorage.getItem('token')}});
 				socket.on('room message',res=>{
-					if (res.hash) socket.emit('message', {hash: res.hash, user: state.data.id === res.id});
 					state.messages.push(res);
 				});
 				this.commit('loginChat',false)
