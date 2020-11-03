@@ -15,7 +15,6 @@ export const chatVuex = {
 		},
 		submitChat:()=>(data,cb)=> {
 			socket.emit('send message', data,(res)=>{
-				socket.emit('message', {hash: data.hash, user: userVuex.state.data.id === data.id});
 				cb(res)
 			})
 
