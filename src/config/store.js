@@ -80,12 +80,11 @@ export const userVuex = {
 						}else{
 							socket.emit('exit');
 						}
-						console.log(state.data.id,res.id)
 						if (res.message) socket.emit('message', {message: res.message, user: state.data.id === res.id});
 						state.messages.push(res);
 					}
 					if (res.message) socket.emit('message', {message: res.message, user: state.data.id === res.id});
-					state.chat.push(res);
+					state.messages.push(res);
 				});
 				this.commit('loginChat',false)
 				this.commit('loadCat')
