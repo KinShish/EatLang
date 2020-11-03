@@ -11,11 +11,10 @@
 			div(v-for="(message,index) in roomMessages" :key="message.hash")
 				span.mainData(v-if="$_vtr_dialogs_showDate(index,message.dateTime)") {{$_vtr_dialogs_showDate(index,message.dateTime)}}
 				div(:class="message.id===$store.state.user.data.id?'blockMessageMe':'blockMessage'")
-					span.timeMessage(v-if="message.id===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
+					span.timeMessage {{$_vtr_dialogs_showTime(message.dateTime)}}
 					.logo(v-if="message.id!==$store.state.user.data.id")
 						img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
 					span.text {{message.text}}
-					span.timeMessage(v-if="message.id!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
 				//.blockMessageMe
 					span.timeMessage 15:35
 					.photoBlock(@click="$_vtr_dialog_watchPhoto('https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg')")
@@ -55,10 +54,10 @@
 						let text = "";
 						const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-						for (let i = 0; i < 50; i++)
-							text += date+possible.charAt(Math.floor(Math.random() * possible.length));
+						for (let i = 0; i < 37; i++)
+							text += possible.charAt(Math.floor(Math.random() * possible.length));
 
-						return text;
+						return date+text;
 					}
 					let hash=makeid();
 					this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
@@ -115,7 +114,7 @@
 		},
 		mounted() {
 			this.room=this.$store.state.user.rooms.filter(room=>room.key===this.$route.params.key)
-			this.roomMessages=this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key)
+			this.roomMessages=this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key).sort((a, b) => {const dateA = new Date(a.dateTime), dateB = new Date(b.dateTime);return dateA.getTime() - dateB.getTime()})
 			this.$_vtr_dialogs_scrollBottom()
 			if(this.$route.query.type==='manager'){
 				this.$store.commit('loginChat',false)
@@ -123,7 +122,7 @@
 		},
 		watch:{
 			'$store.state.user.messages'(){
-				this.roomMessages=this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key);
+				this.roomMessages=this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key).sort((a, b) => {const dateA = new Date(a.dateTime), dateB = new Date(b.dateTime);return dateA.getTime() - dateB.getTime()})
 				this.$_vtr_dialogs_scrollBottom();
 			},
 			'photoModal'(){
@@ -324,6 +323,7 @@
 		border: none;
 		padding-left: 10px;
 		color: #757575;
+		width: 100%;
 	}
 	.blockSendMessage input:focus{
 		outline: none;
