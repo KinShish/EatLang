@@ -68,7 +68,7 @@
 						hash,
 						text:this.textMessage,
 						id:this.$store.state.user.data.id,
-						id_recepient:this.room[0].id_company,
+						id_recipient:this.room[0].id_company,
 						datetime:'',
 						key:this.$route.params.key
 					},res=>{
