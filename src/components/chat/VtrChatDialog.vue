@@ -9,25 +9,13 @@
 				img(:src="imgSrc")
 		.whiteBlock(:class="false?'paddingPhoto':''" ref="chatFeed")
 			//span.mainData 20 августа 2020
-			div(v-for="message in roomMessages" :class="message.id_user===$store.state.user.data.id?'blockMessage':'blockMessage'")
+			div(v-for="message in roomMessages" :class="message.id_user===$store.state.user.data.id?'blockMessageMe':'blockMessage'")
+				span.timeMessage(v-if="message.id_user===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.datetime)}}
+				.logo(v-if="message.id_user!==$store.state.user.data.id")
+					img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
 				span.text {{message.text}}
-				span.timeMessage {{$_vtr_dialogs_showTime(message.datetime)}}
-				|{{message}}
-			.blockMessage
-				.logo
-					img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
-				span.text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu et.
-				span.timeMessage 15:35
-			.blockMessage
-				.logo
-					img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
-				.photoBlock(@click="$_vtr_dialog_watchPhoto('https://img1.labirint.ru/books66/650657/big.png')")
-					img(src="https://img1.labirint.ru/books66/650657/big.png")
-				span.timeMessage 15:35
-			.blockMessageMe
-				span.timeMessage 15:35
-				span.text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu et.
-			.blockMessageMe
+				span.timeMessage(v-if="message.id_user!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.datetime)}}
+			//.blockMessageMe
 				span.timeMessage 15:35
 				.photoBlock(@click="$_vtr_dialog_watchPhoto('https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg')")
 					img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
@@ -41,7 +29,7 @@
 				img(src="../../assets/chat/chatImage.svg")
 			input(v-model="textMessage")
 			img(src="../../assets/chat/chatSend.svg" @click="$_vtr_dialog_sendMessage")
-		span(ref="asd")
+		span(ref="blockChat")
 </template>
 
 <script>
@@ -71,6 +59,10 @@
 					}
 					let hash=makeid();
 					this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
+					const date=new Date().getTime();
+					this.roomMessages.push({text: this.textMessage, id_user: this.$store.state.user.data.id, datetime:date,hash})
+					this.textMessage='';
+					this.$refs.blockChat.scrollIntoView();
 					this.$store.getters.submitChat( {
 						hash,
 						text:this.textMessage,
@@ -78,9 +70,7 @@
 						id_recipient:this.room.id_company,
 						dateTime:'',
 						key:this.$route.params.key
-					},res=>{console.log(res)});
-					console.log(this.textMessage)
-					//this.textMessage='';
+					});
 				}
 			},
 			$_vtr_dialogs_showTime(dateTime){
@@ -113,6 +103,9 @@
 			}
 		},
 		watch:{
+			'$store.state.user.messages'(){
+				this.roomMessages=this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key)
+			},
 			'photoModal'(){
 				if(this.photoModal){
 					document.body.style.cssText="overflow:hidden";
