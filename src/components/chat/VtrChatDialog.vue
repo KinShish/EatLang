@@ -8,7 +8,7 @@
 			.modalPhoto(v-if="photoModal" @click="photoModal=false")
 				img(:src="imgSrc")
 		.whiteBlock(:class="false?'paddingPhoto':''" ref="chatFeed")
-			div(v-for="(message,index) in roomMessages" :key="message.dateTime+message.text")
+			div(v-for="(message,index) in roomMessages" :key="message.hash")
 				span.mainData(v-if="$_vtr_dialogs_showDate(index,message.dateTime)") {{$_vtr_dialogs_showDate(index,message.dateTime)}}
 				div(:class="message.id===$store.state.user.data.id?'blockMessageMe':'blockMessage'")
 					span.timeMessage(v-if="message.id===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
@@ -50,18 +50,18 @@
 			async $_vtr_dialog_sendMessage(){
 				this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
 				if(this.textMessage){
+					const date=new Date().getTime();
 					const makeid=()=>{
 						let text = "";
 						const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 						for (let i = 0; i < 50; i++)
-							text += possible.charAt(Math.floor(Math.random() * possible.length));
+							text += date+possible.charAt(Math.floor(Math.random() * possible.length));
 
 						return text;
 					}
 					let hash=makeid();
 					this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
-					const date=new Date().getTime();
 					await this.$store.getters.submitChat( {
 						hash,
 						text:this.textMessage,
