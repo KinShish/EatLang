@@ -12,10 +12,11 @@
 				div(v-for="(message,index) in roomMessages" :key="message.hash")
 					span.mainData(v-if="$_vtr_dialogs_showDate(index,message.dateTime)") {{$_vtr_dialogs_showDate(index,message.dateTime)}}
 					div(:class="message.id===$store.state.user.data.id?'blockMessageMe':'blockMessage'")
-						span.timeMessage {{$_vtr_dialogs_showTime(message.dateTime)}}
+						span.timeMessage(v-if="message.id===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
 						.logo(v-if="message.id!==$store.state.user.data.id")
 							img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
 						span.text {{message.text}}
+						span.timeMessage(v-if="message.id!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
 					//.blockMessageMe
 						span.timeMessage 15:35
 						.photoBlock(@click="$_vtr_dialog_watchPhoto('https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg')")
