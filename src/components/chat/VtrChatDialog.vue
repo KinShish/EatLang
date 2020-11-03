@@ -46,8 +46,10 @@
 		},
 		methods:{
 			$_vtr_dialog_sendMessage(){
+				console.log('отправил')
 				this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
 				if(this.textMessage){
+					console.log('отправил1')
 					const makeid=()=>{
 						let text = "";
 						const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -108,7 +110,7 @@
 		},
 		watch:{
 			'$store.state.user.messages'(){
-				this.roomMessages=this.roomMessages.concat(this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key));
+				this.roomMessages=this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key);
 				this.$_vtr_dialogs_scrollBottom();
 			},
 			'photoModal'(){
