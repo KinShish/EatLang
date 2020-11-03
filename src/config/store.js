@@ -74,8 +74,8 @@ export const userVuex = {
 				state.managers=(data.managers!==undefined?data.managers:[]);
 				socket = io(settings.server,{path:'/chat',query:{token:localStorage.getItem('token')}});
 				socket.on('room message',res=>{
-					if(userVuex.state.data!=='-1') {
-						if (res.id !== userVuex.state.data.id) {
+					if(state.data!=='-1') {
+						if (res.id !== state.data.id) {
 							console.log(res)
 						}else{
 							socket.emit('exit');
