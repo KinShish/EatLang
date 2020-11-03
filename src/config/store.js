@@ -75,8 +75,7 @@ export const userVuex = {
 				state.managers=(data.managers!==undefined?data.managers:[]);
 				socket = io(settings.server,{path:'/chat',query:{token:localStorage.getItem('token')}});
 				socket.on('room message',res=>{
-					console.log(state.data.id === res.id)
-					if (res.hash) socket.emit('message', {hash: res.message.hash, user: state.data.id === res.id});
+					if (res.hash) socket.emit('message', {hash: res.hash, user: state.data.id === res.id});
 					state.messages.push(res);
 				});
 				this.commit('loginChat',false)
