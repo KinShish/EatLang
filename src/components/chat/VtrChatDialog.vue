@@ -9,7 +9,7 @@
 				img(:src="imgSrc")
 		.whiteBlock(:class="false?'paddingPhoto':''" ref="chatFeed")
 			//span.mainData 20 августа 2020
-			div(v-for="message in roomMessages" :class="message.id_user===$store.state.user.data.id?'blockMessageMe':'blockMessage'" :key="message.id")
+			div(v-for="message in roomMessages" :class="message.id_user===$store.state.user.data.id?'blockMessageMe':'blockMessage'" :key="message.datetime")
 				span.timeMessage(v-if="message.id_user===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.datetime)}}
 				.logo(v-if="message.id_user!==$store.state.user.data.id")
 					img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
