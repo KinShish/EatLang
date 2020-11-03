@@ -9,7 +9,7 @@
 				img(:src="imgSrc")
 		.whiteBlock(:class="false?'paddingPhoto':''" ref="chatFeed")
 			//span.mainData 20 августа 2020
-			div(v-for="message in roomMessages" :class="message.id_user===$store.state.user.data.id?'blockMessageMe':'blockMessage'")
+			div(v-for="message in roomMessages" :class="message.id_user===$store.state.user.data.id?'blockMessageMe':'blockMessage'" :key="message.id")
 				span.timeMessage(v-if="message.id_user===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.datetime)}}
 				.logo(v-if="message.id_user!==$store.state.user.data.id")
 					img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
@@ -60,7 +60,7 @@
 					let hash=makeid();
 					this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
 					const date=new Date().getTime();
-					this.roomMessages.push({text: this.textMessage, id_user: this.$store.state.user.data.id, dateTime:date,hash})
+					this.roomMessages.push({text: this.textMessage, id_user: this.$store.state.user.data.id, datetime:date,hash})
 					this.textMessage='';
 					this.$_vtr_dialogs_scrollBottom();
 					this.$store.getters.submitChat( {
@@ -68,7 +68,7 @@
 						text:this.textMessage,
 						id:this.$store.state.user.data.id,
 						id_recipient:this.room.id_company,
-						dateTime:'',
+						datetime:'',
 						key:this.$route.params.key
 					});
 				}
