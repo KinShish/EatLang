@@ -69,7 +69,7 @@
 										.orderManagerBlock
 											.orderBlockImg
 												img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
-												img(src="../../assets/loadLogo.svg" v-else)
+												img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
 											.orderBlockInfo
 												span {{order.name}}
 											span.orderDate {{order.date}}
@@ -86,7 +86,7 @@
 										.orderManagerBlock
 											.orderBlockImg
 												img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg" v-if="order.img!==''")
-												img(src="../../assets/loadLogo.svg" v-else)
+												img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
 											.orderBlockInfo
 												span {{order.name}}
 											span.orderDate {{order.date}}
@@ -103,7 +103,7 @@
 										.orderManagerBlock
 											.orderBlockImg
 												img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg" v-if="order.img!==''")
-												img(src="../../assets/loadLogo.svg" v-else)
+												img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
 											.orderBlockInfo
 												span {{order.name}}
 											span.orderDate {{order.date}}
@@ -144,7 +144,7 @@
 			'VtrAdditionalPrivateProduct':()=>import('../additional/VtrAdditionalPrivateProduct'),
 		},
 		beforeRouteLeave(to,form,next) {
-			if(!(to.name==='good'||to.name==='company'||to.name==='order')){
+			if(!(to.name==='good'||to.name==='company'||to.name==='order'||to.name==='dialog')){
 				this.$destroy()
 			}
 			next()
@@ -240,6 +240,9 @@
 </script>
 
 <style scoped>
+	.noImgOrder{
+		height: 30px !important;
+	}
 	.orderBorder{
 		border: 1px dashed #757575;
 	}
@@ -313,12 +316,13 @@
 	.orderBlockImg{
 		width: 50px;
 		height: 40px;
-		display: block;
 		background: #DEDEDE;
 		line-height: 40px;
 		min-width: 50px;
 		overflow: hidden;
 		border-radius: 3px;
+		display: grid;
+		place-content: center;
 	}
 	.orderBlockImg img{
 		width: auto;

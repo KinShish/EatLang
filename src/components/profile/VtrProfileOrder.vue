@@ -5,15 +5,24 @@
 			span Подробности заявки
 		.greyBlock(v-if="order.id_order")
 			.titleOrder
+				.orderStatus(v-if="order.status===1") В обработке
+				.orderStatus(v-if="order.status===2") Завершен
 				span Заказ № {{order.id_order}}
 				//span от:
 				//span.name   Пал Палыч
 			div(v-if="good.length!==0")
 				VtrAdditionalPrivateProduct(:good="good" :hrefLink="'/good/'+good.id" :pageName="'Назад'")
 			button.btnRed(@click="$_vtr_order_getOrder" v-if="order.status===0") Взять заказ
-			.orderStatus(v-if="order.status===1") В обработке
-			.orderStatus(v-if="order.status===2") Завершен
-
+			router-link.btnRed(@click="$_vtr_order_getOrder" :to="'/chat/dialog/'+order.chat_key") В чат
+			button.btnRed(@click="$refs.closeOrder.show()") Закрыть заказ
+		b-modal(hide-footer ref="closeOrder" centered no-close-on-backdrop)
+			template(slot="modal-header")
+				h4 Заказ № {{order.id_order}}
+				button.close( @click="$refs.closeOrder.hide()")
+					span(aria-hidden="true") x
+			.container
+				p Вы уверены что хотите закрыть заказ?
+				button.btnRed(@click="$_vtr_order_closeOrder") Да
 </template>
 
 <script>
@@ -25,6 +34,10 @@
 			}
 		},
 		methods:{
+			async $_vtr_order_closeOrder(){
+				console.log('close')
+				this.$refs.closeOrder.hide()
+			},
 			async $_vtr_order_getOrder(){
 				let data=await this.$store.getters.request('PUT',this.$store.state.user.settings.server+'company/order/'+this.$route.params.orderId)
 				console.log(data)
@@ -76,12 +89,14 @@
 	.btnRed{
 		width: 80%;
 		max-width: 300px;
-		margin: 100px auto 0 auto;
+		margin: 10px auto;
+		text-decoration: none;
+		color: white;
 	}
 	.orderStatus{
 		width: 80%;
 		max-width: 300px;
-		margin: 100px auto 0 auto;
+		margin: 0 auto;
 		background: #FFEEEE;
 		border: 1px solid #F64646;
 		box-sizing: border-box;

@@ -9,6 +9,7 @@ body{
 }
 /*Кнопки начало*/
 .btnRed{
+    text-align: center;
     display: block;
     outline: none;
     border: 2px solid #F64646;
