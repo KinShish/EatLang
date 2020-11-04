@@ -41,7 +41,7 @@ body{
     color: #F64646;
     box-shadow: 0 3px 4px rgba(0, 0, 0, 0.11);
     padding: 7px;
-    margin: 0 3px;
+    margin: 5px 3px;
     transition: .3s ease;
 }
 .customTabsProfile .card-header{
