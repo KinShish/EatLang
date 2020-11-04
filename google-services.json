@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "326458101386",
+    "firebase_url": "https://vtr-mobile.firebaseio.com",
+    "project_id": "vtr-mobile",
+    "storage_bucket": "vtr-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:326458101386:android:d6d55a7cee43b80ec8a773",
+        "android_client_info": {
+          "package_name": "ru.vtr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "326458101386-a91ldmu46erq657cu6lga31fn8k2ku4n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD1nz9YqXIR9s0rezWSru1Wc4nW-GfF0s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "326458101386-a91ldmu46erq657cu6lga31fn8k2ku4n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "326458101386-2k93kveqs6h30hb97lr8b348smva8onp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ru.vtr"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
