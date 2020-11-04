@@ -45,6 +45,13 @@
 				}
 			}
 		},
+		beforeRouteLeave(to, from, next){
+			if(!this.$store.state.user.errAuth){
+				next();
+			}else{
+				this.$router.go(1)
+			}
+		},
 		deactivated() {
 			this.formLogin={phone: '', password: '',};
 			this.load=false;

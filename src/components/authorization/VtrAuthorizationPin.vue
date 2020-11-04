@@ -30,6 +30,14 @@
 			this.havePin=localStorage.getItem('pin')===null;
 			this.$refs.pinInput.focus();
 		},
+		beforeRouteLeave(to, from, next){
+			console.log(to)
+			if(to.name!=='login'){
+				next();
+			}else{
+				this.$router.go(1)
+			}
+		},
 		methods:{
 			$_vtr_auth_pin_login(){
 				if(this.havePin){
