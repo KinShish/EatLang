@@ -11,7 +11,7 @@
 							img.noImg(src="../../assets/loadLogo.svg" v-else)
 						.chatBlockInfo
 							span {{room.name}}
-							span Вы: Текст последнего сообщения
+							span(v-if="room.message") {{room.message.id===$store.state.user.data.id?'Вы: '+room.message.text:room.message.text}}
 						span.chatDate  12.08.20
 					.chatPrice
 						span {{room.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
@@ -34,17 +34,31 @@
 				if(this.search.length>1){
 					this.rooms=this.rooms.filter(room=>room.name.toLowerCase().substr(0,this.search.length)===this.search.toLowerCase())
 				}else{
-					this.rooms=this.$store.state.user.rooms
+					this.$_vtr_chat_getRooms();
 				}
+			},
+			$_vtr_chat_getRooms(){
+				let rooms=this.$store.state.user.rooms;
+				rooms.forEach(room=>{
+					let lastMessage=this.$store.state.user.messages.filter(messages=>messages.key===room.key).sort((a, b) => {const dateA = new Date(a.dateTime), dateB = new Date(b.dateTime);return dateA.getTime() - dateB.getTime()})
+					if(lastMessage.length!==0){
+						room.message=lastMessage[lastMessage.length - 1]
+					}
+
+				})
+				this.rooms=rooms;
 			}
 		},
 		watch:{
 			'$store.state.user.rooms'(){
-				this.rooms=this.$store.state.user.rooms
-			}
+				this.$_vtr_chat_getRooms();
+			},
+			'$store.state.user.messages'(){
+				this.$_vtr_chat_getRooms();
+			},
 		},
 		activated() {
-			this.rooms=this.$store.state.user.rooms
+			this.$_vtr_chat_getRooms();
 		}
 	}
 </script>

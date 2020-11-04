@@ -52,14 +52,18 @@ export const userVuex = {
 						localStorage.setItem('token',res.data.token);
 						this.commit('auth');
 					}else{
-						state.errAuth=true;
+						state.errAuth=new Date().getTime();
 						this.commit('notification',res.data.text);
 					}
 
+				})
+				.catch(err=>{
+					state.errAuth=new Date().getTime();
+					this.commit('notification','Произошла ошибка попробуйте позже');
 				});
 			axios.interceptors.response.use(null, error=> {
 				if (error.response.status === 401) {
-					state.errAuth=true;
+					state.errAuth=new Date().getTime();
 					this.commit('notification','Не верный логин или пароль');
 				}
 			})
@@ -80,14 +84,16 @@ export const userVuex = {
 				this.commit('loginChat',false)
 				this.commit('loadCat')
 			}else{
-				state.errAuth=true;
+				state.errAuth=new Date().getTime();
 				this.commit('clearAll');
 			}
 		},
 		loginChat(state,f){
 			const emit=()=>{
 				socket.emit('user join',(rooms)=>{
-					state.rooms=rooms;
+					if(state.rooms.length!==rooms.length){
+						state.rooms=rooms;
+					}
 				});
 			}
 			if(f) emit();
@@ -96,7 +102,7 @@ export const userVuex = {
 					state.rooms=rooms;
 					state.messages=messages;
 				});
-				setInterval(emit, 5000)
+				setInterval(emit, 10000)
 			}
 		},
 		async logout (state){

@@ -63,7 +63,7 @@ let app = {
 			},
 			router,
 		});
-	},
+	}
 };
 
 app.initialize();

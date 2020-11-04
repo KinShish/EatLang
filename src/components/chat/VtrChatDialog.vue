@@ -95,9 +95,8 @@
 				return d.getHours().toString().padStart(2, '0')+':'+d.getMinutes().toString().padStart(2, '0');
 			},
 			$_vtr_dialogs_scrollBottom(){
-				this.$nextTick(()=>{
-					this.$refs.blockChat.scrollIntoView()
-				})
+				//this.$nextTick(()=>{this.$refs.blockChat.scrollIntoView()//для веба})
+				window.scroll({top: document.body.scrollHeight*1.5, behavior: "smooth"});//для приложения
 			},
 			$_vtr_dialog_addPhoto(){
 				console.log(this.filePhoto)
@@ -283,11 +282,10 @@
 		top: 0;
 	}
 	.whiteBlock{
-		margin-top: 50px;
+		margin-top:50px;
 		padding: 0 15px;
 		overflow-x: hidden;
 		overflow-y: scroll;
-		margin-bottom: 60px;
 	}
 	.dottedActive{
 		width: 10px;
@@ -306,7 +304,7 @@
 		margin-bottom: -1rem;
 	}
 	.blockSendMessage{
-		position: fixed;
+		position: sticky;
 		bottom: 0;
 		width: 100%;
 		background: white;

@@ -64,10 +64,7 @@
 		watch:{
 			'$store.state.user.errAuth'(){
 				if(this.$store.state.user.errAuth){
-					this.formLogin={
-						phone: '',
-						password: '',
-					};
+					this.formLogin.password='';
 					this.load=false;
 				}
 			}
