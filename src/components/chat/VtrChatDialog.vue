@@ -2,19 +2,20 @@
 	div
 		.header
 			img.back(src="../../assets/back.svg" @click="$router.go(-1)")
-			span Имя пользователя
+			span(v-if="room[0]") {{room[0].name}}
 			//span.dottedActive(:class="false?'':'deActive'")
 		transition(name="opacity")
 			.modalPhoto(v-if="photoModal" @click="photoModal=false")
 				img(:src="imgSrc")
-		.whiteBlock(:class="false?'paddingPhoto':''" ref="chatFeed")
+		.whiteBlock(:class="false?'paddingPhoto':''" ref="chatFeed" v-if="roomMessages.length>0")
 			transition-group(name="opacity")
 				div(v-for="(message,index) in roomMessages" :key="message.hash")
 					span.mainData(v-if="$_vtr_dialogs_showDate(index,message.dateTime)") {{$_vtr_dialogs_showDate(index,message.dateTime)}}
 					div(:class="message.id===$store.state.user.data.id?'blockMessageMe':'blockMessage'")
 						span.timeMessage(v-if="message.id===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
 						.logo(v-if="message.id!==$store.state.user.data.id")
-							img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
+							img(:src="$store.state.user.settings.server+'company/'+room[0].id_company+'/up/goods/'+room[0].img" v-if="room[0].img")
+							img.noImg(src="../../assets/loadLogo.svg" v-else)
 						span.text {{message.text}}
 						span.timeMessage(v-if="message.id!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
 					//.blockMessageMe
@@ -95,7 +96,7 @@
 				return d.getHours().toString().padStart(2, '0')+':'+d.getMinutes().toString().padStart(2, '0');
 			},
 			$_vtr_dialogs_scrollBottom(){
-				//this.$nextTick(()=>{this.$refs.blockChat.scrollIntoView()//для веба})
+				//this.$nextTick(()=>{this.$refs.blockChat.scrollIntoView()})//для веба})
 				window.scroll({top: document.body.scrollHeight*1.5, behavior: "smooth"});//для приложения
 			},
 			$_vtr_dialog_addPhoto(){
@@ -140,6 +141,9 @@
 </script>
 
 <style scoped>
+	.noImg{
+		padding: 4px;
+	}
 	.logo{
 		overflow: hidden;
 		display: grid;
@@ -280,10 +284,12 @@
 		position: fixed;
 		width: 100%;
 		top: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	.whiteBlock{
-		margin-top:50px;
-		padding: 0 15px;
+		padding: 60px 15px;
 		overflow-x: hidden;
 		overflow-y: scroll;
 	}
@@ -304,7 +310,7 @@
 		margin-bottom: -1rem;
 	}
 	.blockSendMessage{
-		position: sticky;
+		position: fixed;
 		bottom: 0;
 		width: 100%;
 		background: white;
