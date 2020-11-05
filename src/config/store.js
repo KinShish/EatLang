@@ -83,7 +83,7 @@ export const userVuex = {
 				});
 				this.commit('loginChat',false)
 				this.commit('loadCat')
-				cordova.plugins.FirebasePlugin.grantPermission(function(hasPermission){
+				FirebasePlugin.grantPermission(function(hasPermission){
 					console.log("Permission was " + (hasPermission ? "granted" : "denied"));
 				});
 			}else{
