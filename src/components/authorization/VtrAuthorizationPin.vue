@@ -5,7 +5,7 @@
 			.formPin
 				label(for="pinInput")
 					.blockPin(v-for="i in 4" :class="i<=pin.length?'blockPinActive':'blockPinDeActive'" :key="i")
-				input#pinInput(v-model="pin" maxlength="4" ref="pinInput")
+				input#pinInput(v-model="pin" maxlength="4" ref="pinInput" type="number")
 				span.forgotPin(@click="$refs.forgotPinModal.show()" v-if="!havePin") Забыли пин?
 				button.btnRed(@click="$_vtr_auth_pin_login" :disabled="pin.length!==4") {{havePin?'Создать':'Войти'}}
 		b-modal(hide-footer ref="forgotPinModal" centered no-close-on-backdrop)
