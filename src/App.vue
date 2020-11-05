@@ -70,9 +70,8 @@
 
 <style scoped>
 	.mainContent{
-		padding-bottom: 50px;
 		max-width: 600px;
-		height: 100%;
+		height: auto;
 		margin: 0 auto;
 		position: absolute;
 		width: 100%;

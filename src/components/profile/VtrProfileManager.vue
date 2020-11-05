@@ -80,7 +80,7 @@
 				}
 			}
 		},
-		activated() {
+		created() {
 			this.$_vtr_profile_manager_load();
 		}
 	}

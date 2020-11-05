@@ -77,7 +77,7 @@ export const userVuex = {
 				state.data=data.user;
 				state.favorites=data.favorites
 				state.managers=(data.managers!==undefined?data.managers:[]);
-				socket = io(settings.server,{path:'/chat',query:{token:localStorage.getItem('token')}});
+				socket = io(settings.serverChat,{path: '/vtr/chat',query:{token:localStorage.getItem('token')}});
 				socket.on('room message',res=>{
 					state.messages.push(res);
 				});

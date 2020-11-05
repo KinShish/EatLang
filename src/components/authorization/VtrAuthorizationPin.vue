@@ -31,7 +31,6 @@
 			this.$refs.pinInput.focus();
 		},
 		beforeRouteLeave(to, from, next){
-			console.log(to)
 			if(to.name!=='login'){
 				next();
 			}else{

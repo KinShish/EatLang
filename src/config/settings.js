@@ -1,5 +1,5 @@
 const settings={
-  server: "http://192.168.3.123:3000/",
-  serverApi:this.server+"api/",
+  server: "https://01taxi.ru/vtr/",
+  serverChat:"https://01taxi.ru",
 }
 module.exports=settings;
