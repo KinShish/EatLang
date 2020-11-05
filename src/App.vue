@@ -3,7 +3,7 @@
 		VtrAdditionalNotifications
 		transition(name="opacity")
 			keep-alive
-				router-view.mainContent
+				router-view.mainContent(:class="$root.platform==='iPhone'?'iphonePaddingЬainContent':''")
 		VtrAdditionalBottomMenu(v-if="$store.state.user.data!=='-1'&&!($route.name==='pin'&&$route.name==='login')&&($route.name==='feed'||$route.name==='search'||$route.name==='add'||$route.name==='chat'||$route.name==='profile')")
 </template>
 
@@ -66,6 +66,9 @@
 </script>
 
 <style scoped>
+	.iphonePaddingЬainContent{
+		margin-bottom: 20px !important;
+	}
 	.mainContent{
 		max-width: 600px;
 		height: auto;

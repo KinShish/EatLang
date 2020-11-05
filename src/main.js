@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = true
 
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
@@ -58,7 +58,7 @@ let app = {
 			store,
 			data() {
 				return {
-
+					platform:navigator.platform,
 				}
 			},
 			router,

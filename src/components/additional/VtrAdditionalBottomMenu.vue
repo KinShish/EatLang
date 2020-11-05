@@ -1,5 +1,5 @@
 <template lang="pug">
-	.mainBlockMenu
+	.mainBlockMenu(:class="$root.platform==='iPhone'?'iphonePadding':''")
 		audio#localAudio(autoPlay muted)
 		audio#remoteAudio(autoPlay)
 		audio#sounds(autoPlay)
@@ -215,6 +215,10 @@
 			transform: scale(1);
 
 		}
+	}
+	.iphonePadding{
+		padding-bottom: 10px;
+		height: 70px !important;
 	}
 	.mainBlockMenu{
 		position: fixed;
