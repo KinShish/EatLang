@@ -8,7 +8,8 @@
 				p Всего менеджеров {{$store.state.user.managers.length}}
 				.blockUser(v-for="manager in $store.state.user.managers" :key="manager.name")
 					router-link.blockImg(:to="'managers/manager/'+manager.id")
-						img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg")
+						img(src="https://alna.ru/up/services_img/1427/03058d059257409dfe70e596ad320c9726e2ec93.jpg" v-if="manager.avatar")
+						img.noImgManager(src="../../assets/loadLogo.svg" v-else)
 					router-link(:to="'managers/manager/'+manager.id")
 						span {{manager.name}}
 					.btnEditManager
@@ -72,6 +73,9 @@
 </script>
 
 <style scoped>
+	.noImgManager{
+		padding: 10px;
+	}
 	.banManager{
 		transform: rotate(45deg);
 	}

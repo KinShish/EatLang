@@ -39,7 +39,7 @@ import {router} from './config/routes';
 let app = {
 	initialize: function() {
 		this.bindEvents();
-		this.setupVue();//закоментить для запуска на телефоне
+		//this.setupVue();//закоментить для запуска на телефоне
 	},
 	bindEvents: function() {
 		document.addEventListener('deviceready', this.onDeviceReady, false);
@@ -48,7 +48,7 @@ let app = {
 		app.receivedEvent('deviceready');
 	},
 	receivedEvent: function(id) {
-		//this.setupVue();//закоментить для запуска в Web
+		this.setupVue();//закоментить для запуска в Web
 		console.log('Received Event: ' + id);
 	},
 	setupVue: function() {

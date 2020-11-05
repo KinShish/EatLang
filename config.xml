@@ -37,7 +37,7 @@
         <preference name="StatusBarBackgroundColor" value="#F64646" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
-        <splash src="src/assets/appIcon/ios/load/icon_2208x1242.png"/>
+        <splash src="src/assets/appIcon/ios/load/Default@2x~ipad~anyany.png"/>
         <icon src="src/assets/appIcon/ios/icon/icons_180.png" height="180"  width="180"/>
         <icon src="src/assets/appIcon/ios/icon/icons_60.png" height="60"  width="60"/>
         <icon src="src/assets/appIcon/ios/icon/icons_120.png" height="120"  width="120"/>

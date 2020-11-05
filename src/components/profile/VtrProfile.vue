@@ -65,7 +65,7 @@
 								.greyBlock(v-if="ordersArray.orders[0].length===0&&(load&&stopLoad)")
 									p.noOrder Заявок нет
 								.whiteBlock(v-else)
-									router-link.mainOrderBlock(v-for="order in ordersArray.orders[0]" :to="'profile/order/'+1" :key="order.id_order")
+									router-link.mainOrderBlock(v-for="order in ordersArray.orders[0]" :to="'profile/order/'+order.id_order" :key="order.id_order")
 										.orderManagerBlock
 											.orderBlockImg
 												img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
@@ -82,10 +82,10 @@
 								.greyBlock(v-if="ordersArray.orders[1].length===0&&(load&&stopLoad)")
 									p.noOrder Заявок нет
 								.whiteBlock(v-else)
-									router-link.mainOrderBlock(v-for="order in ordersArray.orders[1]" :to="'profile/order/'+1" :key="order.id_order")
+									router-link.mainOrderBlock(v-for="order in ordersArray.orders[1]" :to="'profile/order/'+order.id_order" :key="order.id_order")
 										.orderManagerBlock
 											.orderBlockImg
-												img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg" v-if="order.img!==''")
+												img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
 												img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
 											.orderBlockInfo
 												span {{order.name}}
@@ -99,10 +99,10 @@
 								.greyBlock(v-if="ordersArray.orders[2].length===0&&(load&&stopLoad)")
 									p.noOrder Заявок нет
 								.whiteBlock(v-else)
-									router-link.mainOrderBlock(v-for="order in ordersArray.orders[2]" :to="'profile/order/'+1" :key="order.id_order")
+									router-link.mainOrderBlock(v-for="order in ordersArray.orders[2]" :to="'profile/order/'+order.id_order" :key="order.id_order")
 										.orderManagerBlock
 											.orderBlockImg
-												img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg" v-if="order.img!==''")
+												img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
 												img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
 											.orderBlockInfo
 												span {{order.name}}
