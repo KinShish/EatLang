@@ -39,9 +39,6 @@
 			},
 		},
 		created() {
-			FirebasePlugin.grantPermission(function(hasPermission){
-				console.log("Permission was " + (hasPermission ? "granted" : "denied"));
-			});
 			if(localStorage.getItem('token')===null||localStorage.getItem('token')===''){
 				this.$router.push('/login')
 			}else{
