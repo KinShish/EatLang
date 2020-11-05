@@ -83,12 +83,14 @@ export const userVuex = {
 				});
 				this.commit('loginChat',false)
 				this.commit('loadCat')
-				FirebasePlugin.grantPermission(function(hasPermission){
-					console.log("Permission was " + (hasPermission ? "granted" : "denied"));
-				});
-				FirebasePlugin.hasPermission(function(hasPermission){
-					console.log("Permission is " + (hasPermission ? "granted" : "denied"));
-				});
+				if(process.env.NODE_ENV!=='development') {
+					FirebasePlugin.grantPermission(function (hasPermission) {
+						console.log("Permission was " + (hasPermission ? "granted" : "denied"));
+					});
+					FirebasePlugin.hasPermission(function (hasPermission) {
+						console.log("Permission is " + (hasPermission ? "granted" : "denied"));
+					});
+				}
 			}else{
 				state.errAuth=new Date().getTime();
 				this.commit('clearAll');
@@ -167,7 +169,7 @@ export const userVuex = {
 			console.log(await state.ua.start())
 			console.log(state.ua)
 			var eventHandlers = {
-				'progress': function() {11
+				'progress': function() {
 					console.log('call is in progress');
 				},
 				'failed': function(e) {

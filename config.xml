@@ -30,6 +30,8 @@
         <splash src="src/assets/appIcon/android/load/load_320x400.png" density="port-mdpi"/>
         <splash src="src/assets/appIcon/android/load/load_720x1280.png" density="port-xhdpi"/>
         <splash src="src/assets/appIcon/android/load/load_1280x1920.png" density="port-xxhdpi"/>
+
+        <preference name="AndroidXEnabled" value="true" />
     </platform>
     <platform name="ios">
         <preference name="KeyboardDisplayRequiresUserAction" value="false" />

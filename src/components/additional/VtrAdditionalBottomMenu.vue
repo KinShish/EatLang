@@ -6,7 +6,7 @@
 		//audio(:srcObject.prop="localMedia" autoplay)
 		//audio(:srcObject.prop="remoteMedia" autoplay)
 		//button(@click="$_vtr_answer") Поднять
-		//button(@click="$_vtr_call") Позвонить
+		button(@click="$_vtr_call") Позвонить
 		router-link(to="/feed")
 			div(@click="$_vtr_menu_aimationMenuIcon('menuFeed')")
 				img(:src="$route.name==='feed'?images.feedActive:images.feed" ref="menuFeed")
@@ -44,7 +44,7 @@
 	const socket =new JsSIP.WebSocketInterface('ws://192.168.0.205:8081');
 	const configuration = {
 		sockets: [socket],
-		uri: 'sip:1002@192.168.0.205',
+		uri: 'sip:1000@192.168.0.205',
 		password: 'A123456789',
 		session_timers: false
 	};
@@ -101,12 +101,12 @@
 					mediaConstraints : { audio: true, video: false }
 				};
 
-				const session = this.coolPhone.call('sip:1000@192.168.0.205', options);
+				const session = this.coolPhone.call('sip:1002@192.168.0.205', options);
 				console.log(session)
 			}
 		},
 		async created(){
-			//JsSIP.debug.enable('JsSIP:*');
+			JsSIP.debug.enable('JsSIP:*');
             await this.coolPhone.start();
 			this.coolPhone.on('newRTCSession', function(data) {
                 console.log('жопа с ножками ',data)

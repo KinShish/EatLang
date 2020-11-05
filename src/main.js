@@ -39,7 +39,8 @@ import {router} from './config/routes';
 let app = {
 	initialize: function() {
 		this.bindEvents();
-		//this.setupVue();//закоментить для запуска на телефоне
+		console.log(process.env)
+		if(process.env.NODE_ENV==='development'){this.setupVue();}
 	},
 	bindEvents: function() {
 		document.addEventListener('deviceready', this.onDeviceReady, false);
@@ -48,7 +49,8 @@ let app = {
 		app.receivedEvent('deviceready');
 	},
 	receivedEvent: function(id) {
-		this.setupVue();//закоментить для запуска в Web
+		console.log(process.env)
+		if(process.env.NODE_ENV!=='development'){this.setupVue();}//закоментить для запуска в Web
 		console.log('Received Event: ' + id);
 	},
 	setupVue: function() {
