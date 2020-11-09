@@ -83,14 +83,6 @@ export const userVuex = {
 				});
 				this.commit('loginChat',false)
 				this.commit('loadCat')
-				if(process.env.NODE_ENV!=='development') {
-					FirebasePlugin.grantPermission(function (hasPermission) {
-						console.log("Permission was " + (hasPermission ? "granted" : "denied"));
-					});
-					FirebasePlugin.hasPermission(function (hasPermission) {
-						console.log("Permission is " + (hasPermission ? "granted" : "denied"));
-					});
-				}
 			}else{
 				state.errAuth=new Date().getTime();
 				this.commit('clearAll');
