@@ -172,6 +172,12 @@
 		activated() {
 			this.$_vtr_add_loadAllCat()
 		},
+		beforeRouteLeave(to,from,next) {
+			if(from.name==='edit'){
+				this.$destroy()
+			}
+			next()
+		},
 		directives: {money: VMoney},
 		validations:{
 			cats:{

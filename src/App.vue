@@ -40,9 +40,11 @@
 		},
 		created() {
 			if(process.env.NODE_ENV!=='development') {
+				// eslint-disable-next-line no-undef
 				FirebasePlugin.grantPermission(function (hasPermission) {
 					console.log("Permission was " + (hasPermission ? "granted" : "denied"));
 				});
+				// eslint-disable-next-line no-undef
 				FirebasePlugin.hasPermission(function (hasPermission) {
 					console.log("Permission is " + (hasPermission ? "granted" : "denied"));
 				});
