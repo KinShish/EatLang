@@ -15,6 +15,7 @@
   "author": "ООО АЛНА <developer@alna.ru>",
   "license": "Apache-2.0",
   "dependencies": {
+    "cordova-plugin-firebasex": "^11.0.3-cli",
     "cordova-plugin-splashscreen": "^6.0.0",
     "cordova-plugin-statusbar": "^2.4.3",
     "core-js": "^3.6.5",
@@ -80,7 +81,8 @@
       }
     },
     "platforms": [
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }

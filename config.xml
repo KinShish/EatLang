@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="ru.vtr" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="ru.vtr" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android" >
     <name>ВТР</name>
     <description>
         Описание приложения
@@ -30,6 +30,10 @@
         <splash src="src/assets/appIcon/android/load/load_320x400.png" density="port-mdpi"/>
         <splash src="src/assets/appIcon/android/load/load_720x1280.png" density="port-xhdpi"/>
         <splash src="src/assets/appIcon/android/load/load_1280x1920.png" density="port-xxhdpi"/>
+        <preference name="AndroidXEnabled" value="true" />
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
+            <application android:usesCleartextTraffic="true" />
+        </edit-config>
     </platform>
     <platform name="ios">
         <preference name="KeyboardDisplayRequiresUserAction" value="false" />
