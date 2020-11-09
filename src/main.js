@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-Vue.config.productionTip = true
+Vue.config.productionTip = false
 
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'

@@ -39,6 +39,15 @@
 			},
 		},
 		created() {
+			alert(process.env.NODE_ENV)
+			// eslint-disable-next-line no-undef
+			FirebasePlugin.grantPermission(function(hasPermission){
+				console.log("Permission was " + (hasPermission ? "granted" : "denied"));
+			});
+			// eslint-disable-next-line no-undef
+			FirebasePlugin.hasPermission(function(hasPermission){
+				console.log("Permission is " + (hasPermission ? "granted" : "denied"));
+			});
 			if(localStorage.getItem('token')===null||localStorage.getItem('token')===''){
 				this.$router.push('/login')
 			}else{
