@@ -44,9 +44,11 @@
 	const socket =new JsSIP.WebSocketInterface('ws://192.168.0.205:8081');
 	const configuration = {
 		sockets: [socket],
-		uri: 'sip:1000@192.168.0.205',
+		outbound_proxy_set: 'ws://192.168.0.205:8081',
+		uri: 'sip:1002@192.168.0.205',
 		password: 'A123456789',
-		session_timers: false
+		session_timers: false,
+		register: true
 	};
 	export default {
 		data(){
@@ -101,7 +103,7 @@
 					mediaConstraints : { audio: true, video: false }
 				};
 
-				const session = this.coolPhone.call('sip:1002@192.168.0.205', options);
+				const session = this.coolPhone.call('sip:1000@192.168.0.205', options);
 				console.log(session)
 			}
 		},
@@ -114,7 +116,7 @@
                 var session = data.session;
                 //var request = data.request;
                 session.on('peerconnection', () => {
-                    console.log("UA session progress");
+                    console.log("UA session progress Попытка дозвониться");
                     playSound("vizov.mp3");
                 });
                 session.on('progress', () => {
@@ -127,17 +129,17 @@
                     //playSound("vizov.mp3");
                     // Тут мы подключаемся к микрофону и цепляем к нему поток, который пойдёт в астер
                     let peerconnection = session.connection;
-                    let localStream = peerconnection.getLocalStreams()[0];
+                    //let localStream = peerconnection.getLocalStreams()[0];
                     // Handle local stream
-                    if (localStream) {
+                    //if (localStream) {
                         // Clone local stream
-                        this.localClonedStream = localStream.clone();
+                        //this.localClonedStream = localStream.clone();
 
                         console.log('UA set local stream');
 
-                        let localAudioControl = document.getElementById("localAudio");
-                        localAudioControl.srcObject = this.localClonedStream;
-                    }
+                        //let localAudioControl = document.getElementById("localAudio");
+                        //localAudioControl.srcObject = this.localClonedStream;
+                    //}
 
                     // Как только астер отдаст нам поток абонента, мы его засунем к себе в наушники
                     peerconnection.addEventListener('addstream', (event) => {
@@ -149,9 +151,9 @@
                 });
 
 // Дозвон завершился неудачно, например, абонент сбросил звонок
-                session.on('failed', (data) => {
-                    console.log("UA session failed",data);
-                    stopSound("vizov.mp3");
+                session.on('failed', (e) => {
+                    //stopSound("vizov.mp3");
+					alert(JSON.stringify(e))
                     playSound("rejected.mp3", false);
 
                     //this.callButton.removeClass('d-none');
@@ -170,22 +172,22 @@
 
                 // Звонок принят, можно начинать говорить
                 session.on('accepted', () => {
-                    console.log("UA session accepted");
-                    stopSound("ringback.ogg");
-                    playSound("answered.mp3", false);
+					console.log('Вам ответили')
+                    //stopSound("ringback.ogg");
+                    //playSound("answered.mp3", false);
                 });
                 //this.stop();
             })
             // Register callbacks to desired call events
             const playSound=(name)=>{
-				console.log(name)
-                const audio = new Audio(require('../../assets/audio/vizov.mp3'))
+				//console.log(name)
+				const audio = new Audio(require('../../assets/audio/'+name))
                 audio.play()
             }
-            const stopSound=(name)=>{
-                const audio = new Audio(require(name))
+            /*const stopSound=(name)=>{
+                const audio = new Audio(require('../../assets/audio/'+name))
                 audio.stop()
-            }
+            }*/
 
 
 
