@@ -1,6 +1,6 @@
 <template lang="pug">
 	transition-group(name="notif" tag="span")
-		div.notification(v-if="$store.state.user.notification!==''" :key="1")
+		div.notification(v-if="$store.state.user.notification!==''" :key="1" @click="$store.commit('notification','')")
 			span {{$store.state.user.notification}}
 </template>
 

@@ -13,7 +13,7 @@
 			div(v-if="good.length!==0")
 				VtrAdditionalPrivateProduct(:good="good" :hrefLink="'/good/'+good.id" :pageName="'Назад'")
 			button.btnRed(@click="$_vtr_order_getOrder" v-if="order.status===0") Взять заказ
-			router-link.btnRed(@click="$_vtr_order_getOrder" :to="'/chat/dialog/'+order.chat_key") В чат
+			router-link.btnRed(@click="$_vtr_order_getOrder" :to="'/chat/dialog/'+order.chat_key" v-if="order.status!==0") В чат
 			button.btnRed(@click="$refs.closeOrder.show()") Закрыть заказ
 		b-modal(hide-footer ref="closeOrder" centered no-close-on-backdrop)
 			template(slot="modal-header")
@@ -40,7 +40,6 @@
 			},
 			async $_vtr_order_getOrder(){
 				let data=await this.$store.getters.request('PUT',this.$store.state.user.settings.server+'company/order/'+this.$route.params.orderId)
-				console.log(data)
 				if(data&&!data.err){
 					this.$router.push({path: '/chat/dialog/'+this.order.chat_key,query:{type:'manager'}})
 				}else{

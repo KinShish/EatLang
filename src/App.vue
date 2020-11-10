@@ -2,7 +2,7 @@
 	div
 		VtrAdditionalNotifications
 		transition(name="opacity")
-			keep-alive
+			keep-alive(max="20")
 				router-view.mainContent(:class="$root.platform==='iPhone'?'iphonePaddingЬainContent':''")
 		VtrAdditionalBottomMenu(v-if="$store.state.user.data!=='-1'&&!($route.name==='pin'&&$route.name==='login')&&($route.name==='feed'||$route.name==='search'||$route.name==='add'||$route.name==='chat'||$route.name==='profile')")
 </template>

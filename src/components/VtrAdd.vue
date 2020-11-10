@@ -76,8 +76,12 @@
 					}
 					let data=await this.$store.getters.request('PUT',this.$store.state.user.settings.server+'goods',this.form)
 					if(data&&!data.err){
-						this.$store.commit('notification','Успешно обновлено')
-						this.$router.replace({path: '/good/'+data.id,query: { pageName: 'Назад' }})
+						this.$store.commit('notification',this.$route.name==='edit'?'Успешно обновлено':'Объявление добавлено')
+						if(this.$route.name==='edit'){
+							this.$router.go(-1)
+						}else{
+							this.$router.replace({path: '/good/'+data.id,query: { pageName: 'Назад' }})
+						}
 					}else{
 						this.form.price=this.form.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')
 						this.$store.commit('notification','Прозошла ошибка, попробуйте позже')
@@ -165,6 +169,9 @@
 				let photo=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'goods/photo/'+this.file.length,data)
 				if(photo&&!photo.err){
 					setTimeout(()=>{this.form.img=this.form.img.concat(photo.array_name)},1000)
+				}else{
+					this.$store.commit('notification',"Прозиошла ошибка, попробуйте позже")
+					this.loadImgActive=true
 				}
 				setTimeout(()=>{this.loadImgActive=true},1000)
 			}
