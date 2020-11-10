@@ -108,7 +108,7 @@
 			}
 		},
 		async created(){
-			JsSIP.debug.enable('JsSIP:*');
+			//JsSIP.debug.enable('JsSIP:*');
             await this.coolPhone.start();
 			this.coolPhone.on('newRTCSession', function(data) {
                 console.log('жопа с ножками ',data)

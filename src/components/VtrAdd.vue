@@ -156,13 +156,14 @@
 				let data = new FormData();
 				this.file.forEach((image,index)=>{
 					if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(image.name)) {
-					this.$store.commit('notification',"Файл  "+image.name+"  не поддерживается")
-					this.file.splice(index,1)
+						this.$store.commit('notification',"Файл  "+image.name+"  не поддерживается")
+						this.file.splice(index,1)
 					}else{
 						data.append('file', image);
 					}
 				})
 				let photo=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'goods/photo/'+this.file.length,data)
+				console.log(photo)
 				if(photo&&!photo.err){
 					setTimeout(()=>{this.form.img=this.form.img.concat(photo.array_name)},1000)
 				}
