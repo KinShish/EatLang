@@ -173,6 +173,12 @@ body{
 }
 /*Выпадающее меню в объявлении конец*/
 /*Дополнительно начало*/
+.hideTabProfile .card-header{
+    display: none;
+}
+.hideTabProfile .customTabsProfile .card-header{
+    display: block;
+}
 .spinerBlock{
     width: 100%;
     height: 100%;

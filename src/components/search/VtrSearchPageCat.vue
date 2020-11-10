@@ -9,7 +9,7 @@
 				router-link(:to="''+cat.id" v-for="cat in allCats.filter(item=>item.id_parent===this.$route.params.idCat*1)" :key="cat.id") {{cat.name}}
 			div(v-for="good in arrayGood" :key="'searchPageCat'+good.id")
 				router-link.infoGoodUser(:to="'/company/'+good.company.id")
-					img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/logo.jpg'" v-if="good.company.logo")
+					img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/up/logo.jpg'" v-if="good.company.logo")
 					span.logoName(v-else) {{good.company.name[0]}}
 					span {{good.company.name}}
 				VtrAdditionalProduct(:good="good" :hrefLink="'/good/'+good.id" :pageName="'Поиск'")

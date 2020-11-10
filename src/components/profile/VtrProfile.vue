@@ -37,80 +37,87 @@
 				router-link.btnProfile(to="profile/notifications")
 					img(src="../../assets/notifications.svg")
 					span Уведомления
-			.container(v-if="$store.state.user.admin")
-				h4 Мои объявления
-			.customTabsProfile(v-if="$store.state.user.admin")
+			.customTabsProfile(:class="$store.state.user.admin?'':'hideTabProfile'")
 				b-card(no-body)
-					b-tabs(pills card v-model="tabIndex")
-						b-tab(title='АКТИВНЫЕ' @click="$_vtr_profile_clickTab(1)")
+					b-tabs(pills card v-model="tabMainIndex")
+						b-tab(title='Объявления компании' @click="$_vtr_profile_clickMainTab(0)" v-if="$store.state.user.admin")
+							h4.titleTab Объявления
 							.customTabContent
-								.noGoods(v-if="goodsArray.goods[1].length===0&&(load&&stopLoad)") Тут пусто :(
-								VtrAdditionalPrivateProduct(v-else v-for="good in goodsArray.goods[1]" :key="good.id+'active'" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
-								b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
-						b-tab(title='НА МОДЕРАЦИИ' @click="$_vtr_profile_clickTab(0)")
+								.customTabsProfile
+									b-card(no-body)
+										b-tabs(pills card v-model="tabIndex")
+											b-tab(title='АКТИВНЫЕ' @click="$_vtr_profile_clickTab(1)")
+												.customTabContent
+													.noGoods(v-if="goodsArray.goods[1].length===0&&(load&&stopLoad)") Тут пусто :(
+													VtrAdditionalPrivateProduct(v-else v-for="good in goodsArray.goods[1]" :key="good.id+'active'" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
+													b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
+											b-tab(title='НА МОДЕРАЦИИ' @click="$_vtr_profile_clickTab(0)")
+												.customTabContent
+													.noGoods(v-if="goodsArray.goods[0].length===0&&(load&&stopLoad)") Тут пусто :(
+													VtrAdditionalPrivateProduct(v-else v-for="good in goodsArray.goods[0]" :key="good.id+'moder'" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
+													b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
+											b-tab(title='АРХИВ' @click="$_vtr_profile_clickTab(3)")
+												.customTabContent
+													.noGoods(v-if="goodsArray.goods[3].length===0&&(load&&stopLoad)") Тут пусто :(
+													VtrAdditionalPrivateProduct(v-else v-for="good in goodsArray.goods[3]" :key="good.id+'arch'" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
+													b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
+						b-tab(title='Заявки компании' @click="$_vtr_profile_clickMainTab(1)")
+							h4.titleTab Заявки
 							.customTabContent
-								.noGoods(v-if="goodsArray.goods[0].length===0&&(load&&stopLoad)") Тут пусто :(
-								VtrAdditionalPrivateProduct(v-else v-for="good in goodsArray.goods[0]" :key="good.id+'moder'" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
-								b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
-						b-tab(title='АРХИВ' @click="$_vtr_profile_clickTab(3)")
-							.customTabContent
-								.noGoods(v-if="goodsArray.goods[3].length===0&&(load&&stopLoad)") Тут пусто :(
-								VtrAdditionalPrivateProduct(v-else v-for="good in goodsArray.goods[3]" :key="good.id+'arch'" :good="good" :hrefLink="'/good/'+good.id" :pageName="'Личный кабинет'")
-								b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
-			.customTabsProfile(v-else)
-				b-card(no-body)
-					b-tabs(pills card v-model="tabIndexManager")
-						b-tab(title='В ОЖИДАНИИ' @click="$_vtr_profile_clickTab(0)")
-							.customTabContent
-								.greyBlock(v-if="ordersArray.orders[0].length===0&&(load&&stopLoad)")
-									p.noOrder Заявок нет
-								.whiteBlock(v-else)
-									router-link.mainOrderBlock(v-for="order in ordersArray.orders[0]" :to="'profile/order/'+order.id_order" :key="order.id_order")
-										.orderManagerBlock
-											.orderBlockImg
-												img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
-												img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
-											.orderBlockInfo
-												span {{order.name}}
-											span.orderDate {{order.date}}
-										.orderNumberAndPrice
-											span Заказ № {{order.id_order}}
-											span {{order.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
-										hr.orderBorder
-						b-tab(title='АКТИВНЫЕ' @click="$_vtr_profile_clickTab(1)")
-							.customTabContent
-								.greyBlock(v-if="ordersArray.orders[1].length===0&&(load&&stopLoad)")
-									p.noOrder Заявок нет
-								.whiteBlock(v-else)
-									router-link.mainOrderBlock(v-for="order in ordersArray.orders[1]" :to="'profile/order/'+order.id_order" :key="order.id_order")
-										.orderManagerBlock
-											.orderBlockImg
-												img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
-												img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
-											.orderBlockInfo
-												span {{order.name}}
-											span.orderDate {{order.date}}
-										.orderNumberAndPrice
-											span Заказ № {{order.id_order}}
-											span {{order.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
-										hr.orderBorder
-						b-tab(title='ЗАВЕРШЕННЫЕ' @click="$_vtr_profile_clickTab(2)")
-							.customTabContent
-								.greyBlock(v-if="ordersArray.orders[2].length===0&&(load&&stopLoad)")
-									p.noOrder Заявок нет
-								.whiteBlock(v-else)
-									router-link.mainOrderBlock(v-for="order in ordersArray.orders[2]" :to="'profile/order/'+order.id_order" :key="order.id_order")
-										.orderManagerBlock
-											.orderBlockImg
-												img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
-												img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
-											.orderBlockInfo
-												span {{order.name}}
-											span.orderDate {{order.date}}
-										.orderNumberAndPrice
-											span Заказ № {{order.id_order}}
-											span {{order.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
-										hr.orderBorder
+								.customTabsProfile
+									b-card(no-body)
+										b-tabs(pills card v-model="tabIndexManager")
+											b-tab(title='В ОЖИДАНИИ' @click="$_vtr_profile_clickTab(0)")
+												.customTabContent
+													.greyBlock(v-if="ordersArray.orders[0].length===0&&(load&&stopLoad)")
+														p.noOrder Заявок нет
+													.whiteBlock(v-else)
+														router-link.mainOrderBlock(v-for="order in ordersArray.orders[0]" :to="'profile/order/'+order.id_order" :key="order.id_order")
+															.orderManagerBlock
+																.orderBlockImg
+																	img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
+																	img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
+																.orderBlockInfo
+																	span {{order.name}}
+																span.orderDate {{order.date}}
+															.orderNumberAndPrice
+																span Заказ № {{order.id_order}}
+																span {{order.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
+															hr.orderBorder
+											b-tab(title='АКТИВНЫЕ' @click="$_vtr_profile_clickTab(1)")
+												.customTabContent
+													.greyBlock(v-if="ordersArray.orders[1].length===0&&(load&&stopLoad)")
+														p.noOrder Заявок нет
+													.whiteBlock(v-else)
+														router-link.mainOrderBlock(v-for="order in ordersArray.orders[1]" :to="'profile/order/'+order.id_order" :key="order.id_order")
+															.orderManagerBlock
+																.orderBlockImg
+																	img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
+																	img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
+																.orderBlockInfo
+																	span {{order.name}}
+																span.orderDate {{order.date}}
+															.orderNumberAndPrice
+																span Заказ № {{order.id_order}}
+																span {{order.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
+															hr.orderBorder
+											b-tab(title='ЗАВЕРШЕННЫЕ' @click="$_vtr_profile_clickTab(2)")
+												.customTabContent
+													.greyBlock(v-if="ordersArray.orders[2].length===0&&(load&&stopLoad)")
+														p.noOrder Заявок нет
+													.whiteBlock(v-else)
+														router-link.mainOrderBlock(v-for="order in ordersArray.orders[2]" :to="'profile/order/'+order.id_order" :key="order.id_order")
+															.orderManagerBlock
+																.orderBlockImg
+																	img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
+																	img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
+																.orderBlockInfo
+																	span {{order.name}}
+																span.orderDate {{order.date}}
+															.orderNumberAndPrice
+																span Заказ № {{order.id_order}}
+																span {{order.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
+															hr.orderBorder
 		transition(name="opacity")
 			keep-alive
 				router-view
@@ -136,6 +143,7 @@
 				stopLoad:false,
 				keyLogo:new Date().valueOf(),
 				downloadLogo:false,
+				tabMainIndex:0,
 				tabIndex:0,
 				tabIndexManager:0
 			}
@@ -152,6 +160,7 @@
 		mounted() {
 			this.load=false;
 			if(this.$store.state.user.admin){
+				this.status=1;
 				this.$_vtr_profile_loadGoods();
 			}else{
 				this.status=0;
@@ -169,6 +178,19 @@
 			});
 		},
 		methods:{
+			$_vtr_profile_clickMainTab(type){
+				this.load=false;
+				this.stopLoad=false;
+				if(type){
+					this.ordersArray={orders:{'0':[], '1':[], '2':[], '3':[],}, date:{'0':1, '1':1, '2':1, '3':1,}}
+					this.status=0;
+					this.$_vtr_profile_loadOrders();
+				}else{
+					this.goodsArray={goods:{'0':[], '1':[], '2':[], '3':[],}, date:{'0':1, '1':1, '2':1, '3':1,}}
+					this.status=1;
+					this.$_vtr_profile_loadGoods();
+				}
+			},
 			$_vtr_profile_clickTab(status){
 				if(this.status!==status){
 					this.status=status;
@@ -187,7 +209,8 @@
 			},
 			async $_vtr_profile_loadGoods(){
 				if(this.$route.name==='profile'&&!this.load&&this.$store.state.user.admin){
-					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/company/'+this.$store.state.user.data.id_company+'/'+this.status+'/'+this.ordersArray.date[this.status])
+					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/company/'+this.$store.state.user.data.id_company+'/'+this.status+'/'+this.goodsArray.date[this.status])
+					console.log(data)
 					if(data){
 						this.load=true;
 						if(!data.err&&data.rights&&!this.stopLoad){
@@ -270,7 +293,7 @@
 	.whiteBlock{
 		padding: 5px 0 50px 0;
 	}
-	.whiteBlock h4{
+	.titleTab{
 		margin-left: 15px;
 	}
 	.noOrder{

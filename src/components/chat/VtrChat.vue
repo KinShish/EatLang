@@ -68,13 +68,8 @@
 		text-align: center;
 		font-size: 30px;
 		color: #f54646;
-		height: 100%;
-		position: absolute;
-		bottom: 0;
 		width: 100%;
-		display: grid;
-		place-content: center;
-		padding-bottom: 60px;
+		padding-top: 50%;
 	}
 	.noImg{
 		height: 30px !important;

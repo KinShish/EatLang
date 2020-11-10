@@ -96,8 +96,11 @@
 				return d.getHours().toString().padStart(2, '0')+':'+d.getMinutes().toString().padStart(2, '0');
 			},
 			$_vtr_dialogs_scrollBottom(){
-				//this.$nextTick(()=>{this.$refs.blockChat.scrollIntoView()})//для веба})
-				window.scroll({top: document.body.scrollHeight*1.5, behavior: "smooth"});//для приложения
+				if(process.env.NODE_ENV!=='development') {
+					window.scroll({top: document.body.scrollHeight*1.5, behavior: "smooth"});
+				}else{
+					this.$nextTick(()=>{this.$refs.blockChat.scrollIntoView()})
+				}
 			},
 			$_vtr_dialog_addPhoto(){
 				console.log(this.filePhoto)
