@@ -44,22 +44,28 @@ export const userVuex = {
 	mutations: {
 		async firstAuth(state,form){
 			let token='';
-			if(process.env.NODE_ENV!=='development') {
-				FirebasePlugin.grantPermission(function (hasPermission) {
-					console.log("Permission was " + (hasPermission ? "granted" : "denied"));
-				});
-				FirebasePlugin.hasPermission(function (hasPermission) {
-					console.log("Permission is " + (hasPermission ? "granted" : "denied"));
-				});
-				await FirebasePlugin.getToken(function(fcmToken) {
-					token=fcmToken
-					console.log(fcmToken);
-				}, function(error) {
-					console.error(error);
-				});
+			FirebasePlugin.grantPermission(function (hasPermission) {
+				console.log("Permission was " + (hasPermission ? "granted" : "denied"));
+			});
+			FirebasePlugin.hasPermission(function (hasPermission) {
+				console.log("Permission is " + (hasPermission ? "granted" : "denied"));
+			});
+			await FirebasePlugin.getToken(function(fcmToken) {
+				token=fcmToken
+				console.log(fcmToken);
+			}, function(error) {
+				console.error(error);
+			});
+			let data={phone: form.phone, password: form.password};
+			if(token!==''){
+				alert(token)
+				data.push({token})
+			}else{
+				alert('нет токена')
 			}
+			console.log(data)
 			await axios
-				.post(state.settings.server+'user/sign',{phone:form.phone,password:form.password,token})
+				.post(state.settings.server+'user/sign',data)
 				.then(res => {
 					if(!res.data.err) {
 						state.errAuth=false;
