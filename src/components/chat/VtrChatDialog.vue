@@ -340,7 +340,7 @@
 		white-space: nowrap;
 	}
 	.whiteBlock{
-		padding: 60px 15px;
+		padding: 100px 15px;
 		overflow-x: hidden;
 		overflow-y: scroll;
 	}
