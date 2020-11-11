@@ -34,7 +34,6 @@
 			b-form(@submit.stop.prevent="$_vtr_dialog_sendMessage")
 				input(v-model="textMessage")
 			img(src="../../assets/chat/chatSend.svg" @click="$_vtr_dialog_sendMessage")
-		span(ref="blockChat")
 </template>
 
 <script>
@@ -101,10 +100,11 @@
 				return d.getHours().toString().padStart(2, '0')+':'+d.getMinutes().toString().padStart(2, '0');
 			},
 			$_vtr_dialogs_scrollBottom(){
+				this.$nextTick(()=>{
+					if(this.$refs.chatFeed) this.$refs.chatFeed.scrollTo(0,this.$refs.chatFeed.scrollHeight)
+				})
 				if(process.env.NODE_ENV!=='development') {
 					window.scroll({top: document.body.scrollHeight*1.5, behavior: "smooth"});
-				}else{
-					this.$nextTick(()=>{this.$refs.blockChat.scrollIntoView()})
 				}
 			},
 			async $_vtr_dialog_addPhoto(){
