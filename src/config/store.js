@@ -42,29 +42,8 @@ export const userVuex = {
 		messages:[]
 	},
 	mutations: {
-		async firstAuth(state,form){
-			let token='';
-			FirebasePlugin.grantPermission(function (hasPermission) {
-				console.log("Permission was " + (hasPermission ? "granted" : "denied"));
-			});
-			FirebasePlugin.hasPermission(function (hasPermission) {
-				console.log("Permission is " + (hasPermission ? "granted" : "denied"));
-			});
-			await FirebasePlugin.getToken(function(fcmToken) {
-				token=fcmToken
-				console.log(fcmToken);
-			}, function(error) {
-				console.error(error);
-			});
-			let data={phone: form.phone, password: form.password};
-			if(token!==''){
-				alert(token)
-				data.push({token})
-			}else{
-				alert('нет токена')
-			}
-			console.log(data)
-			await axios
+		firstAuthRequest(state,data){
+			axios
 				.post(state.settings.server+'user/sign',data)
 				.then(res => {
 					if(!res.data.err) {
@@ -87,6 +66,25 @@ export const userVuex = {
 					this.commit('notification','Не верный логин или пароль');
 				}
 			})
+		},
+		firstAuth(state,form){
+			if(process.env.NODE_ENV!=='development') {
+				FirebasePlugin.grantPermission(function (hasPermission) {
+					console.log("Permission was " + (hasPermission ? "granted" : "denied"));
+				});
+				FirebasePlugin.hasPermission(function (hasPermission) {
+					console.log("Permission is " + (hasPermission ? "granted" : "denied"));
+				});
+				FirebasePlugin.getToken(function(fcmToken) {
+					let data={phone: form.phone, password: form.password,token:fcmToken};
+					this.commit('firstAuthRequest',data);
+				}, function(error) {
+					console.error(error);
+				});
+			}else{
+				let data={phone: form.phone, password: form.password};
+				this.commit('firstAuthRequest',data);
+			}
 		},
 		async auth (state){
 			let data=await this.getters.request('GET',state.settings.server+'user/profile');
