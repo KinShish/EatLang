@@ -52,9 +52,9 @@
 		},
 		methods:{
 			async $_vtr_dialog_sendMessage(){
-				this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
-				if(this.textMessage||this.photo.length>0){
-					this.textMessage='img:'+this.photo.join(':')+'@'+this.textMessage;
+				let message=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'');
+				if(message||this.photo.length>0){
+					message='img:'+this.photo.join(':')+'@'+message;
 					const date=new Date().getTime();
 					const makeid=()=>{
 						let text = "";
@@ -66,16 +66,16 @@
 						return date+text;
 					}
 					let hash=makeid();
-					this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
+					message=message.replace(/^\s*/,'').replace(/\s*$/,'')
 					await this.$store.getters.submitChat( {
 						hash,
-						text:this.textMessage,
+						text:message,
 						id:this.$store.state.user.data.id,
 						id_recipient:this.room[0].id_company,
 						dateTime:'',
 						key:this.$route.params.key
 					},()=>{
-						this.roomMessages.push({text: this.textMessage, id: this.$store.state.user.data.id, dateTime:date,hash,id_recipient:this.room[0].id_company,})
+						this.roomMessages.push({text: message, id: this.$store.state.user.data.id, dateTime:date,hash,id_recipient:this.room[0].id_company,})
 						this.textMessage='';
 						this.photo=[];
 						this.$_vtr_dialogs_scrollBottom();
