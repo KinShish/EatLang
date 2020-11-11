@@ -79,7 +79,8 @@ export const userVuex = {
 					let data={phone: form.phone, password: form.password,token:fcmToken};
 					this.commit('firstAuthRequest',data);
 				}, function(error) {
-					console.error(error);
+					state.errAuth=new Date().getTime();
+					this.commit('notification','Произошла ошибка попробуйте позже');
 				});
 			}else{
 				let data={phone: form.phone, password: form.password};
