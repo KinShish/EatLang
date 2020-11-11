@@ -75,7 +75,7 @@ export const userVuex = {
 				FirebasePlugin.hasPermission(function (hasPermission) {
 					console.log("Permission is " + (hasPermission ? "granted" : "denied"));
 				});
-				FirebasePlugin.getToken(function(fcmToken) {
+				FirebasePlugin.getToken((fcmToken)=> {
 					let data={phone: form.phone, password: form.password,token:fcmToken};
 					this.commit('firstAuthRequest',data);
 				}, function(error) {
