@@ -43,10 +43,27 @@ export const userVuex = {
 		messages:[]
 	},
 	mutations: {
-		async firstAuth(state,form){
+		firstAuth(state,form){
+			let token='';
+			if(process.env.NODE_ENV!=='development') {
+				FirebasePlugin.grantPermission(function (hasPermission) {
+					console.log("Permission was " + (hasPermission ? "granted" : "denied"));
+				});
+				FirebasePlugin.hasPermission(function (hasPermission) {
+					console.log("Permission is " + (hasPermission ? "granted" : "denied"));
+				});
+				FirebasePlugin.getToken(function(fcmToken) {
+					token=fcmToken
+					console.log(fcmToken);
+				}, function(error) {
+					console.error(error);
+				});
+			}
+			console.log(state.settings.server+'user/sign',{phone:form.phone,password:form.password,token:token})
 			axios
-				.post(state.settings.server+'user/sign',{phone:form.phone,password:form.password})
+				.post(state.settings.server+'user/sign',{phone:form.phone,password:form.password,token})
 				.then(res => {
+					console.log(res)
 					if(!res.data.err) {
 						state.errAuth=false;
 						localStorage.setItem('token',res.data.token);

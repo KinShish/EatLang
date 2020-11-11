@@ -7,7 +7,7 @@
 		transition(name="opacity")
 			.modalPhoto(v-if="photoModal" @click="photoModal=false")
 				img(:src="imgSrc")
-		.whiteBlock#chatFeed(:class="photo.length>0?'paddingPhoto':''" ref="chatFeed" v-if="roomMessages.length>0")
+		.whiteBlock(:class="photo.length>0?'paddingPhoto':''" ref="chatFeed" v-if="roomMessages.length>0")
 			transition-group(name="opacity")
 				div(v-for="(message,index) in roomMessages" :key="message.hash")
 					span.mainData(v-if="$_vtr_dialogs_showDate(index,message.dateTime)") {{$_vtr_dialogs_showDate(index,message.dateTime)}}
@@ -34,6 +34,7 @@
 			b-form(@submit.stop.prevent="$_vtr_dialog_sendMessage")
 				input(v-model="textMessage")
 			img(src="../../assets/chat/chatSend.svg" @click="$_vtr_dialog_sendMessage")
+		div(ref="bottom")
 </template>
 
 <script>
@@ -101,7 +102,7 @@
 			},
 			$_vtr_dialogs_scrollBottom(){
 				this.$nextTick(()=>{
-					if(this.$refs.chatFeed) this.$refs.chatFeed.scrollTo(0,this.$refs.chatFeed.scrollHeight)
+					if(this.$refs.bottom) this.$refs.bottom.scrollIntoView()
 				})
 				if(process.env.NODE_ENV!=='development') {
 					window.scroll({top: document.body.scrollHeight*1.5, behavior: "smooth"});
