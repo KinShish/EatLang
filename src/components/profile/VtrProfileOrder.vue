@@ -35,8 +35,14 @@
 		},
 		methods:{
 			async $_vtr_order_closeOrder(){
-				console.log('close')
-				this.$refs.closeOrder.hide()
+				this.$refs.closeOrder.hide();
+				let data=await this.$store.getters.request('PUT',this.$store.state.user.settings.server+'company/order/'+this.$route.params.orderId+'/close')
+				if(data&&!data.err){
+					this.$store.commit('notification','Заказ номер '+this.order.id_order+' закрыт')
+				}else{
+					this.$store.commit('notification','Прозошла ошибка, попробуйте позже')
+				}
+				//this.$router.go(-1);
 			},
 			async $_vtr_order_getOrder(){
 				let data=await this.$store.getters.request('PUT',this.$store.state.user.settings.server+'company/order/'+this.$route.params.orderId)
@@ -59,7 +65,6 @@
 				if(good&&!good.err){
 					this.good=good.good;
 				}else{
-					this.$router.go(-1);
 					this.$store.commit('notification','Прозошла ошибка, попробуйте позже')
 				}
 			}

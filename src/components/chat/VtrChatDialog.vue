@@ -7,29 +7,30 @@
 		transition(name="opacity")
 			.modalPhoto(v-if="photoModal" @click="photoModal=false")
 				img(:src="imgSrc")
-		.whiteBlock(:class="false?'paddingPhoto':''" ref="chatFeed" v-if="roomMessages.length>0")
+		.whiteBlock(:class="photo.length>0?'paddingPhoto':''" ref="chatFeed" v-if="roomMessages.length>0")
 			transition-group(name="opacity")
 				div(v-for="(message,index) in roomMessages" :key="message.hash")
 					span.mainData(v-if="$_vtr_dialogs_showDate(index,message.dateTime)") {{$_vtr_dialogs_showDate(index,message.dateTime)}}
+					div(v-if="message.text.split('@')[0].split(':').slice(1)[0]!==''" :class="message.id===$store.state.user.data.id?'photoBlockMe':'photoBlock'")
+						img(v-for="image in message.text.split('@')[0].split(':').slice(1)"
+							:src="$store.state.user.settings.server+'company/'+message.id+'/up/chat/'+image"
+							@click="$_vtr_dialog_watchPhoto($store.state.user.settings.server+'company/'+message.id+'/up/chat/'+image)")
 					div(:class="message.id===$store.state.user.data.id?'blockMessageMe':'blockMessage'")
 						span.timeMessage(v-if="message.id===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
 						.logo(v-if="message.id!==$store.state.user.data.id")
 							img(:src="$store.state.user.settings.server+'company/'+room[0].id_company+'/up/goods/'+room[0].img" v-if="room[0].img")
 							img.noImg(src="../../assets/loadLogo.svg" v-else)
-						span.text {{message.text}}
+						span.text(v-if="message.text.split('@')[1]") {{message.text.split('@')[1]}}
 						span.timeMessage(v-if="message.id!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
-					//.blockMessageMe
-						span.timeMessage 15:35
-						.photoBlock(@click="$_vtr_dialog_watchPhoto('https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg')")
-							img(src="https://st.depositphotos.com/1719616/1212/i/450/depositphotos_12120315-stock-photo-new-tractor-on-white-background.jpg")
-		//.blockAddImg
-			.imgBlock(v-for="item in 10")
-				img.close(src="../../assets/close.svg" @click="$_vtr_dialog_deletePhoto(item)")
-				img(src="https://www.imgacademy.com/themes/custom/imgacademy/images/helpbox-contact.jpg")
+		.blockAddImg(v-if="photo.length>0")
+			.imgBlock(v-for="(img,index) in photo")
+				img.close(src="../../assets/close.svg" @click="$_vtr_dialog_deletePhoto(index,img)")
+				img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/chat/'+img")
 		.blockSendMessage
-			b-form-file#loadPhoto.d-none(type="file" @input="$_vtr_dialog_addPhoto" v-model="filePhoto")
-			label(for="loadPhoto")
+			b-form-file#loadPhoto.d-none(type="file" @input="$_vtr_dialog_addPhoto" v-model="filePhoto" multiple)
+			label(for="loadPhoto" v-if="loadImgActive")
 				img(src="../../assets/chat/chatImage.svg")
+			b-spinner.customSpiner(variant="danger" v-else)
 			b-form(@submit.stop.prevent="$_vtr_dialog_sendMessage")
 				input(v-model="textMessage")
 			img(src="../../assets/chat/chatSend.svg" @click="$_vtr_dialog_sendMessage")
@@ -42,16 +43,19 @@
 			return{
 				textMessage:'',
 				filePhoto:[],
+				photo:[],
 				imgSrc:'',
 				photoModal:false,
 				room:[],
-				roomMessages:[]
+				roomMessages:[],
+				loadImgActive:true
 			}
 		},
 		methods:{
 			async $_vtr_dialog_sendMessage(){
 				this.textMessage=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'')
-				if(this.textMessage){
+				if(this.textMessage||this.photo.length>0){
+					this.textMessage='img:'+this.photo.join(':')+'@'+this.textMessage;
 					const date=new Date().getTime();
 					const makeid=()=>{
 						let text = "";
@@ -74,6 +78,7 @@
 					},()=>{
 						this.roomMessages.push({text: this.textMessage, id: this.$store.state.user.data.id, dateTime:date,hash,id_recipient:this.room[0].id_company,})
 						this.textMessage='';
+						this.photo=[];
 						this.$_vtr_dialogs_scrollBottom();
 
 					});
@@ -102,11 +107,32 @@
 					this.$nextTick(()=>{this.$refs.blockChat.scrollIntoView()})
 				}
 			},
-			$_vtr_dialog_addPhoto(){
-				console.log(this.filePhoto)
+			async $_vtr_dialog_addPhoto(){
+				let data = new FormData();
+				this.loadImgActive=false;
+				this.filePhoto.forEach((image,index)=>{
+					if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(image.name)) {
+						this.$store.commit('notification',"Файл  "+image.name+"  не поддерживается")
+						this.filePhoto.splice(index,1)
+					}else{
+						data.append('file', image);
+					}
+				})
+				let photo=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'photo/chat/'+this.filePhoto.length,data)
+				if(photo&&!photo.err){
+					setTimeout(()=>{this.photo=this.photo.concat(photo.array_name)},1000)
+				}else{
+					this.$store.commit('notification',"Прозиошла ошибка, попробуйте позже")
+					this.loadImgActive=true
+				}
+				setTimeout(()=>{this.loadImgActive=true},1000)
+				this.$_vtr_dialogs_scrollBottom();
 			},
-			$_vtr_dialog_deletePhoto(index){
-				console.log(index)
+			async $_vtr_dialog_deletePhoto(index,img){
+				let photo=await this.$store.getters.request('DELETE',this.$store.state.user.settings.server+'photo/chat/'+img)
+				if(photo&&!photo.err){
+					this.filePhoto.splice(index,1)
+				}
 			},
 			$_vtr_dialog_watchPhoto(img){
 				this.imgSrc=img;
@@ -144,6 +170,12 @@
 </script>
 
 <style scoped>
+	.customSpiner{
+		margin-top: 10px;
+		margin-right: 5px;
+		height: 24px;
+		width: 24px;
+	}
 	.noImg{
 		padding: 4px;
 	}
@@ -185,7 +217,7 @@
 		transform: translateY(-50%);
 	}
 	.paddingPhoto{
-		margin-bottom: 150px !important;
+		margin-bottom: 100px !important;
 	}
 	.blockAddImg{
 		overflow-x: scroll;
@@ -211,8 +243,10 @@
 		margin: 0 5px;
 	}
 	.imgBlock img{
-		width: 100%;
+		width: auto;
 		height: auto;
+		max-height: 80px;
+		max-width: 110px;
 	}
 	.imgBlock .close{
 		height: 20px;
@@ -237,14 +271,22 @@
 		color: #757575;
 	}
 	.photoBlock{
-		background: #e6e6e6;
-		display: grid;
+		display: flex;
 		width: 72%;
-		place-content: center;
+		flex-wrap: wrap;
+		margin-right: auto;
 	}
-	.photoBlock img{
-		width: 100%;
+	.photoBlockMe{
+		display: flex;
+		width: 72%;
+		flex-wrap: wrap;
+		margin-left: auto;
+	}
+	.photoBlockMe img, .photoBlock img{
+		width: 36%;
 		height: auto;
+		padding: 4px;
+		flex: auto;
 	}
 	.blockMessage{
 		display: flex;

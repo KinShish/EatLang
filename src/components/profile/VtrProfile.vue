@@ -72,7 +72,7 @@
 													.greyBlock(v-if="ordersArray.orders[0].length===0&&(load&&stopLoad)")
 														p.noOrder Заявок нет
 													.whiteBlock(v-else)
-														router-link.mainOrderBlock(v-for="order in ordersArray.orders[0]" :to="'profile/order/'+order.id_order" :key="order.id_order")
+														router-link.mainOrderBlock(v-for="order in ordersArray.orders[0]" :to="'/order/'+order.id_order" :key="order.id_order")
 															.orderManagerBlock
 																.orderBlockImg
 																	img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
@@ -89,7 +89,7 @@
 													.greyBlock(v-if="ordersArray.orders[1].length===0&&(load&&stopLoad)")
 														p.noOrder Заявок нет
 													.whiteBlock(v-else)
-														router-link.mainOrderBlock(v-for="order in ordersArray.orders[1]" :to="'profile/order/'+order.id_order" :key="order.id_order")
+														router-link.mainOrderBlock(v-for="order in ordersArray.orders[1]" :to="'/order/'+order.id_order" :key="order.id_order")
 															.orderManagerBlock
 																.orderBlockImg
 																	img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
@@ -106,7 +106,7 @@
 													.greyBlock(v-if="ordersArray.orders[2].length===0&&(load&&stopLoad)")
 														p.noOrder Заявок нет
 													.whiteBlock(v-else)
-														router-link.mainOrderBlock(v-for="order in ordersArray.orders[2]" :to="'profile/order/'+order.id_order" :key="order.id_order")
+														router-link.mainOrderBlock(v-for="order in ordersArray.orders[2]" :to="'/order/'+order.id_order" :key="order.id_order")
 															.orderManagerBlock
 																.orderBlockImg
 																	img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
@@ -130,12 +130,12 @@
 				fileLogo:[],
 
 				goodsArray:{
-					goods:{'0':[], '1':[], '2':[], '3':[],},
-					date:{'0':1, '1':1, '2':1, '3':1,}
+					goods:{'0':[], '1':[],'3':[],},
+					date:{'0':1, '1':1, '3':1,}
 				},
 				ordersArray:{
-					orders:{'0':[], '1':[], '2':[], '3':[],},
-					date:{'0':1, '1':1, '2':1, '3':1,}
+					orders:{'0':[], '1':[], '2':[]},
+					date:{'0':1, '1':1, '2':1}
 				},
 
 				status:1,
@@ -153,6 +153,7 @@
 		},
 		beforeRouteLeave(to,form,next) {
 			if(!(to.name==='good'||to.name==='company'||to.name==='order'||to.name==='dialog')){
+				console.log('asd')
 				this.$destroy()
 			}
 			next()
@@ -169,10 +170,11 @@
 			this.$root.$on('lazyLoad', (res)=>{
 				if(res&&this.load&&!this.stopLoad){
 					this.load=false;
-					if(this.$store.state.user.admin){
-						this.$_vtr_profile_loadGoods();
-					}else{
+					if(this.$store.state.user.admin){this.tabIndexManager = 1}
+					if(this.tabMainIndex){
 						this.$_vtr_profile_loadOrders();
+					}else{
+						this.$_vtr_profile_loadGoods();
 					}
 				}
 			});
@@ -182,12 +184,14 @@
 				this.load=false;
 				this.stopLoad=false;
 				if(type){
-					this.ordersArray={orders:{'0':[], '1':[], '2':[], '3':[],}, date:{'0':1, '1':1, '2':1, '3':1,}}
+					this.ordersArray={orders:{'0':[],'1':[],'2':[]},date:{'0':1, '1':1, '2':1}}
 					this.status=0;
+					this.tabIndexManager=0;
 					this.$_vtr_profile_loadOrders();
 				}else{
-					this.goodsArray={goods:{'0':[], '1':[], '2':[], '3':[],}, date:{'0':1, '1':1, '2':1, '3':1,}}
+					this.goodsArray={goods:{'0':[],'1':[],'3':[],},date:{'0':1, '1':1, '3':1,}}
 					this.status=1;
+					this.tabIndex=0;
 					this.$_vtr_profile_loadGoods();
 				}
 			},
@@ -196,21 +200,20 @@
 					this.status=status;
 					this.load=false;
 					this.stopLoad=false;
-					if(this.$store.state.user.admin){
-						this.goodsArray.goods[status]=[];
-						this.goodsArray.date[status]=1;
-						this.$_vtr_profile_loadGoods();
-					}else{
+					if(this.tabMainIndex){
 						this.ordersArray.orders[status]=[];
 						this.ordersArray.date[status]=1;
 						this.$_vtr_profile_loadOrders();
+					}else{
+						this.goodsArray.goods[status]=[];
+						this.goodsArray.date[status]=1;
+						this.$_vtr_profile_loadGoods();
 					}
 				}
 			},
 			async $_vtr_profile_loadGoods(){
 				if(this.$route.name==='profile'&&!this.load&&this.$store.state.user.admin){
 					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/company/'+this.$store.state.user.data.id_company+'/'+this.status+'/'+this.goodsArray.date[this.status])
-					console.log(data)
 					if(data){
 						this.load=true;
 						if(!data.err&&data.rights&&!this.stopLoad){
@@ -219,8 +222,8 @@
 								this.goodsArray.date[this.status]=Date.parse(new Date(this.goodsArray.goods[this.status][this.goodsArray.goods[this.status].length - 1].update.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
 							}
 						}
-						this.stopLoad=data.goods.length===0||this.goodsArray.goods[this.status].length<=10;
 					}
+					this.stopLoad=data.goods.length===0||this.goodsArray.goods[this.status].length<=10;
 				}
 			},
 			async $_vtr_profile_loadOrders(){
@@ -234,8 +237,8 @@
 							}
 						}
 						this.load=true;
-						this.stopLoad=data.orders.length===0||this.ordersArray.orders[this.status].length<=10;
 					}
+					this.stopLoad=data.orders.length===0||this.ordersArray.orders[this.status].length<=10;
 				}
 			},
 			async $_vtr_profile_loadLogo(file){

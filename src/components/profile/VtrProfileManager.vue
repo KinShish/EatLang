@@ -22,39 +22,41 @@
 						p Уведомления
 			.customTabsProfile
 				b-card(no-body)
-					b-tabs(pills card)
-						b-tab(title='В ОЖИДАНИИ')
+					b-tabs(pills card v-model="tabIndexManager")
+						b-tab(title='АКТИВНЫЕ' @click="$_vtr_profile_clickTab(1)")
 							.customTabContent
-								.whiteBlock
-									.mainOrderBlock(v-for="item in 5")
+								.greyBlock(v-if="ordersArray.orders[1].length===0&&(load&&stopLoad)")
+									p.noOrder Заявок нет
+								.whiteBlock(v-else)
+									router-link.mainOrderBlock(v-for="order in ordersArray.orders[1]" :to="'/order/'+order.id_order" :key="order.id_order")
 										.orderManagerBlock
 											.orderBlockImg
-												img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg")
+												img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
+												img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
 											.orderBlockInfo
-												span Название объявления
-												span Имя покупателя
-											span.orderDate  12.08.20
+												span {{order.name}}
+											span.orderDate {{order.date}}
 										.orderNumberAndPrice
-											span Заказ №12
-											span 600 000
-						b-tab(title='АКТИВНЫЕ')
+											span Заказ № {{order.id_order}}
+											span {{order.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
+										hr.orderBorder
+						b-tab(title='ЗАВЕРШЕННЫЕ' @click="$_vtr_profile_clickTab(2)")
 							.customTabContent
-								.whiteBlock
-									.mainOrderBlock(v-for="item in 5")
+								.greyBlock(v-if="ordersArray.orders[2].length===0&&(load&&stopLoad)")
+									p.noOrder Заявок нет
+								.whiteBlock(v-else)
+									router-link.mainOrderBlock(v-for="order in ordersArray.orders[2]" :to="'/order/'+order.id_order" :key="order.id_order")
 										.orderManagerBlock
 											.orderBlockImg
-												img(src="https://i.ytimg.com/vi/JqyPgG1hagY/maxresdefault.jpg")
+												img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
+												img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
 											.orderBlockInfo
-												span Название объявления
-												span Имя покупателя
-											span.orderDate  12.08.20
+												span {{order.name}}
+											span.orderDate {{order.date}}
 										.orderNumberAndPrice
-											span Заказ №12
-						b-tab(title='ЗАВЕРШЕННЫЕ')
-							.customTabContent
-								.whiteBlock
-									.greyBlock
-										p.noOrder Заявок нет
+											span Заказ № {{order.id_order}}
+											span {{order.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
+										hr.orderBorder
 		transition(name="opacity")
 			keep-alive
 				router-view
@@ -65,7 +67,15 @@
 		data(){
 			return{
 				user:[],
-				favorites:[]
+				favorites:[],
+				ordersArray:{
+					orders:{'1':[], '2':[]},
+					date:{'1':1, '2':1}
+				},
+				status:1,
+				load:true,
+				stopLoad:false,
+				tabIndexManager:0
 			}
 		},
 		methods:{
@@ -78,15 +88,51 @@
 					this.$router.go(-1);
 					this.$store.commit('notification','Прозошла ошибка, попробуйте позже')
 				}
-			}
+			},
+			$_vtr_profile_clickTab(status){
+				if(this.status!==status){
+					this.status=status;
+					this.load=false;
+					this.stopLoad=false;
+					this.ordersArray.orders[status]=[];
+					this.ordersArray.date[status]=1;
+					this.$_vtr_profile_loadOrders();
+				}
+			},
+			async $_vtr_profile_loadOrders(){
+				if(this.$route.name==='manager'&&!this.load){
+					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'user/'+this.$route.params.id+'/orders'+'/'+this.status+'/'+this.ordersArray.date[this.status])
+					if(data){
+						if(!data.err){
+							this.ordersArray.orders[this.status]=this.ordersArray.orders[this.status].concat(data.orders);
+							if(data.orders.length>0){
+								this.ordersArray.date[this.status]=Date.parse(new Date(this.ordersArray.orders[this.status][this.ordersArray.orders[this.status].length - 1].update.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
+							}
+						}
+					}
+					this.load=true;
+					this.stopLoad=data.orders.length===0||this.ordersArray.orders[this.status].length<=10;
+				}
+			},
 		},
 		created() {
+			this.load=false;
 			this.$_vtr_profile_manager_load();
+			this.$_vtr_profile_loadOrders();
+			this.$root.$on('lazyLoad', (res)=>{
+				if(res&&this.load&&!this.stopLoad){
+					this.load=false;
+					this.$_vtr_profile_loadOrders();
+				}
+			});
 		}
 	}
 </script>
 
 <style scoped>
+	.whiteBlock{
+		padding: 5px 0 50px 0;
+	}
 	.noOrder{
 		color: #757575;
 		text-align: center;
@@ -95,6 +141,8 @@
 	}
 	.mainOrderBlock{
 		margin: 13px 15px 0 15px;
+		display: block;
+		color: black;
 	}
 	.orderManagerBlock{
 		display: flex;
@@ -102,12 +150,13 @@
 	.orderBlockImg{
 		width: 50px;
 		height: 40px;
-		display: block;
 		background: #DEDEDE;
 		line-height: 40px;
 		min-width: 50px;
 		overflow: hidden;
 		border-radius: 3px;
+		display: grid;
+		place-content: center;
 	}
 	.orderBlockImg img{
 		width: auto;
