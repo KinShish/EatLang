@@ -20,9 +20,11 @@
 				label(for="fileInp") Изображения
 				b-form-file#fileInp.d-none(type="file" @input="$_vtr_add_loadimages()" v-model="file" multiple)
 				.blockImages
-					.image(v-for="(img,index) in form.img")
-						img.close(src="../assets/close.svg" @click="$_vtr_add_delete_loadimages(img,index)")
-						img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+img")
+					draggable(v-model="form.img")
+						transition-group.blockImages
+							.image(v-for="(img,index) in form.img" :key="img")
+								img.close(src="../assets/close.svg" @click="$_vtr_add_delete_loadimages(img,index)")
+								img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+img")
 					label(for="fileInp")
 						.addImage
 							img(src="../assets/addPhoto.svg" v-if="loadImgActive")
@@ -37,6 +39,7 @@
 
 <script>
 	import {required,maxLength,requiredIf} from "vuelidate/lib/validators";
+	import draggable from 'vuedraggable'
 	import {VMoney} from 'v-money';
 	export default {
 		data(){
@@ -150,7 +153,7 @@
 				}
 			},
 			async $_vtr_add_delete_loadimages(img,index){
-				let photo=await this.$store.getters.request('DELETE',this.$store.state.user.settings.server+'goods/photo/'+img)
+				let photo=await this.$store.getters.request('DELETE',this.$store.state.user.settings.server+'photo/goods/'+img)
 				if(photo&&!photo.err){
 					this.form.img.splice(index,1)
 				}
@@ -160,14 +163,13 @@
 				let data = new FormData();
 				this.file.forEach((image,index)=>{
 					if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(image.name)) {
-						this.$store.commit('notification',"Файл  "+image.name+"  не поддерживается")
-						this.file.splice(index,1)
+					this.$store.commit('notification',"Файл  "+image.name+"  не поддерживается")
+					this.file.splice(index,1)
 					}else{
 						data.append('file', image);
 					}
 				})
-				let photo=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'goods/photo/'+this.file.length,data)
-				console.log(photo)
+				let photo=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'photo/goods/'+this.file.length,data)
 				if(photo&&!photo.err){
 					setTimeout(()=>{this.form.img=this.form.img.concat(photo.array_name)},1000)
 				}else{
@@ -185,6 +187,9 @@
 				this.$destroy()
 			}
 			next()
+		},
+		components: {
+			draggable,
 		},
 		directives: {money: VMoney},
 		validations:{

@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>326458101386-2k93kveqs6h30hb97lr8b348smva8onp.apps.googleusercontent.com</string>
+	<string>360440365376-j3pi2nnos4d96thoottr7skuduf2rijk.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.326458101386-2k93kveqs6h30hb97lr8b348smva8onp</string>
+	<string>com.googleusercontent.apps.360440365376-j3pi2nnos4d96thoottr7skuduf2rijk</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAVEenkVIJ8x-QxP74TQhdTclfEUYUc5YQ</string>
+	<string>AIzaSyDCXW-GONNC2_ZxD4vzpLeFznqit-3gULE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>326458101386</string>
+	<string>360440365376</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>ru.vtr</string>
 	<key>PROJECT_ID</key>
-	<string>vtr-mobile</string>
+	<string>vtr-mobile-fd4e9</string>
 	<key>STORAGE_BUCKET</key>
-	<string>vtr-mobile.appspot.com</string>
+	<string>vtr-mobile-fd4e9.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:326458101386:ios:08af3fd94de0c71bc8a773</string>
+	<string>1:360440365376:ios:629baffc12d1d67a4abaa5</string>
 	<key>DATABASE_URL</key>
-	<string>https://vtr-mobile.firebaseio.com</string>
+	<string>https://vtr-mobile-fd4e9.firebaseio.com</string>
 </dict>
 </plist>

@@ -14,7 +14,7 @@
 				VtrAdditionalPrivateProduct(:good="good" :hrefLink="'/good/'+good.id" :pageName="'Назад'")
 			button.btnRed(@click="$_vtr_order_getOrder" v-if="order.status===0") Взять заказ
 			router-link.btnRed(@click="$_vtr_order_getOrder" :to="'/chat/dialog/'+order.chat_key" v-if="order.status!==0") В чат
-			button.btnRed(@click="$refs.closeOrder.show()") Закрыть заказ
+			button.btnRed(@click="$refs.closeOrder.show()" v-if="order.status===1") Закрыть заказ
 		b-modal(hide-footer ref="closeOrder" centered no-close-on-backdrop)
 			template(slot="modal-header")
 				h4 Заказ № {{order.id_order}}
@@ -35,8 +35,14 @@
 		},
 		methods:{
 			async $_vtr_order_closeOrder(){
-				console.log('close')
-				this.$refs.closeOrder.hide()
+				this.$refs.closeOrder.hide();
+				let data=await this.$store.getters.request('PUT',this.$store.state.user.settings.server+'company/order/'+this.$route.params.orderId+'/close')
+				if(data&&!data.err){
+					this.$store.commit('notification','Заказ номер '+this.order.id_order+' закрыт')
+				}else{
+					this.$store.commit('notification','Прозошла ошибка, попробуйте позже')
+				}
+				//this.$router.go(-1);
 			},
 			async $_vtr_order_getOrder(){
 				let data=await this.$store.getters.request('PUT',this.$store.state.user.settings.server+'company/order/'+this.$route.params.orderId)
@@ -59,7 +65,6 @@
 				if(good&&!good.err){
 					this.good=good.good;
 				}else{
-					this.$router.go(-1);
 					this.$store.commit('notification','Прозошла ошибка, попробуйте позже')
 				}
 			}

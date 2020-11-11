@@ -64,11 +64,6 @@ let routes = {
 			name: 'profile',
 			children:[
 				{
-					path: 'order/:orderId',
-					component: () => import('../components/profile/VtrProfileOrder'),
-					name: 'order',
-				},
-				{
 					path: 'companyGoods',
 					component: () => import('../components/profile/VtrProfileCompanyGoods'),
 					name: 'companyGoods',
@@ -123,6 +118,11 @@ let routes = {
 					name: 'settings',
 				},
 			]
+		},
+		{
+			path: 'order/:orderId',
+			component: () => import('../components/profile/VtrProfileOrder'),
+			name: 'order',
 		},
 		{
 			path: 'good/:idGood',

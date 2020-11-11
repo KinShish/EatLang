@@ -24,10 +24,10 @@
 					img(:src="likeActive?images.likeActive:images.like" ref="imageLikeGood")
 				div(v-if="goods.img.length>0")
 					.blockImg(v-if="goods.img.length===1")
-						img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/up/goods/'+goods.img[0]")
+						img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/'+goods.img[0]")
 					agile(:options="sliderProduct" @after-change="$vtr_good_index_slideIndex" v-else-if="goods.img.length>1")
 						.blockImg(v-for="img in goods.img")
-							img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/up/goods/'+img")
+							img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/'+img")
 				.noPhoto(v-else)
 					img(src="../../assets/loadLogo.svg")
 					span Фото отсутствует
