@@ -78,8 +78,8 @@
       "cordova-plugin-firebasex": {}
     },
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }
