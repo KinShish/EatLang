@@ -6,10 +6,10 @@
 		router-link.mainBlockGood(:to="{ path: hrefLink, query: { pageName: pageName }}")
 			div(v-if="good.img.length>0")
 				.blockImg( v-if="good.img.length===1")
-					img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/up/goods/'+good.img[0]")
+					img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/'+good.img[0]")
 				agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex" v-else-if="good.img.length>1" ref="sliderProduct")
 					.blockImg(v-for="img in good.img")
-						img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/up/goods/'+img")
+						img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/'+img")
 			.noPhoto(v-else)
 				img(src="../../assets/loadLogo.svg")
 				span Фото отсутствует

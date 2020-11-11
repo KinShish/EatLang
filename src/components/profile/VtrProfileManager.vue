@@ -31,7 +31,7 @@
 									router-link.mainOrderBlock(v-for="order in ordersArray.orders[1]" :to="'/order/'+order.id_order" :key="order.id_order")
 										.orderManagerBlock
 											.orderBlockImg
-												img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
+												img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/'+order.img" v-if="order.img!==''")
 												img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
 											.orderBlockInfo
 												span {{order.name}}
@@ -48,7 +48,7 @@
 									router-link.mainOrderBlock(v-for="order in ordersArray.orders[2]" :to="'/order/'+order.id_order" :key="order.id_order")
 										.orderManagerBlock
 											.orderBlockImg
-												img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
+												img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/'+order.img" v-if="order.img!==''")
 												img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
 											.orderBlockInfo
 												span {{order.name}}

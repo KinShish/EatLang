@@ -4,10 +4,10 @@
 			span.countSlider(v-if="good.img.length>1") {{slideIndex}}/{{good.img.length}}
 			div(v-if="good.img.length>0")
 				.blockImg( v-if="good.img.length===1")
-					img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/up/goods/'+good.img[0]")
+					img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/'+good.img[0]")
 				agile(:options="sliderProduct" @after-change="$_vtr_product_slideIndex" v-else-if="good.img.length>1" ref="sliderProductPrivate")
 					.blockImg(v-for="img in good.img")
-						img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/up/goods/'+img")
+						img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/'+img")
 			.noPhoto(v-else)
 				img(src="../../assets/loadLogo.svg")
 				span Фото отсутствует

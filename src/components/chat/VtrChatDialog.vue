@@ -7,25 +7,25 @@
 		transition(name="opacity")
 			.modalPhoto(v-if="photoModal" @click="photoModal=false")
 				img(:src="imgSrc")
-		.whiteBlock(:class="photo.length>0?'paddingPhoto':''" ref="chatFeed" v-if="roomMessages.length>0")
+		.whiteBlock#chatFeed(:class="photo.length>0?'paddingPhoto':''" ref="chatFeed" v-if="roomMessages.length>0")
 			transition-group(name="opacity")
 				div(v-for="(message,index) in roomMessages" :key="message.hash")
 					span.mainData(v-if="$_vtr_dialogs_showDate(index,message.dateTime)") {{$_vtr_dialogs_showDate(index,message.dateTime)}}
 					div(v-if="message.text.split('@')[0].split(':').slice(1)[0]!==''" :class="message.id===$store.state.user.data.id?'photoBlockMe':'photoBlock'")
 						img(v-for="image in message.text.split('@')[0].split(':').slice(1)"
-							:src="$store.state.user.settings.server+'company/'+message.id+'/up/chat/'+image"
-							@click="$_vtr_dialog_watchPhoto($store.state.user.settings.server+'company/'+message.id+'/up/chat/'+image)")
+							:src="$store.state.user.settings.server+'user/'+message.id+'/'+image"
+							@click="$_vtr_dialog_watchPhoto($store.state.user.settings.server+'user/'+message.id+'/'+image)")
 					div(:class="message.id===$store.state.user.data.id?'blockMessageMe':'blockMessage'")
 						span.timeMessage(v-if="message.id===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
 						.logo(v-if="message.id!==$store.state.user.data.id")
-							img(:src="$store.state.user.settings.server+'company/'+room[0].id_company+'/up/goods/'+room[0].img" v-if="room[0].img")
+							img(:src="$store.state.user.settings.server+'company/'+room[0].id_company+'/'+room[0].img" v-if="room[0].img")
 							img.noImg(src="../../assets/loadLogo.svg" v-else)
 						span.text(v-if="message.text.split('@')[1]") {{message.text.split('@')[1]}}
 						span.timeMessage(v-if="message.id!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
 		.blockAddImg(v-if="photo.length>0")
 			.imgBlock(v-for="(img,index) in photo")
 				img.close(src="../../assets/close.svg" @click="$_vtr_dialog_deletePhoto(index,img)")
-				img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/chat/'+img")
+				img(:src="$store.state.user.settings.server+'user/'+$store.state.user.data.id+'/'+img")
 		.blockSendMessage
 			b-form-file#loadPhoto.d-none(type="file" @input="$_vtr_dialog_addPhoto" v-model="filePhoto" multiple)
 			label(for="loadPhoto" v-if="loadImgActive")
@@ -131,7 +131,7 @@
 			async $_vtr_dialog_deletePhoto(index,img){
 				let photo=await this.$store.getters.request('DELETE',this.$store.state.user.settings.server+'photo/chat/'+img)
 				if(photo&&!photo.err){
-					this.filePhoto.splice(index,1)
+					this.photo.splice(index,1)
 				}
 			},
 			$_vtr_dialog_watchPhoto(img){
@@ -144,17 +144,18 @@
 			next();
 		},
 		mounted() {
+			this.$store.commit('loginChat',false)
 			this.room=this.$store.state.user.rooms.filter(room=>room.key===this.$route.params.key)
 			this.roomMessages=this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key).sort((a, b) => {const dateA = new Date(a.dateTime), dateB = new Date(b.dateTime);return dateA.getTime() - dateB.getTime()})
 			this.$_vtr_dialogs_scrollBottom()
-			if(this.$route.query.type==='manager'){
-				this.$store.commit('loginChat',false)
-			}
 		},
 		watch:{
 			'$store.state.user.messages'(){
 				this.roomMessages=this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key).sort((a, b) => {const dateA = new Date(a.dateTime), dateB = new Date(b.dateTime);return dateA.getTime() - dateB.getTime()})
 				this.$_vtr_dialogs_scrollBottom();
+			},
+			'$store.state.user.rooms'(){
+				this.room=this.$store.state.user.rooms.filter(room=>room.key===this.$route.params.key)
 			},
 			'photoModal'(){
 				if(this.photoModal){
@@ -170,6 +171,10 @@
 </script>
 
 <style scoped>
+	.toScrollBlock{
+		position: absolute;
+		bottom: -100px;
+	}
 	.customSpiner{
 		margin-top: 10px;
 		margin-right: 5px;
@@ -284,7 +289,7 @@
 	}
 	.photoBlockMe img, .photoBlock img{
 		width: 36%;
-		height: auto;
+		height: 100%;
 		padding: 4px;
 		flex: auto;
 	}

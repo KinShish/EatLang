@@ -14,7 +14,7 @@
 				VtrAdditionalPrivateProduct(:good="good" :hrefLink="'/good/'+good.id" :pageName="'Назад'")
 			button.btnRed(@click="$_vtr_order_getOrder" v-if="order.status===0") Взять заказ
 			router-link.btnRed(@click="$_vtr_order_getOrder" :to="'/chat/dialog/'+order.chat_key" v-if="order.status!==0") В чат
-			button.btnRed(@click="$refs.closeOrder.show()") Закрыть заказ
+			button.btnRed(@click="$refs.closeOrder.show()" v-if="order.status===1") Закрыть заказ
 		b-modal(hide-footer ref="closeOrder" centered no-close-on-backdrop)
 			template(slot="modal-header")
 				h4 Заказ № {{order.id_order}}

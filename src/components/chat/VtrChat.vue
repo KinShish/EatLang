@@ -7,7 +7,7 @@
 				router-link.mainChatBlock(v-for="room in rooms" :to="'chat/dialog/'+room.key" :key="room.key")
 					.chatBlock
 						.chatBlockImg
-							img(:src="$store.state.user.settings.server+'company/'+room.id_company+'/up/goods/'+room.img" v-if="room.img")
+							img(:src="$store.state.user.settings.server+'company/'+room.id_company+'/'+room.img" v-if="room.img")
 							img.noImg(src="../../assets/loadLogo.svg" v-else)
 						.chatBlockInfo
 							span {{room.name}}

@@ -48,6 +48,12 @@
 				FirebasePlugin.hasPermission(function (hasPermission) {
 					console.log("Permission is " + (hasPermission ? "granted" : "denied"));
 				});
+				// eslint-disable-next-line no-undef
+				FirebasePlugin.getToken(function(fcmToken) {
+					console.log('fcm:   '+fcmToken);
+				}, function(error) {
+					console.error(error);
+				});
 			}
 			if(localStorage.getItem('token')===null||localStorage.getItem('token')===''){
 				this.$router.push('/login')

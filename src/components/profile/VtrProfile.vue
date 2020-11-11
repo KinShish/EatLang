@@ -75,7 +75,7 @@
 														router-link.mainOrderBlock(v-for="order in ordersArray.orders[0]" :to="'/order/'+order.id_order" :key="order.id_order")
 															.orderManagerBlock
 																.orderBlockImg
-																	img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
+																	img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/'+order.img" v-if="order.img!==''")
 																	img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
 																.orderBlockInfo
 																	span {{order.name}}
@@ -92,7 +92,7 @@
 														router-link.mainOrderBlock(v-for="order in ordersArray.orders[1]" :to="'/order/'+order.id_order" :key="order.id_order")
 															.orderManagerBlock
 																.orderBlockImg
-																	img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
+																	img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/'+order.img" v-if="order.img!==''")
 																	img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
 																.orderBlockInfo
 																	span {{order.name}}
@@ -109,7 +109,7 @@
 														router-link.mainOrderBlock(v-for="order in ordersArray.orders[2]" :to="'/order/'+order.id_order" :key="order.id_order")
 															.orderManagerBlock
 																.orderBlockImg
-																	img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+order.img" v-if="order.img!==''")
+																	img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/'+order.img" v-if="order.img!==''")
 																	img.noImgOrder(src="../../assets/loadLogo.svg" v-else)
 																.orderBlockInfo
 																	span {{order.name}}
@@ -143,6 +143,8 @@
 				stopLoad:false,
 				keyLogo:new Date().valueOf(),
 				downloadLogo:false,
+
+				mainIndex:0,
 				tabMainIndex:0,
 				tabIndex:0,
 				tabIndexManager:0
@@ -153,7 +155,6 @@
 		},
 		beforeRouteLeave(to,form,next) {
 			if(!(to.name==='good'||to.name==='company'||to.name==='order'||to.name==='dialog')){
-				console.log('asd')
 				this.$destroy()
 			}
 			next()
@@ -164,14 +165,14 @@
 				this.status=1;
 				this.$_vtr_profile_loadGoods();
 			}else{
+				this.mainIndex=1
 				this.status=0;
 				this.$_vtr_profile_loadOrders();
 			}
 			this.$root.$on('lazyLoad', (res)=>{
 				if(res&&this.load&&!this.stopLoad){
 					this.load=false;
-					if(this.$store.state.user.admin){this.tabIndexManager = 1}
-					if(this.tabMainIndex){
+					if(this.mainIndex){
 						this.$_vtr_profile_loadOrders();
 					}else{
 						this.$_vtr_profile_loadGoods();
@@ -183,6 +184,7 @@
 			$_vtr_profile_clickMainTab(type){
 				this.load=false;
 				this.stopLoad=false;
+				this.mainIndex=type;
 				if(type){
 					this.ordersArray={orders:{'0':[],'1':[],'2':[]},date:{'0':1, '1':1, '2':1}}
 					this.status=0;
@@ -200,7 +202,7 @@
 					this.status=status;
 					this.load=false;
 					this.stopLoad=false;
-					if(this.tabMainIndex){
+					if(this.mainIndex){
 						this.ordersArray.orders[status]=[];
 						this.ordersArray.date[status]=1;
 						this.$_vtr_profile_loadOrders();
