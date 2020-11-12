@@ -113,7 +113,6 @@ export const userVuex = {
 			}
 		},
 		loginChat(state,f){
-			console.log('ad')
 			const emit=()=>{
 				socket.emit('user join',(rooms)=>{
 					if(state.rooms.length!==rooms.length){
