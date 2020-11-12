@@ -31,10 +31,14 @@
 			this.$refs.pinInput.focus();
 		},
 		beforeRouteLeave(to, from, next){
-			if(to.name!=='login'){
-				next();
+			if(this.$store.state.user.data!=="-1"){
+				if(to.name!=='login'){
+					next();
+				}else{
+					this.$router.go(1)
+				}
 			}else{
-				this.$router.go(1)
+				next();
 			}
 		},
 		methods:{

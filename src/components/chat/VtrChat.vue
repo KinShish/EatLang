@@ -12,7 +12,7 @@
 						.chatBlockInfo
 							span {{room.name}}
 							span(v-if="room.message") {{room.message.id===$store.state.user.data.id?'Вы: '+room.message.text.split('@')[1]:room.message.text.split('@')[1]}}
-						span.chatDate  12.08.20
+						span.chatDate  {{new Date(room.message.dateTime).toLocaleDateString()===new Date().toLocaleDateString()?new Date(room.message.dateTime).toLocaleTimeString():new Date(room.message.dateTime).toLocaleDateString().split('/').join('.')}}
 					.chatPrice
 						span {{room.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
 					hr.chatBorder
@@ -46,13 +46,13 @@
 					}
 
 				})
-				this.rooms=rooms;
+				this.rooms=rooms.sort((a, b) => {
+					if (a.message&&b.message&&a.message.dateTime && b.message.dateTime) return b.message.dateTime - a.message.dateTime
+					return 1
+				})
 			}
 		},
 		watch:{
-			'$store.state.user.rooms'(){
-				this.$_vtr_chat_getRooms();
-			},
 			'$store.state.user.messages'(){
 				this.$_vtr_chat_getRooms();
 			},
