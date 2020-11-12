@@ -7,7 +7,7 @@
 			.greyBlock
 				div(v-for="good in goods" :key="good.id")
 					router-link.infoGoodUser(:to="'/company/'+good.company.id")
-						img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/logo.jpg'" v-if="good.company.logo")
+						img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/up/logo.jpg'" v-if="good.company.logo")
 						span.logoName(v-else) {{good.company.name[0]}}
 						span {{good.company.name}}
 					VtrAdditionalProduct(:good="good" :hrefLink="'/good/'+good.id" :pageName="'Избранное'")

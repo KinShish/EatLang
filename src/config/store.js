@@ -24,7 +24,7 @@ export const chatVuex = {
 				cb(res)
 			})
 		},
-	}
+	},
 };
 export const userVuex = {
 	state: {
@@ -96,9 +96,14 @@ export const userVuex = {
 				state.data=data.user;
 				state.favorites=data.favorites
 				state.managers=(data.managers!==undefined?data.managers:[]);
-				socket = io(settings.serverChat,{path: '/vtr/chat',query:{token:localStorage.getItem('token')}});
+				socket = io(settings.serverChat,{path: '/chat',query:{token:localStorage.getItem('token')}});
 				socket.on('room message',res=>{
 					state.messages.push(res);
+					if(state.rooms.length>0){
+						state.rooms.forEach(a=>{
+							a.notification=this.getters.watchChatMessage(a.key)
+						})
+					}
 				});
 				this.commit('loginChat',false)
 				this.commit('loadCat')
@@ -108,10 +113,14 @@ export const userVuex = {
 			}
 		},
 		loginChat(state,f){
+			console.log('ad')
 			const emit=()=>{
 				socket.emit('user join',(rooms)=>{
 					if(state.rooms.length!==rooms.length){
 						state.rooms=rooms;
+						rooms.forEach(a=>{
+							a.notification=this.getters.watchChatMessage(a.key)
+						})
 					}
 				});
 			}
@@ -120,6 +129,11 @@ export const userVuex = {
 				socket.emit('first join',(rooms,messages)=>{
 					state.rooms=rooms;
 					state.messages=messages;
+					localStorage.setItem("rooms",JSON.stringify(rooms))
+					localStorage.setItem("messages",JSON.stringify(messages))
+					rooms.forEach(a=>{
+						a.notification=this.getters.watchChatMessage(a.key)
+					})
 				});
 				setInterval(emit, 10000)
 			}
@@ -169,6 +183,12 @@ export const userVuex = {
 				}
 			}
 		},
+		watchMessage(state,hash){
+			state.messages[state.messages.length-1].watch+'asd'
+			state.messages[state.messages.length-1].watch=1
+			state.messages[state.messages.length-1].watch+'asd'
+			socket.emit('watch', hash);
+		},
 	},
 	getters: {
 		request:state=>async (method,url,formData)=>{
@@ -192,6 +212,12 @@ export const userVuex = {
 		},
 		watchFavoritGood:state=>(id)=>{
 			return state.favorites.indexOf(id)!==-1
+		},
+		watchChatMessage:state=>(key)=>{
+			if(key==='all'){
+
+			}
+			return state.messages.filter(mess=>mess.key===key&&mess.id!==state.data.id&&!mess.watch).length
 		},
 	},
 };

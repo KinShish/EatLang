@@ -135,6 +135,12 @@
 					this.photo.splice(index,1)
 				}
 			},
+			async $_vtr_dialogs_loadUser(){
+				let data=await this.$store.getters.request('DELETE',this.$store.state.user.settings.server+'photo/chat/')
+				if(data&&!data.err){
+					console.log(data)
+				}
+			},
 			$_vtr_dialog_watchPhoto(img){
 				this.imgSrc=img;
 				this.photoModal=true;
@@ -145,9 +151,15 @@
 			next();
 		},
 		mounted() {
+			this.$store.state.user.messages.forEach(mess=>{
+				if(mess.key===this.$route.params.key&&mess.id!==this.$store.state.user.data.id&&!mess.watch){
+					this.$store.commit('watchMessage', mess.hash)
+				}
+			})
 			this.$store.commit('loginChat',false)
 			this.room=this.$store.state.user.rooms.filter(room=>room.key===this.$route.params.key)
 			this.roomMessages=this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key).sort((a, b) => {const dateA = new Date(a.dateTime), dateB = new Date(b.dateTime);return dateA.getTime() - dateB.getTime()})
+			//this.$_vtr_dialogs_loadUser()
 			this.$_vtr_dialogs_scrollBottom()
 		},
 		watch:{
