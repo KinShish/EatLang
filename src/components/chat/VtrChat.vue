@@ -12,7 +12,7 @@
 						.chatBlockInfo
 							span {{room.name}}
 							span(v-if="room.message") {{room.message.id===$store.state.user.data.id?'Вы: '+room.message.text.split('@')[1]:room.message.text.split('@')[1]}}
-						span.chatDate  {{new Date(room.message.dateTime).toLocaleDateString()===new Date().toLocaleDateString()?new Date(room.message.dateTime).toLocaleTimeString():new Date(room.message.dateTime).toLocaleDateString().split('/').join('.')}}
+						span.chatDate  {{new Date(room.message.dateTime).toLocaleDateString()}}
 							.notificationblock(v-if="room.notification")
 								span.notification {{room.notification}}
 					.chatPrice
@@ -28,7 +28,7 @@
 		data(){
 			return{
 				search:'',
-				rooms:[]
+				rooms:this.$store.state.user.rooms
 			}
 		},
 		methods:{
@@ -40,13 +40,7 @@
 				}
 			},
 			$_vtr_chat_getRooms(){
-				let rooms=this.$store.state.user.rooms;
-				rooms.forEach(room=>{
-					let message=this.$store.state.user.messages.filter(messages=>messages.key===room.key).sort((a, b) => {const dateA = new Date(a.dateTime), dateB = new Date(b.dateTime);return dateA.getTime() - dateB.getTime()})
-					if(message.length!==0){
-						room.message=message[message.length - 1]
-					}
-				})
+				let rooms=Object.values(this.$store.state.user.rooms);
 				this.rooms=rooms.sort((a, b) => {
 					if (a.message&&b.message&&a.message.dateTime && b.message.dateTime) return b.message.dateTime - a.message.dateTime
 					return 1
@@ -54,7 +48,7 @@
 			}
 		},
 		watch:{
-			'$store.state.user.messages'(){
+			'$store.state.user.newMessage.hash'(){
 				this.$_vtr_chat_getRooms();
 			},
 		},

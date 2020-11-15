@@ -2,7 +2,7 @@
 	div
 		.header
 			img.back(src="../../assets/back.svg" @click="$router.go(-1)")
-			span(v-if="room[0]") {{room[0].name}}
+			span(v-if="room") {{room.name}}
 			//span.dottedActive(:class="false?'':'deActive'")
 		transition(name="opacity")
 			.modalPhoto(v-if="photoModal" @click="photoModal=false")
@@ -18,7 +18,7 @@
 					div(:class="message.id===$store.state.user.data.id?'blockMessageMe':'blockMessage'")
 						span.timeMessage(v-if="message.id===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
 						.logo(v-if="message.id!==$store.state.user.data.id")
-							img(:src="$store.state.user.settings.server+'company/'+room[0].id_company+'/'+room[0].img" v-if="room[0].img")
+							img(:src="$store.state.user.settings.server+'company/'+room.id_company+'/'+room.img" v-if="room.img")
 							img.noImg(src="../../assets/loadLogo.svg" v-else)
 						span.text(v-if="message.text.split('@')[1]") {{message.text.split('@')[1]}}
 						span.timeMessage(v-if="message.id!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
@@ -57,31 +57,37 @@
 				if(message||this.photo.length>0){
 					message='img:'+this.photo.join(':')+'@'+message;
 					const date=new Date().getTime();
-					const makeid=()=>{
+					const makeid=(n)=>{
 						let text = "";
 						const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-						for (let i = 0; i < 37; i++)
+						for (let i = 0; i < n; i++)
 							text += possible.charAt(Math.floor(Math.random() * possible.length));
-
 						return date+text;
 					}
-					let hash=makeid();
+					let hash=makeid(37);
 					message=message.replace(/^\s*/,'').replace(/\s*$/,'')
-					await this.$store.getters.submitChat( {
-						hash,
-						text:message,
-						id:this.$store.state.user.data.id,
-						id_recipient:this.room[0].id_company,
-						dateTime:'',
-						key:this.$route.params.key
-					},()=>{
-						this.roomMessages.push({text: message, id: this.$store.state.user.data.id, dateTime:date,hash,id_recipient:this.room[0].id_company,})
-						this.textMessage='';
-						this.photo=[];
-						this.$_vtr_dialogs_scrollBottom();
+					this.roomMessages.push({text: message, id: this.$store.state.user.data.id, dateTime:date,hash,id_recipient:this.room.id_company,})
+					this.textMessage='';
+					this.photo=[];
+					this.$_vtr_dialogs_scrollBottom();
+					try {
+						await this.$store.getters.submitChat( {
+							hash,
+							text:message,
+							id:this.$store.state.user.data.id,
+							id_recipient:this.room.id_company,
+							dateTime:'',
+							key:this.$route.params.key
+						},()=>{console.log('Сообщение отправлено')});
+					}catch (e) {
+						for(let i=this.roomMessages.length-1;i>0;i--){
+							if(this.roomMessages[i].hash===hash){
+								this.roomMessages[i].err=true;
+								break;
+							}
+						}
+					}
 
-					});
 				}
 			},
 			$_vtr_dialogs_showDate(index,dateTime){
@@ -90,7 +96,7 @@
 				const res = date.getDate().toString().padStart(2, '0') + ' ' + arrMonth[date.getMonth()];
 				let prevRes='';
 				if(index>0){
-					const now = new Date(this.roomMessages[index-1].dateTime);
+					const now = new Date(this.room.message.dateTime);
 					prevRes = now.getDate().toString().padStart(2, '0') + ' ' + arrMonth[now.getMonth()];
 				}
 				if(res!==prevRes) return res
@@ -151,24 +157,25 @@
 			next();
 		},
 		mounted() {
-			this.$store.state.user.messages.forEach(mess=>{
-				if(mess.key===this.$route.params.key&&mess.id!==this.$store.state.user.data.id&&!mess.watch){
+			this.room=this.$store.state.user.rooms[this.$route.params.key]
+			this.roomMessages=this.$store.state.user.rooms[this.$route.params.key].messages.filter(message=>message.key===this.$route.params.key).sort((a, b) => {const dateA = new Date(a.dateTime), dateB = new Date(b.dateTime);return dateA.getTime() - dateB.getTime()})
+			this.roomMessages
+				.filter(mess=>!mess.watch)
+				.filter(mess=>mess.id!==this.$store.state.user.data.id)
+				.forEach(mess=>{
 					this.$store.commit('watchMessage', mess.hash)
-				}
-			})
-			this.$store.commit('loginChat',false)
-			this.room=this.$store.state.user.rooms.filter(room=>room.key===this.$route.params.key)
-			this.roomMessages=this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key).sort((a, b) => {const dateA = new Date(a.dateTime), dateB = new Date(b.dateTime);return dateA.getTime() - dateB.getTime()})
-			//this.$_vtr_dialogs_loadUser()
+				})
+			this.$store.state.user.rooms[this.$route.params.key].notification=0;
+			//this.$store.commit('loginChat',false)
 			this.$_vtr_dialogs_scrollBottom()
 		},
 		watch:{
-			'$store.state.user.messages'(){
-				this.roomMessages=this.$store.state.user.messages.filter(message=>message.key===this.$route.params.key).sort((a, b) => {const dateA = new Date(a.dateTime), dateB = new Date(b.dateTime);return dateA.getTime() - dateB.getTime()})
-				this.$_vtr_dialogs_scrollBottom();
-			},
-			'$store.state.user.rooms'(){
-				this.room=this.$store.state.user.rooms.filter(room=>room.key===this.$route.params.key)
+			'$store.state.user.newMessage.hash'(){
+				if(this.$route.params.key===this.$store.state.user.newMessage.key){
+					this.roomMessages=this.$store.state.user.rooms[this.$route.params.key].messages.filter(message=>message.key===this.$route.params.key).sort((a, b) => {const dateA = new Date(a.dateTime), dateB = new Date(b.dateTime);return dateA.getTime() - dateB.getTime()})
+					this.$store.commit('watchMessage', this.$store.state.user.newMessage.hash)
+					this.$store.state.user.rooms[this.$route.params.key].notification=0;
+				}
 			},
 			'photoModal'(){
 				if(this.photoModal){

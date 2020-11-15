@@ -30,6 +30,10 @@ export const userVuex = {
 	state: {
 		data: "-1",
 		ua: '',
+		newMessage: {
+			key:'',
+			hash:''
+		},
 		managers:[],
 		admin:false,
 		token:null,
@@ -38,10 +42,15 @@ export const userVuex = {
 		notification:'',
 		cats:[],
 		favorites:[],
-		rooms:[],
-		messages:[]
+		rooms:{},
 	},
 	mutations: {
+		newMessageGetNull(state){
+			state.newMessage={
+				key:'',
+				hash:''
+			}
+		},
 		firstAuthRequest(state,data){
 			axios
 				.post(state.settings.server+'user/sign',data)
@@ -98,12 +107,11 @@ export const userVuex = {
 				state.managers=(data.managers!==undefined?data.managers:[]);
 				socket = io(settings.serverChat,{path: '/vtr/chat',query:{token:localStorage.getItem('token')}});
 				socket.on('room message',res=>{
-					state.messages.push(res);
-					if(state.rooms.length>0){
-						state.rooms.forEach(a=>{
-							a.notification=this.getters.watchChatMessage(a.key)
-						})
-					}
+					//dateTime,hash,id,id_recipient,key,text,watch
+					state.newMessage={key:res.key,hash:res.hash};
+					state.rooms[res.key].message=res;
+					state.rooms[res.key].messages.push(res);
+					state.rooms[res.key].notification=this.getters.watchChatMessage(res.key);
 				});
 				this.commit('loginChat',false)
 				this.commit('loadCat')
@@ -115,10 +123,10 @@ export const userVuex = {
 		loginChat(state,f){
 			const emit=()=>{
 				socket.emit('user join',(rooms)=>{
-					if(state.rooms.length!==rooms.length){
-						state.rooms=rooms;
-						rooms.forEach(a=>{
-							a.notification=this.getters.watchChatMessage(a.key)
+					if(Object.keys(state.rooms).length!==rooms.length){
+						rooms.forEach(r=>{
+							state.rooms[r.key]=r
+							state.rooms[r.key].notification=this.getters.watchChatMessage(r.key)
 						})
 					}
 				});
@@ -126,13 +134,16 @@ export const userVuex = {
 			if(f) emit();
 			else {
 				socket.emit('first join',(rooms,messages)=>{
-					state.rooms=rooms;
 					state.messages=messages;
-					localStorage.setItem("rooms",JSON.stringify(rooms))
 					localStorage.setItem("messages",JSON.stringify(messages))
-					rooms.forEach(a=>{
-						a.notification=this.getters.watchChatMessage(a.key)
+					rooms.forEach(r=>{
+						state.rooms[r.key]=r
+						state.rooms[r.key].messages=messages.filter(mess=>mess.key===r.key).sort((a, b) => {const dateA = new Date(a.dateTime), dateB = new Date(b.dateTime);return dateA.getTime() - dateB.getTime()});
+						state.rooms[r.key].message=state.rooms[r.key].messages.slice(-1)[0];
+						state.rooms[r.key].notification=this.getters.watchChatMessage(r.key);
 					})
+					console.log(state.rooms)
+					localStorage.setItem("rooms",JSON.stringify(state.rooms))
 				});
 				setInterval(emit, 10000)
 			}
@@ -148,6 +159,11 @@ export const userVuex = {
 		},
 		clearAll(state){
 			localStorage.clear();
+			state.rooms={};
+			state.newMessage={
+				key:'',
+				hash:''
+			}
 			state.admin=false
 			state.errAuth=true;
 			state.data='-1';
@@ -183,9 +199,6 @@ export const userVuex = {
 			}
 		},
 		watchMessage(state,hash){
-			state.messages[state.messages.length-1].watch+'asd'
-			state.messages[state.messages.length-1].watch=1
-			state.messages[state.messages.length-1].watch+'asd'
 			socket.emit('watch', hash);
 		},
 	},
@@ -214,9 +227,14 @@ export const userVuex = {
 		},
 		watchChatMessage:state=>(key)=>{
 			if(key==='all'){
-
+				let length=0;
+				Object.values(state.rooms).forEach(r=>{
+					length+=r.notification
+				})
+				console.log(length)
+				return length
 			}
-			return state.messages.filter(mess=>mess.key===key&&mess.id!==state.data.id&&!mess.watch).length
+			return state.rooms[key].messages.filter(mess=>!mess.watch).filter(mess=>mess.id!==state.data.id).length
 		},
 	},
 };
