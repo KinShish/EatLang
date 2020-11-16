@@ -120,6 +120,11 @@ let routes = {
 			]
 		},
 		{
+			path: 'call/:userId',
+			component: () => import('../components/additional/VtrAddititionalPhone'),
+			name: 'order',
+		},
+		{
 			path: 'order/:orderId',
 			component: () => import('../components/profile/VtrProfileOrder'),
 			name: 'order',
