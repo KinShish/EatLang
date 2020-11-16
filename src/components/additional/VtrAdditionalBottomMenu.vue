@@ -22,7 +22,8 @@
 		router-link(to="/chat")
 			div(@click="$_vtr_menu_aimationMenuIcon('menuChat')")
 				img(:src="$route.name==='chat'?images.chatActive:images.chat" ref="menuChat")
-				span(:class="$route.name==='chat'?'redColor':''") {{'Чат'+(notification?notification:'')}}
+				span(:class="$route.name==='chat'?'redColor':''") Чат
+				span.notifMessage(v-if="notification") {{notification}}
 		router-link(to="/profile")
 			div(@click="$_vtr_menu_aimationMenuIcon('menuProfile')")
 				img(:src="$route.name==='profile'?images.profileActive:images.profile" ref="menuProfile")
@@ -79,6 +80,18 @@
 </script>
 
 <style scoped>
+	.notifMessage{
+		background: #F64646;
+		color: white;
+		position: absolute;
+		right: -16px;
+		top: 0;
+		min-width: 16px;
+		height: 16px;
+		border-radius: 50%;
+		font-size: 10px;
+		line-height: 16px;
+	}
 	.redColor{
 		color: red;
 		transition: .3s ease;
@@ -127,6 +140,12 @@
 		text-decoration: none;
 		color: black;
 		outline: none;
+	}
+	.mainBlockMenu a div{
+		position: relative;
+		width: fit-content;
+		margin: 0 auto;
+		text-align: center;
 	}
 	.mainBlockMenu span{
 		display: block;
