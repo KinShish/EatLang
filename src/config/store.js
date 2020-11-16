@@ -107,11 +107,13 @@ export const userVuex = {
 				state.managers=(data.managers!==undefined?data.managers:[]);
 				socket = io(settings.serverChat,{path: '/vtr/chat',query:{token:localStorage.getItem('token')}});
 				socket.on('room message',res=>{
+					console.log(res)
 					//dateTime,hash,id,id_recipient,key,text,watch
 					state.newMessage={key:res.key,hash:res.hash};
 					state.rooms[res.key].message=res;
 					state.rooms[res.key].messages.push(res);
 					state.rooms[res.key].notification=this.getters.watchChatMessage(res.key);
+					FirebasePlugin.setBadgeNumber(this.getters.watchChatMessage('all'));
 				});
 				this.commit('loginChat',false)
 				this.commit('loadCat')

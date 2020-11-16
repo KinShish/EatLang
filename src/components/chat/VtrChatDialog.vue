@@ -10,8 +10,7 @@
 		.whiteBlock(:class="photo.length>0?'paddingPhoto':''" ref="chatFeed" v-if="roomMessages.length>0")
 			transition-group(name="opacity")
 				div(v-for="(message,index) in roomMessages" :key="message.hash")
-					span.mainData(v-if="$_vtr_dialogs_showDate(index,message.dateTime)") {{$_vtr_dialogs_showDate(index,message.dateTime)}}
-					div(v-if="message.text.split('@')[0].split(':').slice(1)[0]!==''" :class="message.id===$store.state.user.data.id?'photoBlockMe':'photoBlock'")
+					.row(v-if="message.text.split('@')[0].split(':').slice(1)[0]!==''" :class="message.id===$store.state.user.data.id?'photoBlockMe':'photoBlock'")
 						img(v-for="image in message.text.split('@')[0].split(':').slice(1)"
 							:src="$store.state.user.settings.server+'user/'+message.id+'/'+image"
 							@click="$_vtr_dialog_watchPhoto($store.state.user.settings.server+'user/'+message.id+'/'+image)")
@@ -103,8 +102,17 @@
 				return false
 			},
 			$_vtr_dialogs_showTime(dateTime){
-				const d = new Date(dateTime);
-				return d.getHours().toString().padStart(2, '0')+':'+d.getMinutes().toString().padStart(2, '0');
+				const arrMonth = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
+				const date = new Date(dateTime);
+				const res = date.getDate().toString().padStart(2, '0') + ' ' + arrMonth[date.getMonth()];
+				let prevRes='';
+				const now = new Date(this.room.message.dateTime);
+				prevRes = now.getDate().toString().padStart(2, '0') + ' ' + arrMonth[now.getMonth()];
+				if(prevRes!==res){
+					return res+'    '+date.getHours().toString().padStart(2, '0')+':'+date.getMinutes().toString().padStart(2, '0');
+				}else{
+					return date.getHours().toString().padStart(2, '0')+':'+date.getMinutes().toString().padStart(2, '0');
+				}
 			},
 			$_vtr_dialogs_scrollBottom(){
 				this.$nextTick(()=>{
@@ -166,8 +174,15 @@
 					this.$store.commit('watchMessage', mess.hash)
 				})
 			this.$store.state.user.rooms[this.$route.params.key].notification=0;
-			//this.$store.commit('loginChat',false)
-			this.$_vtr_dialogs_scrollBottom()
+			this.$_vtr_dialogs_scrollBottom();
+			//this.$store.commit('loginChat',true)
+			let numberBagde=0;
+			// eslint-disable-next-line no-undef
+			FirebasePlugin.getBadgeNumber(n=> {
+				numberBagde=n-this.$store.getters.watchChatMessage('all')
+			});
+			// eslint-disable-next-line no-undef
+			FirebasePlugin.setBadgeNumber(numberBagde);
 		},
 		watch:{
 			'$store.state.user.newMessage.hash'(){
@@ -283,14 +298,6 @@
 		padding: 2px;
 		border-radius: 3px;
 	}
-	.mainData{
-		color: #757575;
-		font-size: 12px;
-		width: 100%;
-		display: block;
-		text-align: center;
-		margin: 5px 0;
-	}
 	.timeMessage{
 		font-size: 12px;
 		color: #757575;
@@ -300,18 +307,22 @@
 		width: 72%;
 		flex-wrap: wrap;
 		margin-right: auto;
+		background: #e6e6e6;
+		border-radius: 3px;
 	}
 	.photoBlockMe{
 		display: flex;
 		width: 72%;
 		flex-wrap: wrap;
 		margin-left: auto;
+		background: rgba(246, 70, 70, 0.76);
+		border-radius: 3px;
 	}
 	.photoBlockMe img, .photoBlock img{
-		width: 36%;
-		height: 100%;
 		padding: 4px;
-		flex: auto;
+		height: 130px;
+		width: auto;
+		margin: 0 auto;
 	}
 	.blockMessage{
 		display: flex;

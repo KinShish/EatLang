@@ -41,6 +41,9 @@
 			},
 			$_vtr_chat_getRooms(){
 				let rooms=Object.values(this.$store.state.user.rooms);
+				rooms.forEach(a=>{
+					a.notification=this.$store.getters.watchChatMessage(a.key)
+				})
 				this.rooms=rooms.sort((a, b) => {
 					if (a.message&&b.message&&a.message.dateTime && b.message.dateTime) return b.message.dateTime - a.message.dateTime
 					return 1

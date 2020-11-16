@@ -38,7 +38,7 @@
 				this.$parent.searchActive=false
 			},
 			$_vtr_search_cat_getCats(){
-				this.catActive=this.$route.params.idCat*1;
+				this.goodDate=1;
 				this.array_id_cat=[];
 				const getChildrenCat=(id)=>{
 					let flag=true;
@@ -50,20 +50,21 @@
 					})
 					if(flag){this.array_id_cat.push(id)}
 				}
-				getChildrenCat(this.catActive)
+				getChildrenCat(this.$route.params.idCat*1)
 				this.load=false;
 				this.$_vtr_search_cat_loadGood();
+				this.catActive=this.$route.params.idCat*1;
 			},
 			async $_vtr_search_cat_loadGood(){
-				if(this.$route.name==='searchPageCat'&&this.catActive!==this.$route.idCat&&!this.load){
+				if(this.$route.name==='searchPageCat'&&this.catActive!==this.$route.params.idCat*1&&!this.load){
 					let data=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'goods/cat/'+this.goodDate, {array_id_cat:this.array_id_cat})
 					if(data&&!data.err){
 						this.load=true;
 						if(data.goods.length>0){
 							this.arrayGood=this.arrayGood.concat(data.goods);
-							this.noGoods=this.arrayGood.length===0&&data.goods.length===0;
 							this.goodDate=Date.parse(new Date(this.arrayGood[this.arrayGood.length - 1].update.replace( /(\d{2}).(\d{2}).(\d{4})/, "$2/$1/$3")));
 						}
+						this.noGoods=this.arrayGood.length===0&&data.goods.length===0;
 						this.stopLoad=data.goods.length===0;
 					}
 				}
@@ -91,7 +92,7 @@
 				this.arrayGood=[]; this.goodDate=1;
 			},
 			'$route.params.idCat'(){
-				if(this.$route.name==='searchPageCat'&&this.catActive!==this.$route.idCat){
+				if(this.$route.name==='searchPageCat'&&this.catActive!==this.$route.params.idCat*1){
 					this.$_vtr_search_cat_getCats();
 				}
 			}
