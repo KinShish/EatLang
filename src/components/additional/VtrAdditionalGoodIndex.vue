@@ -90,7 +90,7 @@
 					router-link(:to="'/company/'+goods.company.id") {{goods.company.name}}
 			.fastBtnGood(v-if="$store.state.user.data.id_company!==goods.company.id")
 				.fastButtonBlock
-					router-link(:to="'/call/'+1").fastButton Позвонить
+					//router-link(:to="'/call/'+1").fastButton Позвонить
 					button.fastButton(@click="$_vtr_good_message") Написать
 			transition(name="opacity")
 				router-view

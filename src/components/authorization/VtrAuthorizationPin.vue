@@ -28,6 +28,7 @@
 		},
 		activated() {
 			this.havePin=localStorage.getItem('pin')===null;
+			this.pin='';
 			this.$refs.pinInput.focus();
 		},
 		beforeRouteLeave(to, from, next){
