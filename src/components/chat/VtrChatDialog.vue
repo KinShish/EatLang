@@ -26,7 +26,7 @@
 				img.close(src="../../assets/close.svg" @click="$_vtr_dialog_deletePhoto(index,img)")
 				img(:src="$store.state.user.settings.server+'user/'+$store.state.user.data.id+'/'+img")
 		.blockSendMessage
-			b-form-file#loadPhoto.d-none(type="file" @input="$_vtr_dialog_addPhoto" v-model="filePhoto" multiple)
+			b-form-file#loadPhoto.d-none(type="file" @input="$_vtr_dialog_addPhoto" v-model="filePhoto" multiple accept = "image / *")
 			label(for="loadPhoto" v-if="loadImgActive")
 				img(src="../../assets/chat/chatImage.svg")
 			b-spinner.customSpiner(variant="danger" v-else)
@@ -123,25 +123,31 @@
 				}
 			},
 			async $_vtr_dialog_addPhoto(){
-				let data = new FormData();
+				let data = new FormData(),count=0;
 				this.loadImgActive=false;
 				this.filePhoto.forEach((image,index)=>{
 					if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(image.name)) {
 						this.$store.commit('notification',"Файл  "+image.name+"  не поддерживается")
 						this.filePhoto.splice(index,1)
+						return false
 					}else{
 						data.append('file', image);
+						count++;
 					}
 				})
-				let photo=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'photo/chat/'+this.filePhoto.length,data)
-				if(photo&&!photo.err){
-					setTimeout(()=>{this.photo=this.photo.concat(photo.array_name)},1000)
+				if(count){
+					let photo=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'photo/chat/'+this.filePhoto.length,data)
+					if(photo&&!photo.err){
+						setTimeout(()=>{this.photo=this.photo.concat(photo.array_name)},1000)
+					}else{
+						this.$store.commit('notification',"Прозиошла ошибка, попробуйте позже")
+						this.loadImgActive=true
+					}
+					setTimeout(()=>{this.loadImgActive=true},1000)
+					this.$_vtr_dialogs_scrollBottom();
 				}else{
-					this.$store.commit('notification',"Прозиошла ошибка, попробуйте позже")
 					this.loadImgActive=true
 				}
-				setTimeout(()=>{this.loadImgActive=true},1000)
-				this.$_vtr_dialogs_scrollBottom();
 			},
 			async $_vtr_dialog_deletePhoto(index,img){
 				let photo=await this.$store.getters.request('DELETE',this.$store.state.user.settings.server+'photo/chat/'+img)

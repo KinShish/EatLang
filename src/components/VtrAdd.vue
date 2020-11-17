@@ -160,23 +160,28 @@
 			},
 			async $_vtr_add_loadimages(){
 				this.loadImgActive=false;
-				let data = new FormData();
+				let data = new FormData(),count=0;
 				this.file.forEach((image,index)=>{
 					if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(image.name)) {
 					this.$store.commit('notification',"Файл  "+image.name+"  не поддерживается")
 					this.file.splice(index,1)
 					}else{
 						data.append('file', image);
+						count++;
 					}
 				})
-				let photo=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'photo/goods/'+this.file.length,data)
-				if(photo&&!photo.err){
-					setTimeout(()=>{this.form.img=this.form.img.concat(photo.array_name)},1000)
+				if(count){
+					let photo=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'photo/goods/'+this.file.length,data)
+					if(photo&&!photo.err){
+						setTimeout(()=>{this.form.img=this.form.img.concat(photo.array_name)},1000)
+					}else{
+						this.$store.commit('notification',"Прозиошла ошибка, попробуйте позже")
+						this.loadImgActive=true
+					}
+					setTimeout(()=>{this.loadImgActive=true},1000)
 				}else{
-					this.$store.commit('notification',"Прозиошла ошибка, попробуйте позже")
 					this.loadImgActive=true
 				}
-				setTimeout(()=>{this.loadImgActive=true},1000)
 			}
 		},
 		activated() {
