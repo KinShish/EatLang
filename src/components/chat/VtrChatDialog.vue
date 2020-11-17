@@ -9,18 +9,18 @@
 				img(:src="imgSrc")
 		.whiteBlock(:class="photo.length>0?'paddingPhoto':''" ref="chatFeed" v-if="roomMessages.length>0")
 			transition-group(name="opacity")
-				div(v-for="(message,index) in roomMessages" :key="message.hash")
-					.row(v-if="message.text.split('@')[0].split(':').slice(1)[0]!==''" :class="message.id===$store.state.user.data.id?'photoBlockMe':'photoBlock'")
-						img(v-for="image in message.text.split('@')[0].split(':').slice(1)"
-							:src="$store.state.user.settings.server+'user/'+message.id+'/'+image"
-							@click="$_vtr_dialog_watchPhoto($store.state.user.settings.server+'user/'+message.id+'/'+image)")
-					div(:class="message.id===$store.state.user.data.id?'blockMessageMe':'blockMessage'")
-						span.timeMessage(v-if="message.id===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
-						.logo(v-if="message.id!==$store.state.user.data.id")
-							img(:src="$store.state.user.settings.server+'company/'+room.id_company+'/'+room.img" v-if="room.img")
-							img.noImg(src="../../assets/loadLogo.svg" v-else)
-						span.text(v-if="message.text.split('@')[1]") {{message.text.split('@')[1]}}
-						span.timeMessage(v-if="message.id!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
+				div(v-for="(message,index) in roomMessages" :key="message.hash" :class="message.id===$store.state.user.data.id?'mainBlockMessageMe':'mainBlockMessage'")
+					.logo(v-if="message.id!==$store.state.user.data.id")
+						img(:src="$store.state.user.settings.server+'company/'+room.id_company+'/'+room.img" v-if="room.img")
+						img.noImg(src="../../assets/loadLogo.svg" v-else)
+					span.timeMessage(v-if="message.id===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
+					.blockMessage
+						.photoBlock(v-if="message.text.split('@')[0].split(':').slice(1)[0]!==''")
+							img(v-for="image in message.text.split('@')[0].split(':').slice(1)" :src="$store.state.user.settings.server+'user/'+message.id+'/'+image"
+								@click="$_vtr_dialog_watchPhoto($store.state.user.settings.server+'user/'+message.id+'/'+image)")
+						.message
+							span.text(v-if="message.text.split('@')[1]") {{message.text.split('@')[1]}}
+							span.timeMessage(v-if="message.id!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
 		.blockAddImg(v-if="photo.length>0")
 			.imgBlock(v-for="(img,index) in photo")
 				img.close(src="../../assets/close.svg" @click="$_vtr_dialog_deletePhoto(index,img)")
@@ -206,10 +206,105 @@
 </script>
 
 <style scoped>
-	.toScrollBlock{
-		position: absolute;
-		bottom: -100px;
+	/*блок сообщений начало*/
+	.timeMessage{
+		font-size: 12px;
+		color: #757575;
 	}
+	.logo{
+		overflow: hidden;
+		width: 25px;
+		height: 25px;
+		background: #e6e6e6;
+		border-radius: 50%;
+		margin-top: 10px;
+		margin-right: 10px;
+		display: table;
+		line-height: 25px;
+	}
+	.logo img{
+		width: 100%;
+	}
+	.photoBlock img{
+		padding: 4px;
+		height: 130px;
+		max-height: 130px;
+		max-width: 100%;
+		margin: 0 auto;
+		width: auto;
+	}
+	.blockMessage{
+		display: flex;
+		width: 100%;
+		position: relative;
+		flex-wrap: wrap;
+	}
+	.message{
+		display: flex;
+		flex: auto;
+	}
+	/*чужое сообщение начало*/
+	.mainBlockMessage{
+		display: flex;
+		margin: 10px 0;
+	}
+	.mainBlockMessage .text{
+		background: #E6E6E6;
+		box-shadow: 0 3px 4px rgba(0, 0, 0, 0.11);
+		border-radius: 3px;
+		padding: 10px;
+		width: 72%;
+		float: left;
+		margin: 10px 0;
+	}
+	.mainBlockMessage .timeMessage{
+		text-align: left;
+		margin-left: 5px;
+		margin-top: auto;
+		margin-bottom: 10px;
+	}
+	.mainBlockMessage .photoBlock{
+		display: flex;
+		width: 72%;
+		flex-wrap: wrap;
+		background: #e6e6e6;
+		border-radius: 3px;
+		position: relative;
+		margin: 10px 0;
+	}
+	/*чужое сообщение конец*/
+	/*мое сообщение начало*/
+	.mainBlockMessageMe{
+		display: flex;
+		margin: 10px 0 auto;
+	}
+	.mainBlockMessageMe .blockMessage{
+		width: 72%;
+	}
+	.mainBlockMessageMe .timeMessage{
+		margin: auto 10px 0 auto;
+		text-align: end;
+	}
+	.mainBlockMessageMe .photoBlock{
+		display: flex;
+		flex-wrap: wrap;
+		background: rgba(246, 70, 70, 0.76);
+		border-radius: 3px;
+		position: relative;
+		margin: 10px 0;
+		width: 100%;
+	}
+	.mainBlockMessageMe .text{
+		background: rgba(246, 70, 70, 0.76);
+		box-shadow: 0 3px 4px rgba(0, 0, 0, 0.11);
+		border-radius: 3px;
+		padding: 10px;
+		width: 100%;
+		margin-left: auto;
+		color: white;
+	}
+	/*мое сообщение конец*/
+	/*блок сообщений конец*/
 	.customSpiner{
 		margin-top: 10px;
 		margin-right: 5px;
@@ -218,21 +313,6 @@
 	}
 	.noImg{
 		padding: 4px;
-	}
-	.logo{
-		overflow: hidden;
-		display: grid;
-		place-content: center;
-		width: 25px;
-		height: 25px;
-		background: #e6e6e6;
-		border-radius: 50%;
-		margin-top: 10px;
-		margin-right: 10px;
-	}
-	.logo img{
-		width: 100%;
-		height: auto;
 	}
 	.modalPhoto{
 		background: rgba(0, 0, 0, 0.23);
@@ -298,69 +378,6 @@
 		padding: 2px;
 		border-radius: 3px;
 	}
-	.timeMessage{
-		font-size: 12px;
-		color: #757575;
-	}
-	.photoBlock{
-		display: flex;
-		width: 72%;
-		flex-wrap: wrap;
-		margin-right: auto;
-		background: #e6e6e6;
-		border-radius: 3px;
-	}
-	.photoBlockMe{
-		display: flex;
-		width: 72%;
-		flex-wrap: wrap;
-		margin-left: auto;
-		background: rgba(246, 70, 70, 0.76);
-		border-radius: 3px;
-	}
-	.photoBlockMe img, .photoBlock img{
-		padding: 4px;
-		height: 130px;
-		width: auto;
-		margin: 0 auto;
-	}
-	.blockMessage{
-		display: flex;
-	}
-	.blockMessage .text{
-		background: #E6E6E6;
-		box-shadow: 0 3px 4px rgba(0, 0, 0, 0.11);
-		border-radius: 3px;
-		padding: 10px;
-		width: 72%;
-		float: left;
-		margin: 10px 0;
-	}
-	.blockMessage .timeMessage{
-		margin-top: auto;
-		margin-left: 5px;
-		margin-bottom: 5px;
-	}
-	.blockMessageMe{
-		display: flex;
-	}
-	.blockMessageMe .timeMessage{
-		width: 28%;
-		text-align: right;
-		margin-right: 5px;
-		margin-top: auto;
-		margin-bottom: 10px;
-	}
-	.blockMessageMe .text{
-		background: rgba(246, 70, 70, 0.76);
-		box-shadow: 0 3px 4px rgba(0, 0, 0, 0.11);
-		border-radius: 3px;
-		padding: 10px;
-		width: 72%;
-		float: right;
-		margin: 10px 0;
-		color: white;
-	}
 	.header{
 		position: fixed;
 		width: 100%;
@@ -370,7 +387,7 @@
 		white-space: nowrap;
 	}
 	.whiteBlock{
-		padding: 100px 15px;
+		padding: 100px 10px;
 		overflow-x: hidden;
 		overflow-y: scroll;
 	}
