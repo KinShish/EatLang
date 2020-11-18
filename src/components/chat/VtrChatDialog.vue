@@ -6,7 +6,12 @@
 			//span.dottedActive(:class="false?'':'deActive'")
 		transition(name="opacity")
 			.modalPhoto(v-if="photoModal" @click="photoModal=false")
-				img(:src="imgSrc")
+				.agileBlock
+					div(v-if="imagesMessage.length>1")
+						agile(:options="sliderProduct" @after-change="$_vtr_dialog_slideIndex" ref="sliderProduct")
+							.imgAgileBlock(v-for="img in imagesMessage")
+								img(:src="img")
+					img(:src="imagesMessage[0]" v-else)
 		.whiteBlock(:class="photo.length>0?'paddingPhoto':''" ref="chatFeed" v-if="roomMessages.length>0")
 			transition-group(name="opacity")
 				div(v-for="(message,index) in roomMessages" :key="message.hash" :class="message.id===$store.state.user.data.id?'mainBlockMessageMe':'mainBlockMessage'")
@@ -16,9 +21,9 @@
 					span.timeMessage(v-if="message.id===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
 					.blockMessage
 						.photoBlock(v-if="message.text.split('@')[0].split(':').slice(1)[0]!==''")
-							.testImg(v-for="image in message.text.split('@')[0].split(':').slice(1)")
+							.blockImg(v-for="(image,index) in message.text.split('@')[0].split(':').slice(1)")
 								img( :src="$store.state.user.settings.server+'user/'+message.id+'/'+image"
-									@click="$_vtr_dialog_watchPhoto($store.state.user.settings.server+'user/'+message.id+'/'+image)")
+									@click="$_vtr_dialog_watchPhoto(message,index)")
 						.message
 							span.text(v-if="message.text.split('@')[1]") {{message.text.split('@')[1]}}
 							span.timeMessage(v-if="message.id!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
@@ -38,20 +43,35 @@
 </template>
 
 <script>
+	import { VueAgile } from 'vue-agile'
 	export default {
 		data(){
 			return{
+				sliderProduct: {
+					navButtons: false,
+					dots: false,
+					slidesToShow: 1,
+					infinite:false,
+					initialSlide:1,
+				},
+				slideIndex:0,
 				textMessage:'',
 				filePhoto:[],
 				photo:[],
-				imgSrc:'',
+				imagesMessage:'',
 				photoModal:false,
 				room:[],
 				roomMessages:[],
 				loadImgActive:true
 			}
 		},
+		components: {
+			agile: VueAgile
+		},
 		methods:{
+			$_vtr_dialog_slideIndex(index){
+				this.slideIndex=index.currentSlide+1;
+			},
 			async $_vtr_dialog_sendMessage(){
 				let message=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'');
 				if(message||this.photo.length>0){
@@ -127,7 +147,7 @@
 				let data = new FormData(),count=0;
 				this.loadImgActive=false;
 				this.filePhoto.forEach((image,index)=>{
-					if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(image.name)) {
+					if (!/\.(jpeg|jpe|jpg|png|webp)$/i.test(image.name)) {
 						this.$store.commit('notification',"Файл  "+image.name+"  не поддерживается")
 						this.filePhoto.splice(index,1)
 						return false
@@ -162,9 +182,14 @@
 					console.log(data)
 				}
 			},
-			$_vtr_dialog_watchPhoto(img){
-				this.imgSrc=img;
+			$_vtr_dialog_watchPhoto(message,index){
+				this.imagesMessage=[];
+				let images=message.text.split('@')[0].split(':').slice(1);
+				images.forEach(img=>{
+					this.imagesMessage.push(this.$store.state.user.settings.server+'user/'+message.id+'/'+img)
+				})
 				this.photoModal=true;
+				this.sliderProduct.initialSlide=index;
 			},
 		},
 		beforeRouteLeave(to, from, next){
@@ -213,12 +238,21 @@
 </script>
 
 <style scoped>
-	.testImg {
+	.imgAgileBlock{
+		width: 100%;
+	}
+	.agileBlock{
+		top: 50%;
+		transform: translateY(-50%);
+		position: relative;
+		height: fit-content;
+	}
+	/*блок сообщений начало*/
+	.blockImg {
 		width: 100%;
 		display: grid;
 		height: 130px;
 	}
-	/*блок сообщений начало*/
 	.timeMessage{
 		font-size: 12px;
 		color: #757575;
@@ -239,10 +273,9 @@
 	}
 	.photoBlock img{
 		padding: 4px;
-		height: 130px;
 		max-height: 130px;
 		max-width: 100%;
-		margin: 0 auto;
+		margin: auto;
 		width: auto;
 	}
 	.blockMessage{
@@ -345,8 +378,6 @@
 		margin: 0 auto;
 		display: block;
 		position: relative;
-		top: 50%;
-		transform: translateY(-50%);
 	}
 	.paddingPhoto{
 		margin-bottom: 100px !important;

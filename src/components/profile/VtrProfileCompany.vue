@@ -38,9 +38,11 @@
 		methods:{
 			async $_vtr_profile_company_subscribe(){
 				let data=await this.$store.getters.request('POST',this.$store.state.user.settings.server+'subscription',{id:this.$route.params.idComp})
-				if(!data.err){
+				if(data&&!data.err){
 					this.subActive=!this.subActive;
 					this.$store.commit('notification',data.text)
+				}else{
+					this.$store.commit('notification','Произошла ошибка, попробуйте позже')
 				}
 			},
 			async $_vtr_profile_company_loadGoods(){

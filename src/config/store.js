@@ -213,10 +213,8 @@ export const userVuex = {
 					const {data}= await axios({method, url, data: formData,headers:{Authorization: "Bearer " + state.token}})
 					if(!data.err) {
 						return data;
-					}else{
-						//this.commit('notification',data.text);
-						return false
 					}
+					return false
 				}
 				catch (e) {
 					console.log(e)

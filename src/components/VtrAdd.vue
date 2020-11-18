@@ -162,7 +162,7 @@
 				this.loadImgActive=false;
 				let data = new FormData(),count=0;
 				this.file.forEach((image,index)=>{
-					if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(image.name)) {
+					if (!/\.(jpeg|jpe|jpg|png|webp)$/i.test(image.name)) {
 					this.$store.commit('notification',"Файл  "+image.name+"  не поддерживается")
 					this.file.splice(index,1)
 					}else{
