@@ -16,8 +16,9 @@
 					span.timeMessage(v-if="message.id===$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
 					.blockMessage
 						.photoBlock(v-if="message.text.split('@')[0].split(':').slice(1)[0]!==''")
-							img(v-for="image in message.text.split('@')[0].split(':').slice(1)" :src="$store.state.user.settings.server+'user/'+message.id+'/'+image"
-								@click="$_vtr_dialog_watchPhoto($store.state.user.settings.server+'user/'+message.id+'/'+image)")
+							.testImg(v-for="image in message.text.split('@')[0].split(':').slice(1)")
+								img( :src="$store.state.user.settings.server+'user/'+message.id+'/'+image"
+									@click="$_vtr_dialog_watchPhoto($store.state.user.settings.server+'user/'+message.id+'/'+image)")
 						.message
 							span.text(v-if="message.text.split('@')[1]") {{message.text.split('@')[1]}}
 							span.timeMessage(v-if="message.id!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
@@ -212,6 +213,11 @@
 </script>
 
 <style scoped>
+	.testImg {
+		width: 100%;
+		display: grid;
+		height: 130px;
+	}
 	/*блок сообщений начало*/
 	.timeMessage{
 		font-size: 12px;

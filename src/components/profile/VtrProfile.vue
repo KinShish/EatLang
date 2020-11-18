@@ -284,7 +284,7 @@
 		top: 140px;
 	}
 	.logo{
-		width: 100% !important;
+		width: auto !important;
 		max-height: 250px;
 		height: auto;
 		margin-top: -30px;

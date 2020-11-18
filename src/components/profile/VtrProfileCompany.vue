@@ -67,10 +67,8 @@
 		},
 		beforeRouteLeave(to, from, next){
 			if(!(to.name==='good')){
-				console.log('dse')
 				this.$destroy()
 			}
-			console.log('dse1')
 			next();
 		},
 		created() {
