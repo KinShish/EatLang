@@ -140,11 +140,9 @@
 				})
 			},
 			async $_vtr_good_loadPrice(){
-				if(this.price==='Показать цену'){
-					let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood+'/price')
-					if(!data.err){
-						this.price=data.price;
-					}
+				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood+'/price')
+				if(!data.err){
+					this.price=data.price;
 				}
 			},
 			async $_vtr_good_loadGood(){

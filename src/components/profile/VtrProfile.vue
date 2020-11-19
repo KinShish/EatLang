@@ -245,7 +245,7 @@
 			},
 			async $_vtr_profile_loadLogo(file){
 				if(file){
-					if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(file.name)) {
+					if (!/\.(jpeg|jpe|jpg|png|webp)$/i.test(file.name)) {
 						this.$store.commit('notification',"Файл  "+file.name+"  не поддерживается")
 					}else{
 						this.downloadLogo=true;
@@ -284,7 +284,7 @@
 		top: 140px;
 	}
 	.logo{
-		width: 100% !important;
+		width: auto !important;
 		max-height: 250px;
 		height: auto;
 		margin-top: -30px;

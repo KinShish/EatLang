@@ -7,7 +7,7 @@
 			div(v-if="good.img.length>0")
 				.blockImg( v-if="good.img.length===1")
 					img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/'+good.img[0]")
-				agile(:options="sliderProduct" @after-change="$vtr_product_slideIndex" v-else-if="good.img.length>1" ref="sliderProduct")
+				agile(:options="sliderProduct" @after-change="$_vtr_product_slideIndex" v-else-if="good.img.length>1" ref="sliderProduct")
 					.blockImg(v-for="img in good.img")
 						img(:src="$store.state.user.settings.server+'company/'+good.company.id+'/'+img")
 			.noPhoto(v-else)
@@ -65,7 +65,7 @@
 					setTimeout(()=> {this.$refs.imageLike.classList.remove('sizeImgBtn')}, 700);
 				}
 			},
-			$vtr_product_slideIndex(index){
+			$_vtr_product_slideIndex(index){
 				this.slideIndex=index.currentSlide+1;
 			}
 		},
