@@ -22,6 +22,19 @@ export const chatVuex = {
 	getters:{
 		createRoom:()=>(data,cb)=>{
 			socket.emit('create room',data,(res)=>{
+				userVuex.state.rooms[res.key]={
+					goods_id:data.goods.id,
+					id_company:data.id_company,
+					id_manager:0,
+					id_user:userVuex.state.data.id,
+					img:data.goods.img,
+					key:res.key,
+					message:{key:'', hash:''},
+					messages:[],
+					name:data.goods.name,
+					notification:0,
+					price:data.goods.price
+				}
 				cb(res)
 			})
 		},
@@ -122,7 +135,6 @@ export const userVuex = {
 				state.phone=new JsSIP.UA(configuration);
 				socket = io(settings.serverChat,{path: '/vtr/chat',query:{token:localStorage.getItem('token')}});
 				socket.on('room message',res=>{
-					console.log(res)
 					//dateTime,hash,id,id_recipient,key,text,watch
 					state.newMessage={key:res.key,hash:res.hash};
 					state.rooms[res.key].message=res;
@@ -160,7 +172,6 @@ export const userVuex = {
 						state.rooms[r.key].message=state.rooms[r.key].messages.slice(-1)[0];
 						state.rooms[r.key].notification=this.getters.watchChatMessage(r.key);
 					})
-					console.log(state.rooms)
 					localStorage.setItem("rooms",JSON.stringify(state.rooms))
 				});
 				setInterval(emit, 10000)
@@ -250,7 +261,6 @@ export const userVuex = {
 				Object.values(state.rooms).forEach(r=>{
 					length+=r.notification
 				})
-				console.log(length)
 				return length
 			}
 			return state.rooms[key].messages.filter(mess=>!mess.watch).filter(mess=>mess.id!==state.data.id).length

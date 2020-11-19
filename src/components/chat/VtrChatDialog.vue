@@ -196,8 +196,9 @@
 			this.photoModal=false;
 			next();
 		},
-		mounted() {
+		activated() {
 			this.room=this.$store.state.user.rooms[this.$route.params.key]
+			console.log(this.room)
 			this.roomMessages=this.$store.state.user.rooms[this.$route.params.key].messages.filter(message=>message.key===this.$route.params.key).sort((a, b) => {const dateA = new Date(a.dateTime), dateB = new Date(b.dateTime);return dateA.getTime() - dateB.getTime()})
 			this.roomMessages
 				.filter(mess=>!mess.watch)
@@ -216,6 +217,7 @@
 			// eslint-disable-next-line no-undef
 			FirebasePlugin.setBadgeNumber(numberBagde);
 		},
+
 		watch:{
 			'$store.state.user.newMessage.hash'(){
 				if(this.$route.params.key===this.$store.state.user.newMessage.key){
@@ -238,6 +240,7 @@
 </script>
 
 <style scoped>
+	/*модальное окно слайдера фотографий начало*/
 	.imgAgileBlock{
 		width: 100%;
 	}
@@ -247,6 +250,7 @@
 		position: relative;
 		height: fit-content;
 	}
+	/*модальное окно слайдера фотографий конец*/
 	/*блок сообщений начало*/
 	.blockImg {
 		width: 100%;

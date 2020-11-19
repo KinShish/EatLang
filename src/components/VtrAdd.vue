@@ -24,14 +24,14 @@
 						transition-group.blockImages
 							.image(v-for="(img,index) in form.img" :key="img")
 								img.close(src="../assets/close.svg" @click="$_vtr_add_delete_loadimages(img,index)")
-								img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/up/goods/'+img")
+								img(:src="$store.state.user.settings.server+'company/'+$store.state.user.data.id_company+'/'+img")
 					label(for="fileInp")
 						.addImage
 							img(src="../assets/addPhoto.svg" v-if="loadImgActive")
 							b-spinner.customSpiner(variant="danger" v-else)
 				label(for="videoInp") Видео
 				b-form-input#videoInp.borderInput(placeholder="Ссылка" v-model="form.video")
-			button.btnRed(type="submit") {{$route.name==='edit'?'Редактировать':'Добавить'}}
+			button.btnRed(type="submit") {{$route.name==='edit'?'Готово':'Добавить'}}
 			button.btnRed.noMarginTop(type="button" @click="$router.go(-1)" v-if="$route.name==='edit'") Отмена
 		.spinerBlock(v-else)
 			b-spinner.customSpiner(variant="danger")

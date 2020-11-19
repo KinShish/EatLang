@@ -12,7 +12,7 @@
 						.chatBlockInfo
 							span {{room.name}}
 							span(v-if="room.message") {{room.message.id===$store.state.user.data.id?'Вы: '+room.message.text.split('@')[1]:room.message.text.split('@')[1]}}
-						span.chatDate  {{new Date(room.message.dateTime).toLocaleDateString()}}
+						span.chatDate(v-if="room.message")  {{new Date(room.message.dateTime).toLocaleDateString()}}
 							.notificationblock(v-if="room.notification")
 								span.notification {{room.notification}}
 					.chatPrice
@@ -21,7 +21,8 @@
 			.noRooms(v-else-if="search.length<2") Диалогов еще нет :(
 			.noRooms(v-else) Ничего не найдено :(
 		transition(name="opacity")
-			router-view
+			keep-alive
+				router-view
 </template>
 
 <script>

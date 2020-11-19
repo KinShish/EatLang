@@ -10,17 +10,23 @@
 						v-model="$v.formLogin.phone.$model"
 						placeholder="+7 (___) __-__-___"
 						@input="$_vtr_login_phone")
-					b-form-input(
-						required
-						v-model="$v.formLogin.password.$model"
-						type="password"
-						placeholder="Пароль")
+					b-input-group
+						b-form-input(
+							required
+							v-model="$v.formLogin.password.$model"
+							:type="lookPass?'text':'password'"
+							placeholder="Пароль")
+						b-input-group-append
+							button.watchPassword(type="button")
+								img(:src="lookPass?imgPass.text:imgPass.pass" @click="lookPass=!lookPass")
 				button.btnRed(type="submit" :disabled="$v.formLogin.$invalid") Далее
 			.spinerBlock(v-else)
 				b-spinner.customSpiner(variant="danger")
 </template>
 
 <script>
+	import pass from '../../assets/lookPass.svg'
+	import text from '../../assets/lookPassActive.svg'
 	import {minLength, required} from "vuelidate/lib/validators";
 	export default {
 		data(){
@@ -29,7 +35,12 @@
 					phone: '',
 					password: '',
 				},
-				load:false
+				load:false,
+				lookPass:false,
+				imgPass:{
+					pass:pass,
+					text:text
+				}
 			}
 		},
 		methods:{
@@ -80,6 +91,26 @@
 	}
 </script>
 <style scoped>
+	.watchPassword img{
+		width: 25px;
+		transition: .3s ease;
+	}
+	button.watchPassword{
+		outline: none;
+	}
+	.watchPassword{
+		display: block;
+		width: 100%;
+		height: calc(1.5em + 0.75rem + 2px);
+		font-size: 1rem;
+		font-weight: 400;
+		line-height: 1.5;
+		color: #495057;
+		background-color: #fff;
+		margin-top: auto;
+		border: 1px solid white;
+		border-radius: 0 0.25rem 0.25rem 0;
+	}
 	.spinerBlock{
 		height: 260px;
 	}
@@ -103,6 +134,9 @@
 	}
 	.formLogin input{
 		margin-top: 25px;
+		outline: none;
+		box-shadow: none;
+		border-color: #ced4da;
 	}
 	.formLogin input::-webkit-outer-spin-button,
 	.formLogin input::-webkit-inner-spin-button {
