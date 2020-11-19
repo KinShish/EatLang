@@ -18,7 +18,8 @@
 					.chatPrice
 						span {{room.price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g,'$1' + ' ')+' ₽'}}
 					hr.chatBorder
-			.noRooms(v-else) Диалогов еще нет :(
+			.noRooms(v-else-if="search.length<2") Диалогов еще нет :(
+			.noRooms(v-else) Ничего не найдено :(
 		transition(name="opacity")
 			router-view
 </template>
