@@ -5,6 +5,19 @@ let socket = '';
 window.onbeforeunload=(e=>{
 	if(userVuex.state.data!=='-1') socket.emit('exit')
 })
+
+import JsSIP from 'jssip'
+const socketSip =new JsSIP.WebSocketInterface('wss://sip.alna.ru/ws');
+const configuration = {
+	sockets: [socketSip],
+	outbound_proxy_set: 'wss://sip.alna.ru/ws',
+	uri: 'sip:1000@sip.alna.ru',
+	password: 'A123456789',
+	session_timers: false,
+	register: true
+};
+
+
 export const chatVuex = {
 	getters:{
 		createRoom:()=>(data,cb)=>{
@@ -17,7 +30,6 @@ export const chatVuex = {
 				socket.emit('message', {hash: data.hash, user: userVuex.state.data.id === data.id});
 				cb(res)
 			})
-
 		},
 		createOldRoom:()=>(data,cb)=>{
 			socket.emit('create old room',data,(res)=>{
@@ -43,6 +55,7 @@ export const userVuex = {
 		cats:[],
 		favorites:[],
 		rooms:{},
+		phone:''
 	},
 	mutations: {
 		newMessageGetNull(state){
@@ -105,6 +118,8 @@ export const userVuex = {
 				state.data=data.user;
 				state.favorites=data.favorites
 				state.managers=(data.managers!==undefined?data.managers:[]);
+				configuration.uri='sip:'+data.user.sip+'@sip.alna.ru';
+				state.phone=new JsSIP.UA(configuration);
 				socket = io(settings.serverChat,{path: '/vtr/chat',query:{token:localStorage.getItem('token')}});
 				socket.on('room message',res=>{
 					console.log(res)
@@ -121,6 +136,7 @@ export const userVuex = {
 				state.errAuth=new Date().getTime();
 				this.commit('clearAll');
 			}
+
 		},
 		loginChat(state,f){
 			const emit=()=>{
@@ -149,6 +165,9 @@ export const userVuex = {
 				});
 				setInterval(emit, 10000)
 			}
+		},
+		callSip(state,num){
+			sip.call(num);
 		},
 		async logout (state){
 			let data=await this.getters.request('POST',state.settings.server+'user/logout');

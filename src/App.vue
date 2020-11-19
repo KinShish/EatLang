@@ -1,5 +1,6 @@
 <template lang="pug">
 	div
+		audio#remoteAudio(autoPlay)
 		VtrAdditionalNotifications
 		transition(name="opacity")
 			keep-alive(max="20")
@@ -8,6 +9,8 @@
 </template>
 
 <script>
+	import JsSIP from "jssip";
+
 	export default {
 		components:{
 			VtrAdditionalNotifications :()=>import('./components/additional/VtrAdditionalNotifications'),
@@ -37,6 +40,80 @@
 					this.$root.$emit('lazyLoad', this.$_vtr_main_lazyLoad());
 				};
 			},
+			start(){
+				JsSIP.debug.enable('JsSIP:*');
+				this.$store.state.user.phone.start();
+				this.$store.state.user.phone.on('newRTCSession', function (data) {
+					console.log('жопа с ножками ', data)
+
+					const session = data.session;
+
+					session.on('peerconnection', () => {
+						console.log("UA session progress Попытка дозвониться");
+						playSound("vizov.mp3");
+					});
+					session.on('progress', () => {
+						console.log("Идет дозвон");
+						playSound("vizov.mp3");
+					});
+
+					session.on('connecting', () => {
+						console.log("дозвонился");
+						//playSound("vizov.mp3");
+						// Тут мы подключаемся к микрофону и цепляем к нему поток, который пойдёт в астер
+						let peerconnection = session.connection;
+						//let localStream = peerconnection.getLocalStreams()[0];
+						// Handle local stream
+						//if (localStream) {
+						// Clone local stream
+						//this.localClonedStream = localStream.clone();
+
+						console.log('UA set local stream');
+
+						//let localAudioControl = document.getElementById("localAudio");
+						//localAudioControl.srcObject = this.localClonedStream;
+						//}
+
+						// Как только астер отдаст нам поток абонента, мы его засунем к себе в наушники
+						peerconnection.addEventListener('addstream', (event) => {
+							console.log("UA session addstream");
+
+							let remoteAudioControl = document.getElementById("remoteAudio");
+							remoteAudioControl.srcObject = event.stream;
+						});
+					});
+					session.on('failed', (e) => {
+						//stopSound("vizov.mp3");
+						alert(JSON.stringify(e))
+						playSound("rejected.mp3", false);
+
+						//this.callButton.removeClass('d-none');
+						//this.hangUpButton.addClass('d-none');
+					});
+					session.on('ended', () => {
+						console.log("UA session ended");
+						playSound("rejected.mp3", false);
+						//JsSIP.Utils.closeMediaStream(this.localClonedStream);
+
+						//this.callButton.removeClass('d-none');
+						//this.hangUpButton.addClass('d-none');
+					});
+					session.on('accepted', () => {
+						console.log('Вам ответили')
+						//stopSound("ringback.ogg");
+						//playSound("answered.mp3", false);
+					});
+					//this.stop();
+				})
+				const playSound = (name) => {
+					const audio = new Audio(require('./assets/audio/' + name))
+					audio.play()
+				}
+				/*const stopSound=(name)=>{
+					const audio = new Audio(require('../assets/audio/'+name))
+					audio.stop()
+				}*/
+			}
 		},
 		created() {
 			if(localStorage.getItem('token')===null||localStorage.getItem('token')===''){
@@ -51,6 +128,7 @@
 			'$store.state.user.data'(){
 				if(this.$store.state.user.data!=='-1'){
 					this.$router.push('/pin')
+					this.start()
 				}else{
 					this.$router.push('/login')
 				}

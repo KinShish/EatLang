@@ -3,13 +3,44 @@
 		.titleName Имя кого бы то ни было
 		.fastBtnGood
 			.fastButtonBlock
-				button.fastButton(@click="") Позвонить
-				button.fastButton(@click="") Закончить
+				button.fastButton(@click="call()") Позвонить
+				button.fastButton(@click="call()") Закончить
 </template>
 
 <script>
-	export default {
 
+	export default {
+		methods:{
+			call(){
+				const eventHandlers = {
+					'progress': function (e) {
+						console.log('call is in progress', e);
+					},
+					'failed': function (e) {
+						console.log('call failed with cause: ' + e);
+					},
+					'ended': function (e) {
+						console.log('call ended with cause: ' + e);
+					},
+					'confirmed': function (e) {
+						console.log('call confirmed', e);
+					}
+				};
+				const options = {
+					pcConfig: {
+						hackStripTcp: true, // Важно для хрома, чтоб он не тупил при звонке
+						iceServers: []
+					},
+					rtcOfferConstraints: {
+						offerToReceiveAudio: 1, // Принимаем только аудио
+						offerToReceiveVideo: 0
+					},
+					eventHandlers: eventHandlers,
+					mediaConstraints: {audio: true, video: false}
+				};
+				this.$store.state.user.phone.call('sip:1001@sip.alna.ru', options);
+			},
+		}
 	}
 </script>
 
