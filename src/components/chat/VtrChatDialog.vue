@@ -176,7 +176,7 @@
 					this.photo.splice(index,1)
 				}
 			},
-			async $_vtr_dialogs_loadUser(){
+			async $_vtr_dialogs_loadUser(){ //загрузка инфы пользователя, пока не сделано
 				let data=await this.$store.getters.request('DELETE',this.$store.state.user.settings.server+'photo/chat/')
 				if(data&&!data.err){
 					console.log(data)
@@ -198,7 +198,6 @@
 		},
 		activated() {
 			this.room=this.$store.state.user.rooms[this.$route.params.key]
-			console.log(this.room)
 			this.roomMessages=this.$store.state.user.rooms[this.$route.params.key].messages.filter(message=>message.key===this.$route.params.key).sort((a, b) => {const dateA = new Date(a.dateTime), dateB = new Date(b.dateTime);return dateA.getTime() - dateB.getTime()})
 			this.roomMessages
 				.filter(mess=>!mess.watch)

@@ -29,7 +29,7 @@
 					router-link.socBlock(:to="$store.state.user.admin?'/profile/managers':'/profile/companyGoods'")
 						div
 							img(src="../../assets/managers.svg")
-							span {{$store.state.user.admin?$store.state.user.managers.length:''}}
+							span {{$store.state.user.admin?$store.state.user.managers.length:$store.state.user.goods_count}}
 						p {{$store.state.user.admin?'Менеджеры':'Объявления'}}
 				router-link.btnProfile(to="profile/settings" v-if="$store.state.user.admin")
 					img(src="../../assets/settings.svg")

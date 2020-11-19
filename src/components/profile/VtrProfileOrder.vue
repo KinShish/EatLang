@@ -23,6 +23,9 @@
 			.container
 				p Вы уверены что хотите закрыть заказ?
 				button.btnRed(@click="$_vtr_order_closeOrder") Да
+		transition(name="opacity")
+			keep-alive
+				router-view
 </template>
 
 <script>
@@ -47,7 +50,8 @@
 			async $_vtr_order_getOrder(){
 				let data=await this.$store.getters.request('PUT',this.$store.state.user.settings.server+'company/order/'+this.$route.params.orderId)
 				if(data&&!data.err){
-					this.$router.push({path: '/chat/dialog/'+this.order.chat_key,query:{type:'manager'}})
+					this.$store.getters.createRoomOrder(this.order)
+					this.$router.push('/chat/dialog/'+this.order.chat_key)
 				}else{
 					this.$router.go(-1);
 					this.$store.commit('notification','Прозошла ошибка, попробуйте позже')

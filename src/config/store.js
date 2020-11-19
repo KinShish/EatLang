@@ -20,6 +20,21 @@ const configuration = {
 
 export const chatVuex = {
 	getters:{
+		createRoomOrder:()=>(data)=>{
+			userVuex.state.rooms[data.chat_key]={
+					goods_id:data.id_goods,
+					id_company:data.id_company,
+					id_manager:userVuex.state.data.id,
+					id_user:data.id_client,
+					img:data.img,
+					key:data.chat_key,
+					message:{key:'', hash:''},
+					messages:[],
+					name:data.name,
+					notification:0,
+					price:data.price
+			}
+		},
 		createRoom:()=>(data,cb)=>{
 			socket.emit('create room',data,(res)=>{
 				userVuex.state.rooms[res.key]={
@@ -68,7 +83,8 @@ export const userVuex = {
 		cats:[],
 		favorites:[],
 		rooms:{},
-		phone:''
+		phone:'',
+		goods_count:''
 	},
 	mutations: {
 		newMessageGetNull(state){
@@ -125,6 +141,7 @@ export const userVuex = {
 		async auth (state){
 			let data=await this.getters.request('GET',state.settings.server+'user/profile');
 			if(data){
+				state.goods_count=data.goods_count
 				state.admin=data.admin;
 				state.errAuth=false;
 				state.company=data.company;
