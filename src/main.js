@@ -10,9 +10,9 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import '../src/css/index.css'
 import Vuelidate from 'vuelidate'
 import VueMask from 'v-mask'
+import VueZoomer from 'vue-zoomer'
 
-
-
+Vue.use(VueZoomer)
 Vue.use(VueMask);
 Vue.use(Vuelidate)
 Vue.use(VueRouter)

@@ -64,6 +64,9 @@
 </script>
 
 <style scoped>
+	.whiteBlock{
+		padding-bottom: 60px;
+	}
 	.notificationblock{
 		display: block;
 		width: 100%;

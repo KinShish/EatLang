@@ -5,13 +5,14 @@
 			span(v-if="room") {{room.name}}
 			//span.dottedActive(:class="false?'':'deActive'")
 		transition(name="opacity")
-			.modalPhoto(v-if="photoModal" @click="photoModal=false")
+			.modalPhoto(v-if="photoModal")
 				.agileBlock
 					div(v-if="imagesMessage.length>1")
-						agile(:options="sliderProduct" @after-change="$_vtr_dialog_slideIndex" ref="sliderProduct")
-							.imgAgileBlock(v-for="img in imagesMessage")
-								img(:src="img")
-					img(:src="imagesMessage[0]" v-else)
+						v-zoomer-gallery(v-model="sliderModal" :list="imagesMessage")
+					v-zoomer(v-else)
+						img(:src="imagesMessage[0]")
+				.btnCloseModal
+					span(@click="$_vtr_dialog_watchPhoto(0)") Закрыть
 		.whiteBlock(:class="photo.length>0?'paddingPhoto':''" ref="chatFeed" v-if="roomMessages.length>0")
 			transition-group(name="opacity")
 				div(v-for="(message,index) in roomMessages" :key="message.hash" :class="message.id===$store.state.user.data.id?'mainBlockMessageMe':'mainBlockMessage'")
@@ -23,7 +24,7 @@
 						.photoBlock(v-if="message.text.split('@')[0].split(':').slice(1)[0]!==''")
 							.blockImg(v-for="(image,index) in message.text.split('@')[0].split(':').slice(1)")
 								img( :src="$store.state.user.settings.server+'user/'+message.id+'/'+image"
-									@click="$_vtr_dialog_watchPhoto(message,index)")
+									@click="$_vtr_dialog_watchPhoto(1,message,index)")
 						.message
 							span.text(v-if="message.text.split('@')[1]") {{message.text.split('@')[1]}}
 							span.timeMessage(v-if="message.id!==$store.state.user.data.id") {{$_vtr_dialogs_showTime(message.dateTime)}}
@@ -47,14 +48,7 @@
 	export default {
 		data(){
 			return{
-				sliderProduct: {
-					navButtons: false,
-					dots: false,
-					slidesToShow: 1,
-					infinite:false,
-					initialSlide:1,
-				},
-				slideIndex:0,
+				sliderModal:0,
 				textMessage:'',
 				filePhoto:[],
 				photo:[],
@@ -69,9 +63,6 @@
 			agile: VueAgile
 		},
 		methods:{
-			$_vtr_dialog_slideIndex(index){
-				this.slideIndex=index.currentSlide+1;
-			},
 			async $_vtr_dialog_sendMessage(){
 				let message=this.textMessage.replace(/^\s*/,'').replace(/\s*$/,'');
 				if(message||this.photo.length>0){
@@ -182,14 +173,20 @@
 					console.log(data)
 				}
 			},
-			$_vtr_dialog_watchPhoto(message,index){
-				this.imagesMessage=[];
-				let images=message.text.split('@')[0].split(':').slice(1);
-				images.forEach(img=>{
-					this.imagesMessage.push(this.$store.state.user.settings.server+'user/'+message.id+'/'+img)
-				})
-				this.photoModal=true;
-				this.sliderProduct.initialSlide=index;
+			$_vtr_dialog_watchPhoto(type,message,index){
+				if(type){
+					this.imagesMessage=[];
+					let images=message.text.split('@')[0].split(':').slice(1);
+					images.forEach(img=>{
+						this.imagesMessage.push(this.$store.state.user.settings.server+'user/'+message.id+'/'+img)
+					})
+					this.photoModal=true;
+					this.sliderModal=index;
+				}else{
+					this.imagesMessage=[];
+					this.photoModal=false;
+					this.sliderModal=0;
+				}
 			},
 		},
 		beforeRouteLeave(to, from, next){
@@ -240,14 +237,58 @@
 
 <style scoped>
 	/*модальное окно слайдера фотографий начало*/
-	.imgAgileBlock{
+	.btnCloseModal{
+		position: absolute;
 		width: 100%;
+		bottom: 10px;
+	}
+	.btnCloseModal span{
+		display: block;
+		margin: 0 auto;
+		width: -webkit-fit-content;
+		width: -moz-fit-content;
+		width: fit-content;
+		/*background: rgba(0, 0, 0, 0.23);*/
+		background: rgb(255 0 0 / 62%);
+		padding: 5px 10px;
+		border-radius: 10px;
+		color: white;
+		cursor: pointer;
+	}
+	.imgAgileBlock{
+		width: 100% !important;
 	}
 	.agileBlock{
 		top: 50%;
 		transform: translateY(-50%);
 		position: relative;
-		height: fit-content;
+		height: 100%;
+	}
+	.agileBlock div{
+		height: 100%;
+		background: rgba(0, 0, 0, 0) !important;
+		max-width: 600px;
+		margin: 0 auto;
+	}
+	.modalPhoto{
+		background: rgba(0, 0, 0, 0.23);
+		box-shadow: 0 3px 4px rgba(0, 0, 0, 0.11);
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+		padding: 0 7px;
+		display: grid;
+	}
+	.modalPhoto img{
+		width: 100%;
+		height: auto;
+		max-width: 600px;
+		margin: 0 auto;
+		display: block;
+		position: relative;
 	}
 	/*модальное окно слайдера фотографий конец*/
 	/*блок сообщений начало*/
@@ -361,26 +402,6 @@
 	}
 	.noImg{
 		padding: 4px;
-	}
-	.modalPhoto{
-		background: rgba(0, 0, 0, 0.23);
-		box-shadow: 0 3px 4px rgba(0, 0, 0, 0.11);
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: 1;
-		padding: 0 7px;
-		display: grid;
-	}
-	.modalPhoto img{
-		width: 100%;
-		height: auto;
-		max-width: 600px;
-		margin: 0 auto;
-		display: block;
-		position: relative;
 	}
 	.paddingPhoto{
 		margin-bottom: 100px !important;

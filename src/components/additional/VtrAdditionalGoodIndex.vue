@@ -24,10 +24,10 @@
 					img(:src="likeActive?images.likeActive:images.like" ref="imageLikeGood")
 				div(v-if="goods.img.length>0")
 					.blockImg(v-if="goods.img.length===1")
-						img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/'+goods.img[0]")
-					agile(:options="sliderProduct" @after-change="$vtr_good_index_slideIndex" v-else-if="goods.img.length>1")
-						.blockImg(v-for="img in goods.img")
-							img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/'+img")
+						img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/'+goods.img[0]" @click="$_vtr_good_modalSlider(1,0)")
+					agile(:options="sliderProduct" @after-change="$_vtr_good_index_slideIndex" v-else-if="goods.img.length>1")
+						.blockImg(v-for="(img,index) in goods.img")
+							img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/'+img" @click="$_vtr_good_modalSlider(1,index)")
 				.noPhoto(v-else)
 					img(src="../../assets/loadLogo.svg")
 					span Фото отсутствует
@@ -93,6 +93,15 @@
 					//router-link(:to="'/call/'+1001").fastButton Позвонить
 					button.fastButton(@click="$_vtr_good_message") Написать
 			transition(name="opacity")
+				.modalPhoto(v-if="photoModal")
+					.agileBlock
+						div(v-if="imgModal.length>1")
+							v-zoomer-gallery(v-model="sliderModal" :list="imgModal")
+						v-zoomer(v-else)
+							img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/'+goods.img[0]")
+					.btnCloseModal
+						span(@click="$_vtr_good_modalSlider(0)") Закрыть
+			transition(name="opacity")
 				router-view
 		.spinerBlock(v-else)
 			b-spinner.customSpiner(variant="danger")
@@ -116,7 +125,12 @@
 					navButtons: false,
 					dots: false,
 					slidesToShow: 1,
+					infinite:false,
+					initialSlide:0,
 				},
+				photoModal:false,
+				imgModal: [],
+				sliderModal:1,
 				slideIndex:0,
 			}
 		},
@@ -124,6 +138,20 @@
 			this.$_vtr_good_loadGood();
 		},
 		methods:{
+			$_vtr_good_modalSlider(type,index){
+				if(type){
+					this.imgModal=[];
+					this.goods.img.forEach(img=>{
+						this.imgModal.push(this.$store.state.user.settings.server+'company/'+this.goods.company.id+'/'+img)
+					})
+					this.photoModal=true;
+					this.sliderModal=index;
+				}else{
+					this.photoModal=false;
+					this.imgModal=[];
+					this.sliderModal=0;
+				}
+			},
 			async $_vtr_good_message(){
 				this.$store.getters.createRoom({
 					goods:{
@@ -146,6 +174,7 @@
 				}
 			},
 			async $_vtr_good_loadGood(){
+				this.goods=[];
 				let data=await this.$store.getters.request('GET',this.$store.state.user.settings.server+'goods/'+this.$route.params.idGood)
 				if(data&&!data.err){
 					this.goods=data.good;
@@ -165,7 +194,7 @@
 					setTimeout(()=> {this.$refs.imageLikeGood.classList.remove('sizeImgBtn')}, 700);
 				}
 			},
-			$vtr_good_index_slideIndex(index){
+			$_vtr_good_index_slideIndex(index){
 				this.slideIndex=index.currentSlide+1;
 			}
 		},
@@ -176,6 +205,61 @@
 </script>
 
 <style scoped>
+	/*модальное окно слайдера фотографий начало*/
+	.btnCloseModal{
+		position: absolute;
+		width: 100%;
+		bottom: 10px;
+	}
+	.btnCloseModal span{
+		display: block;
+		margin: 0 auto;
+		width: -webkit-fit-content;
+		width: -moz-fit-content;
+		width: fit-content;
+		/*background: rgba(0, 0, 0, 0.23);*/
+		background: rgb(255 0 0 / 62%);
+		padding: 5px 10px;
+		border-radius: 10px;
+		color: white;
+		cursor: pointer;
+	}
+	.imgAgileBlock{
+		width: 100% !important;
+	}
+	.agileBlock{
+		top: 50%;
+		transform: translateY(-50%);
+		position: relative;
+		height: 100%;
+	}
+	.agileBlock div{
+		height: 100%;
+		background: rgba(0, 0, 0, 0) !important;
+		max-width: 600px;
+		margin: 0 auto;
+	}
+	.modalPhoto{
+		background: rgba(0, 0, 0, 0.23);
+		box-shadow: 0 3px 4px rgba(0, 0, 0, 0.11);
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+		padding: 0 7px;
+		display: grid;
+	}
+	.modalPhoto img{
+		width: 100%;
+		height: auto;
+		max-width: 600px;
+		margin: 0 auto;
+		display: block;
+		position: relative;
+	}
+	/*модальное окно слайдера фотографий конец*/
 	.noPhoto{
 		padding: 30px 0;
 		color: #868686;
