@@ -9,8 +9,9 @@
 				.agileBlock
 					div(v-if="imagesMessage.length>1")
 						v-zoomer-gallery(v-model="sliderModal" :list="imagesMessage")
-					v-zoomer(v-else)
-						img(:src="imagesMessage[0]")
+					.agileBlockSolo(v-else)
+						v-zoomer
+							img(:src="imagesMessage[0]")
 				.btnCloseModal
 					span(@click="$_vtr_dialog_watchPhoto(0)") Закрыть
 		.whiteBlock(:class="photo.length>0?'paddingPhoto':''" ref="chatFeed" v-if="roomMessages.length>0")
@@ -263,6 +264,11 @@
 		transform: translateY(-50%);
 		position: relative;
 		height: 100%;
+	}
+	.agileBlockSolo img{
+		top: 50%;
+		position: relative;
+		transform: translateY(-50%);
 	}
 	.agileBlock div{
 		height: 100%;

@@ -97,8 +97,9 @@
 					.agileBlock
 						div(v-if="imgModal.length>1")
 							v-zoomer-gallery(v-model="sliderModal" :list="imgModal")
-						v-zoomer(v-else)
-							img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/'+goods.img[0]")
+						.agileBlockSolo(v-else)
+							v-zoomer
+								img(:src="$store.state.user.settings.server+'company/'+goods.company.id+'/'+goods.img[0]")
 					.btnCloseModal
 						span(@click="$_vtr_good_modalSlider(0)") Закрыть
 			transition(name="opacity")
@@ -226,6 +227,11 @@
 	}
 	.imgAgileBlock{
 		width: 100% !important;
+	}
+	.agileBlockSolo img{
+		top: 50%;
+		position: relative;
+		transform: translateY(-50%);
 	}
 	.agileBlock{
 		top: 50%;
