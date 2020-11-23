@@ -218,7 +218,6 @@
 		width: -webkit-fit-content;
 		width: -moz-fit-content;
 		width: fit-content;
-		/*background: rgba(0, 0, 0, 0.23);*/
 		background: rgb(255 0 0 / 62%);
 		padding: 5px 10px;
 		border-radius: 10px;
