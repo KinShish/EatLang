@@ -12,6 +12,7 @@
 						span {{good.company.name}}
 					VtrAdditionalProduct(:good="good" :hrefLink="'/good/'+good.id" :pageName="'Лента объявлений'")
 				b-spinner.customSpiner(variant="danger" v-if="!load&&!stopLoad")
+				p.noOrder(v-if="goods.length===0&&stopLoad") Тут пусто :(
 		transition(name="opacity")
 			router-view
 </template>
@@ -74,5 +75,12 @@
 <style scoped>
 	.whiteBlock{
 		margin: 0 0 60px 0;
+	}
+	.noOrder{
+		color: #757575;
+		text-align: center;
+		font-size: 24px;
+		padding-top: 50%;
+		background: #f7f7f7;
 	}
 </style>
