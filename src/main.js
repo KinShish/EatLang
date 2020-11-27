@@ -9,11 +9,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import '../src/css/index.css'
 import Vuelidate from 'vuelidate'
-import VueMask from 'v-mask'
-import VueZoomer from 'vue-zoomer'
 
-Vue.use(VueZoomer)
-Vue.use(VueMask);
 Vue.use(Vuelidate)
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -23,11 +19,10 @@ Vue.use(BootstrapVue);
 
 
 
-import {userVuex,chatVuex} from "./config/store";
+import {userVuex} from "./config/store";
 const store = new Vuex.Store({
 	modules: {
 	user: userVuex,
-	chat:chatVuex
 	}
 });
 import {router} from './config/routes';
