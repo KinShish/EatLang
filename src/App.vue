@@ -1,5 +1,7 @@
 <template lang="pug">
 	div
+		//keep-alive
+			EatLangMain
 		button.col-12(@click="sayEn") en
 		button.col-12(@click="sayRu") ru
 		input.col-12(v-model="text")
@@ -17,6 +19,9 @@
 				text:'',
 				arrText:[]
 			}
+		},
+		components:{
+			'EatLangMain':()=>import('./components/EatLangMain'),
 		},
 		methods:{
 			sayRu(){
@@ -45,9 +50,13 @@
 				alert(type)
 			},
 			startListing(){
+				let options = {
+					language:'en-US',
+					showPartial:true
+				}
 				window.plugins.speechRecognition.startListening(
 					(res)=>{console.log('startListeningSuc',res);this.arrText=res;this.text=this.arrText[0]},
-					(res)=>{console.log('startListeningBad',res)},)
+					(res)=>{console.log('startListeningBad',res)},options)
 			},
 			stopListing(){
 				window.plugins.speechRecognition.stopListening(
