@@ -52,6 +52,7 @@
 			startListing(){
 				let options = {
 					language:'en-US',
+					matches:100,
 					showPartial:true
 				}
 				window.plugins.speechRecognition.startListening(
