@@ -69,20 +69,8 @@
         <icon src="src/assets/appIcon/ios/icon/icons_167.png" height="167"  width="167"/>
         <icon src="src/assets/appIcon/ios/icon/icons_512.png" height="512"  width="512"/>
         <icon src="src/assets/appIcon/ios/icon/icons_1024.png" height="1024"  width="1024"/>
-        <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
-            <string>Данные о вашем местоположении могут быть использованы при подаче и поиске объявлений</string>
-        </edit-config>
-        <edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
-            <string>Приложению нужен доступ к камере что бы делать фотографии для логотипа пользователя</string>
-        </edit-config>
-        <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryUsageDescription">
-            <string>Приложению нужен доступ к галреее, что бы прикрепить фотографиюю к логотипу пользователя</string>
-        </edit-config>
-        <edit-config file="*-Info.plist" mode="merge" target="NSLocationAlwaysUsageDescription">
-            <string>Данные о вашем местоположении могут быть использованы при подаче и поиске объявлений</string>
-        </edit-config>
-        <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryAddUsageDescription">
-            <string>Приложению нужен доступ к галреее, что бы прикрепить фотографиюю к логотипу пользователя</string>
+        <edit-config target="NSMicrophoneUsageDescription" file="*-Info.plist" mode="merge">
+            <string>need microphone access to record sounds</string>
         </edit-config>
     </platform>
 </widget>

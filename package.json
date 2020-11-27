@@ -15,8 +15,10 @@
   "author": "ООО АЛНА <developer@alna.ru>",
   "license": "Apache-2.0",
   "dependencies": {
+    "cordova-plugin-speechrecognition": "^1.2.0",
     "cordova-plugin-splashscreen": "^6.0.0",
     "cordova-plugin-statusbar": "^2.4.3",
+    "cordova-plugin-tts-advanced": "^0.4.1",
     "core-js": "^3.6.5",
     "firebase": "^8.0.1",
     "jsonwebtoken": "^8.5.1",
@@ -76,11 +78,13 @@
       "cordova-plugin-whitelist": {},
       "cordova-plugin-statusbar": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-firebasex": {}
+      "cordova-plugin-firebasex": {},
+      "cordova-plugin-tts": {},
+      "cordova-plugin-speechrecognition": {}
     },
     "platforms": [
-      "ios",
-      "android"
+      "android",
+      "ios"
     ]
   }
 }
