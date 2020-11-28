@@ -61,7 +61,7 @@
 				window.plugins.speechRecognition.startListening(
 					async (res)=>{
 						this.activeVoice=!this.activeVoice;
-						axios.post('http://192.168.1.23:3000/distance',{arrayTextVoic:res})
+						axios.post('http://01taxi.ru/eatlern',{arrayTextVoic:res})
 							.then(respons=>{
 								if(!respons.err){
 									this.messages.push({text:respons.data.text,type:"user",options:{phonetics:respons.data.phonetics,grammar:respons.data.grammar,lexicon:respons.data.lexicon}});
