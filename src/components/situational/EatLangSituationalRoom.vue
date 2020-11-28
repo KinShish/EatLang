@@ -15,13 +15,13 @@
 				.raitingMessage(v-else)
 					.raitingItem
 						img(src="../../assets/rating/phoneticsGreen.svg")
-						span 12%
+						span {{word.options.phonetics+'%'}}
 					.raitingItem
 						img(src="../../assets/rating/grammarGreen.svg")
-						span 12%
+						span {{word.options.grammar+'%'}}
 					.raitingItem
 						img(src="../../assets/rating/vocabularyGreen.svg")
-						span 12%
+						span {{word.options.lexicon+'%'}}
 			div(ref="bottom")
 		div.fixedBottom
 			.btnGetVoice
@@ -155,7 +155,7 @@
 		padding: 5px 0;
 	}
 	.activeVoice{
-		background: white !important;
+		background: #36A6E5 !important;
 	}
 	.chatBlock{
 		position: absolute;

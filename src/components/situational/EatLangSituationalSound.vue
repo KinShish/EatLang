@@ -24,7 +24,7 @@
 				span Грамматика
 		.goToGameBlock
 			transition(name="opacity")
-				button.goToGame(@click="$router.push('/room/1')" ) Начать
+				button.goToGame(@click="$router.push('/map/1')" ) Начать
 </template>
 
 <script>

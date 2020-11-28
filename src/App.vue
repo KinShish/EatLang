@@ -12,19 +12,11 @@
 					span Будь понятым и оцени свои успехи по трем критериям: грамматика, лексика и фонетика
 			.goToGameBlock
 				button.goToGame(@click="$router.push('/gameMode')") Начать
-		.header(v-else)
-			img(src="./assets/helperHead.svg" @click="$refs.helperModal.show()")
+		.header(v-else-if="$route.name!=='end'")
 			span(@click="$router.go(-1)") НАЗАД
 		transition(name="opacity")
 			keep-alive
 					router-view
-		b-modal(hide-footer ref="helperModal" centered no-close-on-backdrop)
-				template(slot="modal-header")
-					h4 Задача
-					button.close( @click="$refs.helperModal.hide()")
-						span(aria-hidden="true") x
-				.container
-					p Узнайте, как пройти к остановке. Для этого обращайтесь к собеседникам, которых встретите.
 </template>
 
 <script>

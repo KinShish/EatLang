@@ -13,13 +13,13 @@
 				.raitingMessage(v-else)
 					.raitingItem
 						img(src="../../assets/rating/phoneticsGreen.svg")
-						span 12%
+						span {{word.options.phonetics+'%'}}
 					.raitingItem
 						img(src="../../assets/rating/grammarGreen.svg")
-						span 12%
+						span {{word.options.grammar+'%'}}
 					.raitingItem
 						img(src="../../assets/rating/vocabularyGreen.svg")
-						span 12%
+						span {{word.options.lexicon+'%'}}
 			div(ref="bottom")
 		div.fixedBottom
 			.btnGetVoice
@@ -27,8 +27,14 @@
 					img(src="../../assets/whiteMic.svg")
 				span(:class="activeVoice?'activeVoice':''" v-else @click="startListing()")
 					img(src="../../assets/whiteMic.svg")
+		b-modal(hide-footer ref="endGame" centered no-close-on-backdrop)
+			template(slot="modal-header")
+				h4 The theme is completed
+				button.close( @click="$refs.endGame.hide()")
+					span(aria-hidden="true") x
+			.container
+				p Congratulate!
 </template>
-
 <script>
 	import axios from 'axios'
 	import name from '../../sounds/1_Hi. My name.mp3'
@@ -97,6 +103,11 @@
 										this.startSound(respons.data.answer)
 									}
 									this.scrollToDown();
+									if(this.questions_id===7){ //Модальное окно конца
+										setTimeout(()=>{
+											this.$refs.endGame.show();
+										},5000)
+									}
 								}
 								this.distance=JSON.stringify(respons)
 							}).catch(e=>console.log(e))
@@ -192,7 +203,7 @@
 		padding: 5px 0;
 	}
 	.activeVoice{
-		background: white !important;
+		background: #36A6E5 !important;
 	}
 	.chatBlock{
 		position: absolute;
