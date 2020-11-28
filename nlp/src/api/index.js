@@ -29,7 +29,9 @@ const sendLexicon=(text,finalText)=>{
             }
         }
     })
-    return (count===0?1:Math.round(count/arrayWords.length*100))*(countStem===0?1:Math.round(countStem/finalArrayWordsStem.length*100))/100
+    console.log(Math.round(count/arrayWords.length*100))
+    console.log(Math.round(countStem/arrayWordsStem.length*100))
+    return (count===0?1:Math.round(count/arrayWords.length*100))*(countStem===0?1:Math.round(countStem/arrayWordsStem.length*100))/100
 
 }
 
@@ -43,20 +45,23 @@ exports.plugin = {
             config: {
                 async handler(req) {
                     let {text,arrayTextVoic}=req.payload;
-                    let finalText='',min=0;
+                    let finalText=arrayTextVoic[0].toLowerCase(),min=0;
+                    const faildAnswer=['I don\'t get you','I don\'t understand you','I can\'t understand','I don\'t get your','I don\'t know what you\'re talking about','Didn’t catch that']
+                    const random=Math.floor(Math.random() * (faildAnswer.length + 1));
                     try {
-                        arrayTextVoic.forEach(t=>{
+                        let analysisNLP=natural.LevenshteinDistance(text.toLowerCase(),arrayTextVoic[0].toLowerCase(), {search: true});
+                        /*arrayTextVoic.forEach(t=>{
                             let analysisNLP=natural.LevenshteinDistance(text.toLowerCase(), t.toLowerCase(), {search: true});
                             //max=max===0?analysisNLP.distance:(max>analysisNLP.distance?max:analysisNLP.distance)
                             min=min===0?analysisNLP.distance:(min<analysisNLP.distance?min:analysisNLP.distance)
                             if(min===analysisNLP.distance){
                                 finalText=t.toLowerCase();
                             }
-                        })
+                        })*/
                         const phonetics=100-(arrayTextVoic.length-1)*5
-                        const grammar=Math.round(100-min/text.length*100);
+                        const grammar=Math.round(100-analysisNLP.distance/text.length*100);
                         const lexicon=sendLexicon(text.toLowerCase(),finalText);
-                        return {err:false,phonetics,grammar,lexicon,text:finalText,answer:'Hello Sure'}
+                        return {err:false,phonetics,grammar,lexicon,text:finalText,answer:((phonetics-50)*2+grammar+lexicon)/3>50?'Hello sure':faildAnswer[random]}
                     }catch (e) {
                         console.log(e)
                         return {err:true}

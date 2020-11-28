@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build&&cordova run android",
     "lint": "vue-cli-service lint"
   },
   "keywords": [
