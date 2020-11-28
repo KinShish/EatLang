@@ -23,15 +23,49 @@
 					span Just lemon.
 		div.fixedBottom
 			.btnGetVoice
-				span(:class="activeVoice?'activeVoice':''" @click="activeVoice=!activeVoice")
+				span(:class="activeVoice?'activeVoice':''" @click="startListing()")
 					img(src="../assets/mic.svg")
 </template>
 
 <script>
+	import axios from 'axios'
 	export default {
 		data(){
 			return{
+				distance:'',
 				activeVoice:false
+			}
+		},
+		methods:{
+			sound(){
+				this.activeVoice=!this.activeVoice
+				if(this.activeVoice) {
+					this.startListing()
+				}else{
+					this.stopListing()
+				}
+			},
+			startListing(){
+				let options = {
+					language:'en-US',
+					matches:100,
+					showPartial:true
+				}
+				window.plugins.speechRecognition.startListening(
+					async (res)=>{
+						axios.post('http://192.168.1.23:3000/distance',{text:'Hello Can you help me',arrayTextVoic:res})
+							.then(respons=>{
+								alert(respons);
+								this.distance=JSON.stringify(respons)
+							}).catch(e=>alert(e))
+
+					},
+					(res)=>{console.log('startListeningBad',res)},options)
+			},
+			stopListing(){
+				window.plugins.speechRecognition.stopListening(
+					(res)=>{console.log('stopListeningSuc',res)},
+					(res)=>{console.log('stopListeningBad',res)},)
 			}
 		}
 	}

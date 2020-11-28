@@ -21,13 +21,11 @@
 </template>
 
 <script>
-	import axios from 'axios'
 	export default {
 		data(){
 			return{
 				text:'',
 				arrText:[],
-				distance:'',
 				selectMode:'',
 				mode:[
 					{title:'SMALL TALK',descript:'Непринужденный разговор на отвлеченные темы, которые не предполагают договоренностей, обязательств и т. д.',type:'1'},
@@ -67,36 +65,13 @@
 			test(type){
 				alert(type)
 			},
-			startListing(){
-				let options = {
-					language:'en-US',
-					matches:100,
-					showPartial:true
-				}
-				window.plugins.speechRecognition.startListening(
-					async (res)=>{
-						console.log('startListeningSuc',res);this.arrText=res;this.text=this.arrText[0]
-						axios.post('http://192.168.1.23:3000/distance',{text:['Hello','Can you help me'],arrayTextVoic:res})
-							.then(respons=>{
-								alert(respons);
-								this.distance=JSON.stringify(respons)
-							}).catch(e=>alert(e))
 
-					},
-					(res)=>{console.log('startListeningBad',res)},options)
-			},
-			stopListing(){
-				window.plugins.speechRecognition.stopListening(
-					(res)=>{console.log('stopListeningSuc',res)},
-					(res)=>{console.log('stopListeningBad',res)},)
-			},
-			testmic(){
-				// eslint-disable-next-line no-undef
-				window.plugins.speechRecognition.requestPermission(
-					(requestPermissionSuc)=>{console.log('requestPermission',requestPermissionSuc)} ,
-					(requestPermissionErr)=>{console.log('requestPermission',requestPermissionErr)})
-			}
 		},
+		created() {
+			window.plugins.speechRecognition.requestPermission(
+				(requestPermissionSuc)=>{console.log('requestPermission',requestPermissionSuc)} ,
+				(requestPermissionErr)=>{console.log('requestPermission',requestPermissionErr)})
+		}
 	}
 </script>
 
