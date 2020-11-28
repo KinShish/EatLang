@@ -39,6 +39,17 @@
 			return{
 				distance:'',
 				activeVoice:false,
+				questions_id:0,
+				questions:[
+					'Hi. My name is Zhenya. That is you name?',
+					'I\'m an expert from the case 3. I represent compony "Rostelecom". You are new here. Which department do you work?',
+					'Where do you come from?',
+					'O! Grate! When did you arrive?',
+					'Do you enjoy the city?',
+					'What is your home town like?',
+					'I have never been to Russia but I\'ve heard a lot about it.',
+					'I hope I will.'
+				],
 				messages:[
 					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
 					{text:'бота текст',type:"bot"},
@@ -76,11 +87,21 @@
 				window.plugins.speechRecognition.startListening(
 					async (res)=>{
 						this.activeVoice=!this.activeVoice;
-						axios.post('http://192.168.1.23:3000/distance',{arrayTextVoic:res})
+						axios.post('http://192.168.1.23:3000/distance/'+this.questions_id,{arrayTextVoic:res})
 							.then(respons=>{
-								if(!respons.err){
-									this.messages.push({text:respons.data.text,type:"user",options:{phonetics:respons.data.phonetics,grammar:respons.data.grammar,lexicon:respons.data.lexicon}});
-									this.messages.push({text:respons.data.answer,type:"bot"});
+								if(!respons.data.err){
+									this.messages.push({
+										text:respons.data.text,
+										type:"user",
+										options:{
+											phonetics:respons.data.phonetics,
+											grammar:respons.data.grammar,
+											lexicon:respons.data.lexicon
+										}});
+									if(respons.data.result){
+										this.messages.push({text:respons.data.answer,type:"bot"});
+										this.questions_id++;
+									}
 									this.scrollToDown();
 									this.startSound(respons.data.answer)
 								}
