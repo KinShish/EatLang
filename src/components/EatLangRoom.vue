@@ -10,7 +10,7 @@
 		.chatBlock
 			.message(v-for="message in messages" :class="message.type==='user'?'me':'noMe'")
 				.content
-					span {{message.text+'   '+message.options}}
+					span {{message.text+'   '+JSON.stringify(message.options)}}
 			//transition-group(name="opacity")
 		div.fixedBottom
 			.btnGetVoice
