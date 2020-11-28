@@ -5,8 +5,9 @@
 			.selectGameMode(v-for="mode in mode" :key="mode.title" :class="selectMode===mode.type?'selectGameModeActive':''" @click="selectMode=mode.type")
 				h1 {{mode.title}}
 				p {{mode.descript}}
-			transition(name="opacity")
-				button.goToGame(@click="$_eatLang_go_game" v-if="selectMode!==''") Продолжить
+			.goToGameBlock
+				transition(name="opacity")
+					button.goToGame(@click="$_eatLang_go_game" v-if="selectMode!==''") Продолжить
 		transition(name="opacity")
 			keep-alive
 					router-view
@@ -42,6 +43,9 @@
 </script>
 
 <style scoped>
+	.goToGameBlock{
+		height: 100px;
+	}
 	.gameMode{
 		display: grid;
 		place-content: center;
@@ -49,6 +53,7 @@
 		position: absolute;
 		width: 100%;
 		text-align: center;
+		margin-bottom: 30px;
 	}
 	.selectGameMode{
 		border: 1px solid white;

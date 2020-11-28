@@ -5,10 +5,10 @@
 				img.imgMap(src="../assets/main.svg")
 				.pathUser
 					a
-						//img.point(src="../assets/point.svg")
+						img.dontWork(src="../assets/dontWork.svg")
 						img(src="../assets/building/churchGrey.svg")
 					a
-						//img.point(src="../assets/point.svg")
+						img.dontWork(src="../assets/dontWork.svg")
 						img(src="../assets/building/haltGrey.svg")
 					router-link(to="/question/1")
 						img.point(src="../assets/point.svg")
@@ -20,11 +20,18 @@
 
 <script>
 	export default {
-
+		activated() {
+			console.log(this.$route.params.type)
+		}
 	}
 </script>
 
 <style scoped>
+	.dontWork{
+		position: absolute;
+		bottom: 50%;
+		left: 30%;
+	}
 	.point{
 		position: absolute;
 		height: 30px !important;
