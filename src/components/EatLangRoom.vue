@@ -1,7 +1,7 @@
 <template lang="pug">
 	div
 		div.fixedTop
-			h1.title Школа
+			h1.title(@click="scrollToDown()") Школа
 			.placeImage
 				img(src="../assets/story/school.svg")
 			.voiceBlock
@@ -12,6 +12,7 @@
 				.content
 					span {{message.text+'   '+JSON.stringify(message.options)}}
 			//transition-group(name="opacity")
+			div(ref="bottom")
 		div.fixedBottom
 			.btnGetVoice
 				span(:class="activeVoice?'activeVoice':''" @click="sound()" v-if="$root.platform==='iPhone'")
@@ -81,7 +82,12 @@
 					})
 			},
 			scrollToDown(){
-				window.scroll({top: document.body.scrollHeight*1.5, behavior: "smooth"});
+				this.$nextTick(()=>{
+					if(this.$refs.bottom) this.$refs.bottom.scrollIntoView()
+				})
+				if(process.env.NODE_ENV!=='development') {
+					window.scroll({top: document.body.scrollHeight*1.5, behavior: "smooth"});
+				}
 			}
 		}
 	}
