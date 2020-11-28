@@ -72,9 +72,8 @@
 				window.plugins.speechRecognition.startListening(
 					async (res)=>{
 						this.activeVoice=!this.activeVoice;
-						axios.post('http://192.168.1.23:3000/distance/'+this.questions_id,{arrayTextVote:res})
+						axios.post('http://01taxi.ru/eatlern/'+this.questions_id,{arrayTextVote:res})
 							.then(respons=>{
-								alert(respons.data.err)
 								if(!respons.data.err){
 									this.messages.push({
 										text:respons.data.text,
@@ -86,8 +85,8 @@
 										}});
 									if(respons.data.result){
 										this.questions_id++;
-										this.messages.push({text:this.questions_id,type:"bot"});
-										this.startSound(this.questions_id)
+										this.messages.push({text:this.questions[this.questions_id],type:"bot"});
+										this.startSound(this.questions[this.questions_id])
 									}else{
 										this.messages.push({text:respons.data.answer,type:"bot"});
 										this.startSound(respons.data.answer)
@@ -95,7 +94,7 @@
 									this.scrollToDown();
 								}
 								this.distance=JSON.stringify(respons)
-							}).catch(e=>console.log(e))
+							}).catch(e=>alert(e))
 
 					},
 					(res)=>{console.log('startListeningBad',res)},options)
@@ -127,6 +126,7 @@
 		},
 		mounted() {
 			this.messages.push({text:this.questions[0],type:"bot"});
+			this.startSound(this.questions[0])
 		}
 	}
 </script>

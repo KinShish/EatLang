@@ -63,7 +63,7 @@ const addQuestions=(arrayTextVoic)=>{
         num++;
     })
     const faildAnswer=['I don\'t get you','I don\'t understand you','I can\'t understand','I don\'t get your','I don\'t know what you\'re talking about','Didn’t catch that']
-    const random=(n)=>{return Math.floor(Math.random() * n);}
+    const random=(n)=>{return Math.floor(Math.random() * (n-1));}
     let analysisNLP=natural.LevenshteinDistance(questionsText.toLowerCase(),finalText, {search: true});
     /*arrayTextVoic.forEach(t=>{
         let analysisNLP=natural.LevenshteinDistance(text.toLowerCase(), t.toLowerCase(), {search: true});
@@ -105,10 +105,11 @@ const checkQuestionSmallTalk=(id,arrayTextVote)=>{
         num++;
     })
     const errorAnswer=['I don\'t get you','I don\'t understand you','I can\'t understand','I don\'t get your','I don\'t know what you\'re talking about','Didn’t catch that']
-    const random=(n)=>{return Math.floor(Math.random() * n);}
+    const random=(n)=>{return Math.floor(Math.random() * (n-1));}
     const phonetics=sendPhonetics(finalText,arrayTextVote)
     const lexicon=sendLexicon(answerEnd.text,finalText);
-    const grammar=Math.round((1-answerEnd.nlp.distance/answerEnd.text.length.length)*lexicon);
+    console.log(answerEnd.nlp.distance,answerEnd.text.length)
+    const grammar=Math.round((1-answerEnd.nlp.distance/answerEnd.text.length)*lexicon);
     return {
         err:false,
         phonetics,
@@ -129,7 +130,9 @@ exports.plugin = {
             path: '/distance',
             config: {
                 async handler(req) {
+
                     let {arrayTextVoic}=req.payload;
+                    console.log(arrayTextVoic)
                     try{
                         return addQuestions(arrayTextVoic)
                     }catch (e) {
@@ -165,7 +168,7 @@ exports.plugin = {
                 tags: ['api'],
                 validate: {
                     params:Joi.object({
-                        id: Joi.number().integer().min(0),
+                        id: Joi.number().integer().min(0).allow(0),
                     }),
                     payload:Joi.object({
                         arrayTextVote: Joi.any(),
