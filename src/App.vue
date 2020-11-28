@@ -61,7 +61,7 @@
 				window.plugins.speechRecognition.startListening(
 					async (res)=>{
 						console.log('startListeningSuc',res);this.arrText=res;this.text=this.arrText[0]
-						axios.post('http://192.168.1.23:3000/distance',{text:'Hello. Can you help me?',arrayTextVoic:res})
+						axios.post('http://192.168.1.23:3000/distance',{text:['Hello','Can you help me'],arrayTextVoic:res})
 							.then(respons=>{
 								alert(respons);
 								this.distance=JSON.stringify(respons)
