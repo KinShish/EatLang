@@ -59,7 +59,7 @@
 									this.startSound(respons.data.answer)
 								}
 								this.distance=JSON.stringify(respons)
-							}).catch(e=>alert(e))
+							}).catch(e=>console.log(e))
 
 					},
 					(res)=>{console.log('startListeningBad',res)},options)
