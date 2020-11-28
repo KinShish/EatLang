@@ -2,12 +2,11 @@
 	div
 		div.fixedTop
 			.placeImage
-				img(src="../../assets/story/room2.svg")
+				img(src="../../assets/story/streetGirl.svg")
 		.chatBlock
 			.message(v-for="message in messages" :class="message.type==='user'?'me':'noMe'")
 				.content
 					span {{message.text}}
-						//+'   '+JSON.stringify(message.options)
 				.keyWords(v-if="message.type!=='user'")
 					span.wordDesc Используйте опорные слова:
 					span.word Hello

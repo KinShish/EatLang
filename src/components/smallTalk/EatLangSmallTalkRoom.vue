@@ -1,13 +1,13 @@
 <template lang="pug">
 	div
+		audio#audioRoom
 		div.fixedTop
 			.placeImage
-				img(src="../../assets/story/room2Man.svg")
+				img(src="../../assets/story/room2Girl.svg")
 		.chatBlock
 			.message(v-for="message in messages" :class="message.type==='user'?'me':'noMe'")
 				.content
 					span {{message.text}}
-						//+'   '+JSON.stringify(message.options)
 				.keyWords(v-if="message.type!=='user'")
 					span.wordDesc Используйте опорные слова:
 					span.word Hello
@@ -42,14 +42,14 @@
 				messages:[],
 				questions_id:0,
 				questions:[
-					'Hi. My name is Zhenya. That is you name?',
-					'I\'m an expert from the case 3. I represent compony "Rostelecom". You are new here. Which department do you work?',
-					'Where do you come from?',
-					'O! Grate! When did you arrive?',
-					'Do you enjoy the city?',
-					'What is your home town like?',
-					'I have never been to Russia but I\'ve heard a lot about it.',
-					'I hope I will.'
+					{text:'Hi. My name is Zhenya. That is you name?',voice:'',words:['имя','Алекс']},
+					{text:'I\'m an expert from the case 3. I represent compony "Rostelecom". You are new here. Which department do you work?',voice:'',words:['быть новеньким','отдел']},
+					{text:'Where do you come from?',voice:'',words:['из России','стажер']},
+					{text:'O! Grate! When did you arrive?',voice:'',words:['прибыл','прошлая неделя']},
+					{text:'Do you enjoy the city?',voice:'',words:['это прекрасно','немного шумно','не привык к такому шуму','родной город']},
+					{text:'What is your home town like?',voice:'',words:['тихий','многолюдное место','Север России','место']},
+					{text:'I have never been to Russia but I\'ve heard a lot about it.',voice:'',words:['должны посетить','однажды','уверен','понравится']},
+					{text:'I hope I will.',voice:'',words:[]},
 				],
 			}
 		},
