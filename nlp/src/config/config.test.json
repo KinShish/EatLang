@@ -1,0 +1,26 @@
+{
+    "db": [],
+    "modules": {
+        "db": ["njs_array_goods","njs_array_transport","njs_array_services","njs_array_immovables","njs_array_vacancy","njs_array_summary"]
+    },
+    "server": {
+        "host": "192.168.0.40",
+        "port": 4050,
+        "plugins": ["swagger", "mysql2","laabr"],
+        "modules": ["articles"]
+    },
+    "swagger": {
+        "info": {
+            "title": "ALNA backend",
+            "version": "0.7.8"
+        },
+        "tags":[{
+            "name":"api",
+            "description":"Все команды"
+        },{
+            "name":"articles",
+            "description":"API модуля Новости"
+        }]
+    }
+}
+
