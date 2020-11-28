@@ -3,7 +3,18 @@ let routes = {
 	path: '/',
 	name:'index',
 	component: () => import('../App'),
-	children: []
+	children: [
+		{
+			path: 'map/:type',
+			component:()=> import('../components/EatLangMain'),
+			name: 'game',
+		},
+		{
+			path: 'question/:idQuestion',
+			component:()=> import('../components/EatLangRoom'),
+			name: 'question',
+		}
+	]
 }
 export const router = new VueRouter({
 	scrollBehavior(to, from, savedPosition) {

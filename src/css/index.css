@@ -1,272 +1,3 @@
-@charset "utf-8";
-body{
-    word-wrap: break-word;
-    height: 100%;
-    opacity: 1;
-    overflow-y: auto;
-    -webkit-overflow-scrolling:touch;
-    background-color: #f7f7f7;
-}
-/*Кнопки начало*/
-.btnRed{
-    text-align: center;
-    display: block;
-    outline: none;
-    border: 2px solid #F64646;
-    background: #F64646;
-    color: white;
-    border-radius: 3px;
-    padding: 5px 50px;
-    font-size: 16px;
-    transition: .3s ease;
-}
-.btnRed:focus{
-    outline: none;
-}
-/*Кнопки конец*/
-/*Табы в профиле начало*/
-.customTabsProfile{
-    font-size: 14px;
-}
-.customTabContent{
-    min-height: 300px;
-}
-.customTabsProfile .nav-pills .nav-link.active, .nav-pills .show > .nav-link{
-    background: #F64646;
-    color: white;
-}
-.customTabsProfile .nav-pills .nav-link{
-    background: white;
-    border-radius: 14px;
-    color: #F64646;
-    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.11);
-    padding: 8px;
-    margin: 5px 3px;
-    transition: .3s ease;
-}
-.customTabsProfile .card-header{
-    border: none;
-    padding: 0;
-    margin-bottom: 20px;
-    background: #f7f7f7;
-    position: relative;
-    box-shadow: none;
-    height: fit-content;
-}
-.customTabsProfile .nav-item{
-    display: block;
-    margin: 0 auto;
-}
-.customTabsProfile .card-header-pills{
-    width: fit-content;
-    margin: 0 auto;
-}
-.customTabsProfile .card{
-    border:none;
-    background-color: #f7f7f7;
-}
-.customTabsProfile .card-body{
-    padding: 0;
-}
-/*Табы в профиле конец*/
-/*Табы в профиле начало*/
-.customTabsSearch{
-    font-size: 14px;
-}
-.customTabsSearch{
-    min-height: 300px;
-}
-.customTabsSearch .nav-pills .nav-link.active, .nav-pills .show > .nav-link{
-    color: black;
-}
-.customTabsSearch .nav-pills .nav-link{
-    background: white;
-    border-radius: 14px;
-    color: #757575;
-    padding: 8px;
-    margin: 0 3px;
-    font-size: 16px;
-}
-.customTabsSearch .card-header{
-    border: none;
-    padding: 0;
-    background: white;
-    position: relative;
-    box-shadow: none;
-    height: fit-content;
-}
-.customTabsSearch .nav-item{
-    display: block;
-    margin: 0 auto;
-}
-.customTabsSearch .card-header-pills{
-    width: fit-content;
-    margin: 0 auto;
-}
-.customTabsSearch .card{
-    border:none;
-    background-color: white;
-}
-.customTabsSearch .card-body{
-    padding: 0;
-}
-/*Табы в профиле конец*/
-/*Шапка начало*/
-.header{
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.12);
-    height: 50px;
-    line-height: 50px;
-    padding-left: 10px;
-    font-size: 19px;
-    background-color: #f7f7f7;
-    position: relative;
-    z-index: 1;
-}
-.back{
-    margin-right: 10px;
-    width: 20px;
-    height: 20px;
-}
-/*Шапка конец*/
-/*Радио кнопки начало*/
-.radioBtnFilter .custom-control-inline{
-    display: block;
-}
-.radioBtnFilter{
-    margin: 30px 15px;
-}
-.radioBtnFilter .custom-control{
-    margin-bottom: 10px;
-}
-.radioBtnFilter .custom-control-label::after{
-    border-radius: 50%;
-    border: 2px solid #F64646;
-}
-.radioBtnFilter .custom-radio .custom-control-input:checked ~ .custom-control-label::after{
-    background-color: #F64646;
-}
-/*Радио кнопки конец*/
-/*Выпадающее меню в объявлении начало*/
-.hamburgerButtonDropDown .btn-secondary{
-    background: none;
-    max-width: 50px;
-    display: block;
-    top: -6px;
-    position: relative;
-    color: black;
-    outline: none;
-    border:none;
-    box-shadow: none;
-    width: 10px;
-    margin-left: 25px;
-}
-.hamburgerButtonDropDown .btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active, .show > .btn-secondary.dropdown-toggle{
-    background: none;
-    color: black;
-    border:none;
-    box-shadow: none !important;
-}
-.hamburgerButtonDropDown .dropdown-item.active, .dropdown-item:active{
-    background: none;
-    color: black;
-    outline: none;
-}
-/*Выпадающее меню в объявлении конец*/
-/*Дополнительно начало*/
-.hideTabProfile .card-header{
-    display: none;
-}
-.hideTabProfile .customTabsProfile .card-header{
-    display: block;
-}
-.spinerBlock{
-    width: 100%;
-    height: 100%;
-    display: grid;
-    place-content: center;
-}
-.redColor{
-    color: #F64646;
-}
-.whiteBlock{
-    background-color: white;
-}
-.greyBlock{
-    background-color: #f7f7f7;
-}
-.borderInput{
-    border:1px solid #333333;
-    border-radius: 3px;
-    background-color: #f7f7f7;
-}
-#sidebarFilter{
-    width: 100%;
-    background: white;
-}
-.searchActive{
-    background: red;
-}
-.b-sidebar > .b-sidebar-body{
-    background-color: white
-}
-.infoGoodUser{
-    height: 25px;
-    line-height: 25px;
-    margin-bottom: 5px;
-    font-size: 12px;
-    color: black;
-    text-decoration: none;
-    display: block;
-}
-.infoGoodUser img{
-    width: 25px;
-    height: 25px;
-    margin-left: 15px;
-    margin-right: 5px;
-    border-radius: 50%;
-}
-.logoName{
-    width: 25px;
-    height: 25px;
-    margin-left: 15px;
-    margin-right: 5px;
-    border-radius: 50%;
-    display: inline-block;
-    background: #F64646;
-    color: white;
-    text-align: center;
-    line-height: 25px;
-    font-size: 16px;
-}
-.infoGoodUser:hover{
-    color: black;
-    text-decoration: none;
-}
-.customSpiner{
-    margin: 0 auto;
-    display: block;
-}
-/*Дополнительно конец*/
-/*Анимация лайка начало*/
-.sizeImgBtn{
-    animation: sizeimg .8s;
-}
-@keyframes sizeimg {
-    0% {
-        transform: scale(1);
-
-    }
-    50% {
-        transform: scale(1.5);
-
-    }
-
-    100% {
-        transform: scale(1);
-
-    }
-}
-/*Анимация лайка конец*/
 /*Анимация перехода начало*/
 .opacity-enter-active {
     opacity: 1;
@@ -277,3 +8,25 @@ body{
     transition: all .3s ease;
 }
 /*Анимация перехода конец*/
+/*Задний фон начало*/
+.backgroundMap::before {
+    content: '';
+    position: fixed;
+    left: 0; right: 0;
+    top: 0; bottom: 0;
+    z-index: -1;
+    background: url('../assets/main.svg') center / cover no-repeat;
+    filter: blur(5px);
+}
+/*Задний фон конец*/
+/*Дополнительно начало*/
+.title{
+    color: #36A6E5;
+    font-size: 21px;
+    margin-bottom: 30px;
+}
+.app{
+    max-width: 600px;
+    margin: 0 auto;
+}
+/*Дополнительно конец*/
