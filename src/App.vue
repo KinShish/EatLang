@@ -11,6 +11,7 @@
 		.header(v-else)
 			img(src="./assets/helper.svg" @click="$refs.helperModal.show()")
 			.title HOTEL
+			span(@click="$router.go(-1)") назад
 		transition(name="opacity")
 			keep-alive
 					router-view
@@ -72,6 +73,7 @@
 	.header .title{
 		width: 100%;
 		margin-left: -24px;
+		margin-right: -44px;
 	}
 	.goToGameBlock{
 		height: 100px;
