@@ -42,7 +42,7 @@
 		},
 		methods:{
 			$_eatLang_go_game(){
-				this.$router.push('map/'+this.selectMode)
+				this.$router.push('info')
 			},
 		},
 		created() {

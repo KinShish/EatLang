@@ -5,6 +5,11 @@ let routes = {
 	component: () => import('../App'),
 	children: [
 		{
+			path: 'info',
+			component:()=> import('../components/EatLangInfo'),
+			name: 'info',
+		},
+		{
 			path: 'map/:type',
 			component:()=> import('../components/EatLangMain'),
 			name: 'game',
