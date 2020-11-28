@@ -129,7 +129,7 @@ exports.plugin = {
             method: 'GET',
             path: '/distance/auth',
             config: {
-                async handler(req) {
+                async handler() {
                     return true
                 },
                 description: 'Просмотр объявления',

@@ -10,7 +10,7 @@
 					span {{message.text}}
 				.keyWords(v-if="message.type!=='user'")
 					span.wordDesc Используйте опорные слова:
-					span.word Hello
+					span.word {{message.words}}
 					span.word Hello
 					span.word Hello
 				.raitingMessage(v-else)
@@ -85,10 +85,10 @@
 										}});
 									if(respons.data.result){
 										this.questions_id++;
-										this.messages.push({text:this.questions[this.questions_id],type:"bot"});
-										this.startSound(this.questions[this.questions_id])
+										this.messages.push({text:this.questions[this.questions_id].text,type:"bot",words:this.questions[this.questions_id].words});
+										this.startSound(this.questions[this.questions_id].text)
 									}else{
-										this.messages.push({text:respons.data.answer,type:"bot"});
+										this.messages.push({text:respons.data.answer,type:"bot",words:this.questions[this.questions_id].words});
 										this.startSound(respons.data.answer)
 									}
 									this.scrollToDown();
@@ -102,6 +102,10 @@
 				window.plugins.speechRecognition.stopListening(
 					(res)=>{console.log('stopListeningSuc',res)},
 					(res)=>{console.log('stopListeningBad',res)},)
+			},
+			playAudio(){
+				const audio = new Audio('file://path-to-file/file.mp3')
+				audio.play()
 			},
 			startSound(text){
 				// eslint-disable-next-line no-undef
@@ -133,8 +137,8 @@
 		mounted() {
 			this.sayErrorNo();
 			setTimeout(()=>{
-				this.messages.push({text:this.questions[0],type:"bot"});
-				this.startSound(this.questions[0])
+				this.messages.push({text:this.questions[0].text,type:"bot",words:this.questions[0].words});
+				//this.startSound(this.questions[0].text)
 			},3000)
 		}
 	}
