@@ -6,7 +6,7 @@
 		.soundBox
 			.item(v-for="word in array")
 				img(src="../../assets/speaker.svg")
-				span.name(@click="chechWordSound(word.engName)")
+				span.name(@click="startSound(word.engName)")
 					span {{word.engName}}
 					span    - {{word.ruName}}
 				span.blockImg(@click="sayWord(word.engName+'Say')")
@@ -52,6 +52,18 @@
 				if(this.arrWord.indexOf(name)===-1){
 					this.arrWord.push(name)
 				}
+			},
+			startSound(text){
+				// eslint-disable-next-line no-undef
+				TTS
+					.speak({
+						text: text,
+						locale: 'en-US',
+						rate: 0.6,
+						pitch: 1,
+						cancel: true
+					})
+				this.chechWordSound(text)
 			},
 			sayWord(name){
 				let options = {
