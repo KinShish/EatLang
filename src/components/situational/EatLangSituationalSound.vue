@@ -38,7 +38,7 @@
 				span Грамматика
 		.goToGameBlock
 			transition(name="opacity")
-				button.goToGame(@click="$router.push('/room/2')" v-if="arrWord.length===allCountWord") Начать
+				button.goToGame(@click="$router.push('/room/1')" v-if="arrWord.length===allCountWord") Начать
 </template>
 
 <script>
