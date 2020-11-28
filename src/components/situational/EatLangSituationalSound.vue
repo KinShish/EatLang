@@ -32,15 +32,15 @@
 		data(){
 			return{
 				array:[
-					{engName:'Can you',ruName:'вы можете?',pathSound:''},
-					{engName:'Help',ruName:'помощь',pathSound:''},
-					{engName:'What',ruName:'что',pathSound:''},
-					{engName:'City/town',ruName:'город',pathSound:''},
-					{engName:'Where is ',ruName:'где',pathSound:''},
-					{engName:'Located/situated',ruName:'расположенный',pathSound:''},
-					{engName:'suburb/outskirts/ countryside',ruName:'пригород',pathSound:''},
-					{engName:'How',ruName:'как',pathSound:''},
-					{engName:'Get there',ruName:'попасть туда',pathSound:''},
+					{engName:'Can you',ruName:'вы можете?',sound:''},
+					{engName:'Help',ruName:'помощь',sound:''},
+					{engName:'What',ruName:'что',sound:''},
+					{engName:'City/town',ruName:'город',sound:''},
+					{engName:'Where is ',ruName:'где',sound:''},
+					{engName:'Located/situated',ruName:'расположенный',sound:''},
+					{engName:'suburb/outskirts/ countryside',ruName:'пригород',sound:''},
+					{engName:'How',ruName:'как',sound:''},
+					{engName:'Get there',ruName:'попасть туда',sound:''},
 
 				],
 				arrWord:[],

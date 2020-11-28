@@ -1,6 +1,5 @@
 <template lang="pug">
 	div
-		audio#audioRoom
 		div.fixedTop
 			.placeImage
 				img(src="../../assets/story/room2Girl.svg")
@@ -10,9 +9,7 @@
 					span {{message.text}}
 				.keyWords(v-if="message.type!=='user'")
 					span.wordDesc Используйте опорные слова:
-					span.word {{message.words}}
-					span.word Hello
-					span.word Hello
+					span.word(v-for="word in message.words") {{word}}
 				.raitingMessage(v-else)
 					.raitingItem
 						img(src="../../assets/rating/phoneticsGreen.svg")

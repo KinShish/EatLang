@@ -28,29 +28,49 @@
 </template>
 
 <script>
+	import benew from '../../sounds/words/1_be new.mp3'
+	import departament from '../../sounds/words/2_department.mp3'
+	import apprentice from '../../sounds/words/3_apprentice.mp3'
+	import arrive from '../../sounds/words/4_arrive.mp3'
+	import lovely from '../../sounds/words/5_its lovely.mp3'
+	import noisy from '../../sounds/words/6_a bit noisy.mp3'
+	import used from '../../sounds/words/7_Im not used to.mp3'
+	import home from '../../sounds/words/8_home town.mp3'
+	import like from '../../sounds/words/9_What is your… like.mp3'
+	import quiet from '../../sounds/words/10_quiet.mp3'
+	import notso from '../../sounds/words/11_not so.mp3'
+	import crowed from '../../sounds/words/12_crowed place.mp3'
+	//import north from '../../sounds/words/13_in the north.mp3'
+	import never from '../../sounds/words/14_I have never been to.mp3'
+	import heard from '../../sounds/words/15_Ive heard a lot about.mp3'
+	import should from '../../sounds/words/16_You should.mp3'
+	import visit from '../../sounds/words/17_visit.mp3'
+	import day from '../../sounds/words/18_one day.mp3'
+	import sure from '../../sounds/words/19_Im sure.mp3'
+	import love from '../../sounds/words/20_love it.mp3'
 	export default {
 		data(){
 			return{
 				array:[
-					{engName:'be new',ruName:'быть новеньким',pathSound:''},
-					{engName:'departament',ruName:'отдел',pathSound:''},
-					{engName:'apprentice',ruName:'стажер',pathSound:''},
-					{engName:'arrive',ruName:'приезжать, прибывать',pathSound:''},
-					{engName:'it\'s lovely',ruName:'прекрасно',pathSound:''},
-					{engName:'a but noisy',ruName:'немного шумный',pathSound:''},
-					{engName:'I\'m not used to',ruName:'я не привык к...',pathSound:''},
-					{engName:'home town',ruName:'родной город',pathSound:''},
-					{engName:'What is your... like?',ruName:'дай храктеристику (опиши)',pathSound:''},
-					{engName:'quiet',ruName:'тихий',pathSound:''},
-					{engName:'not su',ruName:'не такое',pathSound:''},
-					{engName:'crowed place',ruName:'многолюдное место',pathSound:''},
-					{engName:'I have never been to',ruName:'я никогда не бывал...',pathSound:''},
-					{engName:'I\'ve heard a lot about',ruName:'я слышал много об...',pathSound:''},
-					{engName:'You chould',ruName:'тебе следует (совет)',pathSound:''},
-					{engName:'visit',ruName:'посетить',pathSound:''},
-					{engName:'one day',ruName:'однажды',pathSound:''},
-					{engName:'I\'m sure',ruName:'я уверен',pathSound:''},
-					{engName:'love it',ruName:'понравится',pathSound:''},
+					{engName:'be new',ruName:'быть новеньким',sound:benew},
+					{engName:'departament',ruName:'отдел',sound:departament},
+					{engName:'apprentice',ruName:'стажер',sound:apprentice},
+					{engName:'arrive',ruName:'приезжать, прибывать',sound:arrive},
+					{engName:'it\'s lovely',ruName:'прекрасно',sound:lovely},
+					{engName:'a but noisy',ruName:'немного шумный',sound:noisy},
+					{engName:'I\'m not used to',ruName:'я не привык к...',sound:used},
+					{engName:'home town',ruName:'родной город',sound:home},
+					{engName:'What is your... like?',ruName:'дай храктеристику (опиши)',sound:like},
+					{engName:'quiet',ruName:'тихий',sound:quiet},
+					{engName:'not su',ruName:'не такое',sound:notso},
+					{engName:'crowed place',ruName:'многолюдное место',sound:crowed},
+					{engName:'I have never been to',ruName:'я никогда не бывал...',sound:never},
+					{engName:'I\'ve heard a lot about',ruName:'я слышал много об...',sound:heard},
+					{engName:'You chould',ruName:'тебе следует (совет)',sound:should},
+					{engName:'visit',ruName:'посетить',sound:visit},
+					{engName:'one day',ruName:'однажды',sound:day},
+					{engName:'I\'m sure',ruName:'я уверен',sound:sure},
+					{engName:'love it',ruName:'понравится',sound:love},
 				],
 				arrWord:[],
 				allCountWord:38
