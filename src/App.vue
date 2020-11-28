@@ -9,9 +9,8 @@
 				transition(name="opacity")
 					button.goToGame(@click="$_eatLang_go_game" v-if="selectMode!==''") Продолжить
 		.header(v-else)
-			img(src="./assets/helper.svg" @click="$refs.helperModal.show()")
-			.title HOTEL
-			span(@click="$router.go(-1)") назад
+			img(src="./assets/helperHead.svg" @click="$refs.helperModal.show()")
+			span(@click="$router.go(-1)") НАЗАД
 		transition(name="opacity")
 			keep-alive
 					router-view
@@ -32,17 +31,14 @@
 				arrText:[],
 				selectMode:'',
 				mode:[
-					{title:'SMALL TALK',descript:'Непринужденный разговор на отвлеченные темы, которые не предполагают договоренностей, обязательств и т. д.',type:'1'},
-					{title:'СИТУАТИВНЫЙ',descript: 'Короткие диалоги в типычных ситуациях речевого общения',type:'2'}
+					{title:'SMALL TALK',descript:'Непринужденный разговор на отвлеченные темы, которые не предполагают договоренностей, обязательств и т. д.',type:'2'},
+					{title:'СИТУАТИВНЫЙ',descript: 'Короткие диалоги в типычных ситуациях речевого общения',type:'1'}
 					]
 			}
 		},
-		components:{
-			'EatLangMain':()=>import('./components/EatLangMain'),
-		},
 		methods:{
 			$_eatLang_go_game(){
-				this.$router.push('info')
+				this.$router.push('info/'+this.selectMode)
 			},
 		},
 		created() {
@@ -54,30 +50,6 @@
 </script>
 
 <style scoped>
-	.header{
-		height: 40px;
-		position: relative;
-		width: 100%;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
-		color: #36A6E5;
-		background: white;
-		z-index: 10;
-		text-align: center;
-		font-weight: bold;
-		line-height: 40px;
-		display: flex;
-		padding: 0 15px;
-		max-width: 600px;
-		margin: 0 auto;
-	}
-	.header .title{
-		width: 100%;
-		margin-left: -24px;
-		margin-right: -44px;
-	}
-	.goToGameBlock{
-		height: 100px;
-	}
 	.gameMode{
 		display: grid;
 		place-content: center;
@@ -109,26 +81,5 @@
 	.selectGameModeActive {
 		border: 1px solid #36A6E5;
 		transition: .3s ease;
-	}
-	.goToGame{
-		margin: 0 auto;
-		background: #36A6E6;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.13);
-		border-radius: 7px;
-		color: white;
-		width: 80%;
-		padding: 2% 0;
-		max-height: 40px;
-		display: grid;
-		place-content: center;
-		margin-top: 50px;
-		outline: none;
-		border:2px solid #36A6E6;
-		transition: .3s ease;
-	}
-	button.goToGame:active{
-		border-color: #36A6E6;
-		background: white;
-		color: #36A6E6;
 	}
 </style>
