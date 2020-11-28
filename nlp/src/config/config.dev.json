@@ -1,0 +1,23 @@
+{
+	"db": [],
+	"server": {
+		"host": "192.168.1.23",
+		"port": 3000,
+		"plugins": ["swagger","laabr"],
+		"modules": ["index"]
+	},
+	"swagger": {
+		"info": {
+			"title": "EatLang backend",
+			"version": "0.0.1"
+		},
+		"tags":[{
+			"name":"API",
+			"description":"Все команды"
+		},{
+			"name":"index",
+			"description":"API запросы"
+		}]
+	}
+}
+
