@@ -8,19 +8,10 @@
 				.mainAnimBlock(:class="activeVoice?'animation':''")
 					span(v-for="item in 20")
 		.chatBlock
-			//transition-group(name="opacity")
-			.message.me
-				.content
-					span Would you like a drink, sir?
-			.message.noMe
-				.content
-					span Yes, a Diet Coke, please.
-			.message.me
-				.content
-					span Ice and lemon?
-			.message.noMe
-				.content
-					span Just lemon.
+			transition-group(name="opacity")
+				.message(v-for="message in messages" :class="message.type==='user'?'me':'noMe'")
+					.content
+						span {{message}}
 		div.fixedBottom
 			.btnGetVoice
 				span(:class="activeVoice?'activeVoice':''" @click="startListing()")
@@ -34,8 +25,7 @@
 			return{
 				distance:'',
 				activeVoice:false,
-				messageUser:[],
-				messageBot:[]
+				messages:[],
 			}
 		},
 		methods:{
@@ -59,7 +49,8 @@
 						axios.post('http://192.168.1.23:3000/distance',{text:'Hello Can you help me',arrayTextVoic:res})
 							.then(respons=>{
 								if(!respons.err){
-									messageUser.push(respons.text);
+									this.messages.push({text:respons.text,type:"user",options:{phonetics:respons.phonetics,grammar:respons.grammar,lexicon:respons.lexicon}});
+									this.messages.push({text:respons.answer,type:"bot"});
 								}
 								this.distance=JSON.stringify(respons)
 							}).catch(e=>alert(e))

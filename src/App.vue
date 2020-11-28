@@ -10,14 +10,6 @@
 		transition(name="opacity")
 			keep-alive
 					router-view
-		button.col-12(@click="sayEn") en
-		button.col-12(@click="sayRu") ru
-		input.col-12(v-model="text")
-		button.col-12(@click="testmic") testmic
-		.row
-			button.col-6(@click="startListing") start
-			button.col-6(@click="stopListing") stop
-		span.col-12 {{arrText}}
 </template>
 
 <script>
@@ -40,32 +32,6 @@
 			$_eatLang_go_game(){
 				this.$router.push('map/'+this.selectMode)
 			},
-			sayRu(){
-				// eslint-disable-next-line no-undef
-				TTS
-					.speak({
-						text: this.text,
-						locale: 'ru-ru',
-						rate: 0.4,
-						pitch: 1.3,
-						cancel: true
-					})
-			},
-			sayEn(){
-				// eslint-disable-next-line no-undef
-				TTS
-					.speak({
-						text: this.text,
-						locale: 'en-US',
-						rate: 0.4,
-						pitch: 1.3,
-						cancel: true
-					})
-			},
-			test(type){
-				alert(type)
-			},
-
 		},
 		created() {
 			window.plugins.speechRecognition.requestPermission(
