@@ -34,6 +34,14 @@
 
 <script>
 	import axios from 'axios'
+	import name from '../../sounds/1_Hi. My name.mp3'
+	import expert from '../../sounds/2_Im an expert.mp3'
+	import where from '../../sounds/3_Where do you.mp3'
+	import grate from '../../sounds/4_Grate.mp3'
+	import enjoy from '../../sounds/5_Do you enjoy.mp3'
+	import home from '../../sounds/6_What is your home.mp3'
+	import never from '../../sounds/7_I have never.mp3'
+	import hope from '../../sounds/8_I hope.mp3'
 	export default {
 		data(){
 			return{
@@ -42,14 +50,14 @@
 				messages:[],
 				questions_id:0,
 				questions:[
-					{text:'Hi. My name is Zhenya. That is you name?',voice:'',words:['имя','Алекс']},
-					{text:'I\'m an expert from the case 3. I represent compony "Rostelecom". You are new here. Which department do you work?',voice:'',words:['быть новеньким','отдел']},
-					{text:'Where do you come from?',voice:'',words:['из России','стажер']},
-					{text:'O! Grate! When did you arrive?',voice:'',words:['прибыл','прошлая неделя']},
-					{text:'Do you enjoy the city?',voice:'',words:['это прекрасно','немного шумно','не привык к такому шуму','родной город']},
-					{text:'What is your home town like?',voice:'',words:['тихий','многолюдное место','Север России','место']},
-					{text:'I have never been to Russia but I\'ve heard a lot about it.',voice:'',words:['должны посетить','однажды','уверен','понравится']},
-					{text:'I hope I will.',voice:'',words:[]},
+					{text:'Hi. My name is Zhenya. That is you name?',voice:name,words:['имя','Алекс']},
+					{text:'I\'m an expert from the case 3. I represent compony "Rostelecom". You are new here. Which department do you work?',voice:expert,words:['быть новеньким','отдел']},
+					{text:'Where do you come from?',voice:where,words:['из России','стажер']},
+					{text:'O! Grate! When did you arrive?',voice:grate,words:['прибыл','прошлая неделя']},
+					{text:'Do you enjoy the city?',voice:enjoy,words:['это прекрасно','немного шумно','не привык к такому шуму','родной город']},
+					{text:'What is your home town like?',voice:home,words:['тихий','многолюдное место','Север России','место']},
+					{text:'I have never been to Russia but I\'ve heard a lot about it.',voice:never,words:['должны посетить','однажды','уверен','понравится']},
+					{text:'I hope I will.',voice:hope,words:[]},
 				],
 			}
 		},
