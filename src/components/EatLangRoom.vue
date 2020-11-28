@@ -101,6 +101,7 @@
 		place-content: center;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16);
 		border-radius: 50%;
+		transition: .3s ease;
 	}
 	.btnGetVoice{
 		display: grid;
@@ -156,12 +157,70 @@
 		height: 60px;
 		transition: 2s linear;
 	}
-	.animation span:nth-child(odd){
-		animation: voice 1.5s linear infinite;
+	.animation span:nth-child(1){
+		animation: voice 3s linear infinite;
 	}
-	.animation span:nth-child(even){
+	.animation span:nth-child(2){
 		animation: voice 2.5s linear infinite;
 	}
+	.animation span:nth-child(3){
+		animation: voice 2s linear infinite;
+	}
+	.animation span:nth-child(4){
+		animation: voice 1.5s linear infinite;
+	}
+	.animation span:nth-child(5){
+		animation: voice 1s linear infinite;
+	}
+
+	.animation span:nth-child(6){
+		animation: voice 3s linear infinite;
+	}
+	.animation span:nth-child(7){
+		animation: voice 2.5s linear infinite;
+	}
+	.animation span:nth-child(8){
+		animation: voice 2s linear infinite;
+	}
+	.animation span:nth-child(9){
+		animation: voice 1.5s linear infinite;
+	}
+	.animation span:nth-child(10){
+		animation: voice 1s linear infinite;
+	}
+
+	.animation span:nth-child(11){
+		animation: voice 3s linear infinite;
+	}
+	.animation span:nth-child(12){
+		animation: voice 2.5s linear infinite;
+	}
+	.animation span:nth-child(13){
+		animation: voice 2s linear infinite;
+	}
+	.animation span:nth-child(14){
+		animation: voice 1.5s linear infinite;
+	}
+	.animation span:nth-child(15){
+		animation: voice 1s linear infinite;
+	}
+
+	.animation span:nth-child(16){
+		animation: voice 3s linear infinite;
+	}
+	.animation span:nth-child(17){
+		animation: voice 2.5s linear infinite;
+	}
+	.animation span:nth-child(18){
+		animation: voice 2s linear infinite;
+	}
+	.animation span:nth-child(19){
+		animation: voice 1.5s linear infinite;
+	}
+	.animation span:nth-child(20){
+		animation: voice 1s linear infinite;
+	}
+
 	@keyframes voice {
 		0%{
 			height: 60px;
