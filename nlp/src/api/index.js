@@ -44,19 +44,24 @@ exports.plugin = {
                 async handler(req) {
                     let {text,arrayTextVoic}=req.payload;
                     let finalText='',min=0;
-                    arrayTextVoic.forEach(t=>{
-                        let analysisNLP=natural.LevenshteinDistance(text.toLowerCase(), t.toLowerCase(), {search: true});
-                        //max=max===0?analysisNLP.distance:(max>analysisNLP.distance?max:analysisNLP.distance)
-                        min=min===0?analysisNLP.distance:(min<analysisNLP.distance?min:analysisNLP.distance)
-                        if(min===analysisNLP.distance){
-                            finalText=t.toLowerCase();
-                        }
-                    })
-                    const phonetics=100-(arrayTextVoic.length-1)*5
-                    const grammar=Math.round(100-min/text.length*100);
+                    try {
+                        arrayTextVoic.forEach(t=>{
+                            let analysisNLP=natural.LevenshteinDistance(text.toLowerCase(), t.toLowerCase(), {search: true});
+                            //max=max===0?analysisNLP.distance:(max>analysisNLP.distance?max:analysisNLP.distance)
+                            min=min===0?analysisNLP.distance:(min<analysisNLP.distance?min:analysisNLP.distance)
+                            if(min===analysisNLP.distance){
+                                finalText=t.toLowerCase();
+                            }
+                        })
+                        const phonetics=100-(arrayTextVoic.length-1)*5
+                        const grammar=Math.round(100-min/text.length*100);
+                        const lexicon=sendLexicon(text.toLowerCase(),finalText);
+                        return {err:false,phonetics,grammar,lexicon,text:finalText,answer:'Hello Sure'}
+                    }catch (e) {
+                        console.log(e)
+                        return {err:true}
+                    }
 
-                    const lexicon=sendLexicon(text.toLowerCase(),finalText);
-                    return {phonetics,grammar,lexicon}
                 },
                 description: 'Просмотр объявления',
                 tags: ['api'],
