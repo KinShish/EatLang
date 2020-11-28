@@ -126,11 +126,21 @@ exports.plugin = {
     version:'0.0.1',
     register: async (server)=>{
         server.route({
+            method: 'GET',
+            path: '/distance/auth',
+            config: {
+                async handler(req) {
+                    return true
+                },
+                description: 'Просмотр объявления',
+                tags: ['api']
+            }
+        });
+        server.route({
             method: 'POST',
             path: '/distance',
             config: {
                 async handler(req) {
-
                     let {arrayTextVoic}=req.payload;
                     console.log(arrayTextVoic)
                     try{
@@ -139,7 +149,6 @@ exports.plugin = {
                         console.log(e)
                         return {err:true}
                     }
-
                 },
                 description: 'Просмотр объявления',
                 tags: ['api'],
