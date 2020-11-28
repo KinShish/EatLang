@@ -6,7 +6,7 @@ let routes = {
 	children: [
 		{
 			path: 'gameMode',
-			component:()=> import('../components/EatLangFirstPage'),
+			component:()=> import('../components/EatLangGameMode'),
 			name: 'gameMode',
 		},
 		//Ситуативная игра начало
