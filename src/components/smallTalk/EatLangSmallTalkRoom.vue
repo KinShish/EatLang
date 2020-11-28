@@ -94,7 +94,7 @@
 									if(respons.data.result){
 										this.questions_id++;
 										this.messages.push({text:this.questions[this.questions_id].text,type:"bot",words:this.questions[this.questions_id].words});
-										this.startSound(this.questions[this.questions_id].text)
+										this.playAudio(this.questions[this.questions_id].voice)
 									}else{
 										this.messages.push({text:respons.data.answer,type:"bot",words:this.questions[this.questions_id].words});
 										this.startSound(respons.data.answer)
@@ -111,8 +111,8 @@
 					(res)=>{console.log('stopListeningSuc',res)},
 					(res)=>{console.log('stopListeningBad',res)},)
 			},
-			playAudio(){
-				const audio = new Audio('file://path-to-file/file.mp3')
+			playAudio(file){
+				const audio = new Audio(file)
 				audio.play()
 			},
 			startSound(text){
@@ -146,7 +146,7 @@
 			this.sayErrorNo();
 			setTimeout(()=>{
 				this.messages.push({text:this.questions[0].text,type:"bot",words:this.questions[0].words});
-				//this.startSound(this.questions[0].text)
+				this.playAudio(this.questions[0].voice)
 			},3000)
 		}
 	}
