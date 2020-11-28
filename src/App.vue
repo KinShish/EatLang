@@ -5,6 +5,7 @@
 		button.col-12(@click="sayEn") en
 		button.col-12(@click="sayRu") ru
 		input.col-12(v-model="text")
+		input.col-12(v-model="distance")
 		button.col-12(@click="testmic") testmic
 		.row
 			button.col-6(@click="startListing") start
@@ -13,11 +14,13 @@
 </template>
 
 <script>
+	import axios from 'axios'
 	export default {
 		data(){
 			return{
 				text:'',
-				arrText:[]
+				arrText:[],
+				distance:''
 			}
 		},
 		components:{
@@ -52,10 +55,19 @@
 			startListing(){
 				let options = {
 					language:'en-US',
-					showPartial:true
+					showPartial:false,
+					matches:10
 				}
 				window.plugins.speechRecognition.startListening(
-					(res)=>{console.log('startListeningSuc',res);this.arrText=res;this.text=this.arrText[0]},
+					async (res)=>{
+						console.log('startListeningSuc',res);this.arrText=res;this.text=this.arrText[0]
+						axios.post('http://192.168.1.23:3000/distance',{text:'Hello. Can you help me?',arrayTextVoic:res})
+							.then(respons=>{
+								alert(respons);
+								this.distance=JSON.stringify(respons)
+							}).catch(e=>alert(e))
+
+					},
 					(res)=>{console.log('startListeningBad',res)},options)
 			},
 			stopListing(){
