@@ -18,7 +18,7 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <icon src="src/assets/appIcon/android/icon/icons_36.png" density="ldpi" foreground="src/assets/appIcon/android/icon/icons_36.png" background="src/assets/appIcon/android/icon/icons_36.png"/>
+        <!--<icon src="src/assets/appIcon/android/icon/icons_36.png" density="ldpi" foreground="src/assets/appIcon/android/icon/icons_36.png" background="src/assets/appIcon/android/icon/icons_36.png"/>
         <icon src="src/assets/appIcon/android/icon/icons_48.png" density="mdpi" foreground="src/assets/appIcon/android/icon/icons_48.png" background="src/assets/appIcon/android/icon/icons_48.png"/>
         <icon src="src/assets/appIcon/android/icon/icons_72.png" density="hdpi" foreground="src/assets/appIcon/android/icon/icons_72.png" background="src/assets/appIcon/android/icon/icons_72.png"/>
         <icon src="src/assets/appIcon/android/icon/icons_96.png" density="xhdpi" foreground="src/assets/appIcon/android/icon/icons_96.png" background="src/assets/appIcon/android/icon/icons_96.png"/>
@@ -29,7 +29,7 @@
         <splash src="src/assets/appIcon/android/load/load_200x320.png" density="port-ldpi"/>
         <splash src="src/assets/appIcon/android/load/load_320x400.png" density="port-mdpi"/>
         <splash src="src/assets/appIcon/android/load/load_720x1280.png" density="port-xhdpi"/>
-        <splash src="src/assets/appIcon/android/load/load_1280x1920.png" density="port-xxhdpi"/>
+        <splash src="src/assets/appIcon/android/load/load_1280x1920.png" density="port-xxhdpi"/>-->
         <preference name="AndroidXEnabled" value="true" />
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
             <application android:usesCleartextTraffic="true" />

@@ -4,12 +4,15 @@
 			.map
 				img.imgMap(src="../assets/main.svg")
 				.pathUser
+					a
+						//img.point(src="../assets/point.svg")
+						img(src="../assets/building/churchGrey.svg")
+					a
+						//img.point(src="../assets/point.svg")
+						img(src="../assets/building/haltGrey.svg")
 					router-link(to="/question/1")
-						img(src="../assets/building/church.svg")
-					router-link(to="/question/2")
-						img(src="../assets/building/halt.svg")
-					router-link(to="/question/3")
-						//img(src="../assets/building/halt.svg")
+						img.point(src="../assets/point.svg")
+						img(src="../assets/building/hotel.svg")
 		transition(name="opacity")
 			keep-alive
 				router-view
@@ -22,6 +25,12 @@
 </script>
 
 <style scoped>
+	.point{
+		position: absolute;
+		height: 30px !important;
+		width: 30px !important;
+		right: 35%;
+	}
 	.map{
 		width: fit-content;
 		height: 100%;
@@ -76,17 +85,16 @@
 	}
 	.pathUser a:nth-child(3){
 		right: 29%;
-		top: 2%;
+		top: 6%;
 		height: 170px;
 		width: 130px;
 	}
 	.pathUser a{
-		display: block;
+		display: grid;
 		width: -webkit-fit-content;
 		width: -moz-fit-content;
 		width: fit-content;
 		position: absolute;
-		background: rgb(255 255 255 / .6);
-		border-radius: 50%;
+		place-content: center;
 	}
 </style>
