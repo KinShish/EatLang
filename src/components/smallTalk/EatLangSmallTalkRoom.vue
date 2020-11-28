@@ -72,8 +72,9 @@
 				window.plugins.speechRecognition.startListening(
 					async (res)=>{
 						this.activeVoice=!this.activeVoice;
-						axios.post('http://192.168.1.23:3000/distance/'+this.questions_id,{arrayTextVoic:res})
+						axios.post('http://192.168.1.23:3000/distance/'+this.questions_id,{arrayTextVote:res})
 							.then(respons=>{
+								alert(respons.data.err)
 								if(!respons.data.err){
 									this.messages.push({
 										text:respons.data.text,
@@ -84,11 +85,14 @@
 											lexicon:respons.data.lexicon
 										}});
 									if(respons.data.result){
-										this.messages.push({text:respons.data.answer,type:"bot"});
 										this.questions_id++;
+										this.messages.push({text:this.questions_id,type:"bot"});
+										this.startSound(this.questions_id)
+									}else{
+										this.messages.push({text:respons.data.answer,type:"bot"});
+										this.startSound(respons.data.answer)
 									}
 									this.scrollToDown();
-									this.startSound(respons.data.answer)
 								}
 								this.distance=JSON.stringify(respons)
 							}).catch(e=>console.log(e))
@@ -120,6 +124,9 @@
 					window.scroll({top: document.body.scrollHeight*1.5, behavior: "smooth"});
 				}
 			}
+		},
+		mounted() {
+			this.messages.push({text:this.questions[0],type:"bot"});
 		}
 	}
 </script>

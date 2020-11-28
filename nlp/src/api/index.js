@@ -168,7 +168,7 @@ exports.plugin = {
                         id: Joi.number().integer().min(0),
                     }),
                     payload:Joi.object({
-                        arrayTextVoic: Joi.any(),
+                        arrayTextVote: Joi.any(),
                     })
                 }
             }
