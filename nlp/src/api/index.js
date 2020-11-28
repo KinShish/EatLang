@@ -61,7 +61,7 @@ exports.plugin = {
                         const phonetics=100-(arrayTextVoic.length-1)*5
                         const grammar=Math.round(100-analysisNLP.distance/text.length*100);
                         const lexicon=sendLexicon(text.toLowerCase(),finalText);
-                        return {err:false,phonetics,grammar,lexicon,text:finalText,answer:((phonetics-50)*2+grammar+lexicon)/3>50?'Hello sure':faildAnswer[random]}
+                        return {err:false,phonetics,grammar,lexicon,text:finalText,answer:((phonetics-50)*2+grammar+lexicon)/3>50?'sure':faildAnswer[random]}
                     }catch (e) {
                         console.log(e)
                         return {err:true}
