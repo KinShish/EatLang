@@ -4,21 +4,45 @@ let routes = {
 	name:'index',
 	component: () => import('../App'),
 	children: [
+		//Ситуативная игра начало
 		{
-			path: 'info',
-			component:()=> import('../components/EatLangInfo'),
+			path: 'info/1',
+			component:()=> import('../components/situational/EatLangSituationalInfo'),
 			name: 'info',
 		},
 		{
-			path: 'map/:type',
-			component:()=> import('../components/EatLangMain'),
+			path: 'map/1',
+			component:()=> import('../components/situational/EatLangSituationalMain'),
 			name: 'game',
 		},
 		{
-			path: 'question/:idQuestion',
-			component:()=> import('../components/EatLangRoom'),
+			path: 'room/1',
+			component:()=> import('../components/situational/EatLangSituationalRoom'),
 			name: 'question',
-		}
+		},
+		{
+			path: 'sound/1',
+			component:()=> import('../components/situational/EatLangSituationalSound'),
+			name: 'info',
+		},
+		//Ситуативная игра конец
+		//Small Talk начало
+		{
+			path: 'info/2',
+			component:()=> import('../components/smallTalk/EatLangSmallTalkInfo'),
+			name: 'info',
+		},
+		{
+			path: 'room/2',
+			component:()=> import('../components/smallTalk/EatLangSmallTalkRoom'),
+			name: 'question',
+		},
+		{
+			path: 'sound/2',
+			component:()=> import('../components/smallTalk/EatSmallTalkLangSound'),
+			name: 'info',
+		},
+		//Small Talk конец
 	]
 }
 export const router = new VueRouter({

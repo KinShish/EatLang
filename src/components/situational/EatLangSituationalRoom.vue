@@ -1,24 +1,35 @@
 <template lang="pug">
 	div
 		div.fixedTop
-			h1.title(@click="scrollToDown()") Школа
 			.placeImage
-				img(src="../assets/story/school.svg")
-			.voiceBlock
-				.mainAnimBlock(:class="activeVoice?'animation':''")
-					span(v-for="item in 20")
+				img(src="../../assets/story/room2.svg")
 		.chatBlock
 			.message(v-for="message in messages" :class="message.type==='user'?'me':'noMe'")
 				.content
-					span {{message.text+'   '+JSON.stringify(message.options)}}
-			//transition-group(name="opacity")
+					span {{message.text}}
+						//+'   '+JSON.stringify(message.options)
+				.keyWords(v-if="message.type!=='user'")
+					span.wordDesc Используйте опорные слова:
+					span.word Hello
+					span.word Hello
+					span.word Hello
+				.raitingMessage(v-else)
+					.raitingItem
+						img(src="../../assets/rating/phoneticsGreen.svg")
+						span 12%
+					.raitingItem
+						img(src="../../assets/rating/grammarGreen.svg")
+						span 12%
+					.raitingItem
+						img(src="../../assets/rating/vocabularyGreen.svg")
+						span 12%
 			div(ref="bottom")
 		div.fixedBottom
 			.btnGetVoice
 				span(:class="activeVoice?'activeVoice':''" @click="sound()" v-if="$root.platform==='iPhone'")
-					img(src="../assets/mic.svg")
+					img(src="../../assets/whiteMic.svg")
 				span(:class="activeVoice?'activeVoice':''" v-else @click="startListing()")
-					img(src="../assets/mic.svg")
+					img(src="../../assets/whiteMic.svg")
 </template>
 
 <script>
@@ -28,7 +39,22 @@
 			return{
 				distance:'',
 				activeVoice:false,
-				messages:[],
+				messages:[
+					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
+					{text:'бота текст',type:"bot"},
+					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
+					{text:'бота текст',type:"bot"},
+					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
+					{text:'бота текст',type:"bot"},
+					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
+					{text:'бота текст',type:"bot"},
+					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
+					{text:'бота текст',type:"bot"},
+					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
+					{text:'бота текст',type:"bot"},
+					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
+					{text:'бота текст',type:"bot"},
+				],
 			}
 		},
 		methods:{
@@ -59,7 +85,7 @@
 									this.startSound(respons.data.answer)
 								}
 								this.distance=JSON.stringify(respons)
-							}).catch(e=>alert(e))
+							}).catch(e=>console.log(e))
 
 					},
 					(res)=>{console.log('startListeningBad',res)},options)
@@ -107,13 +133,9 @@
 		width: 100%;
 		bottom: 0;
 	}
-	.title{
-		max-width: 600px;
-		margin: 0 auto;
-	}
 	.placeImage img{
 		width: 100%;
-		height: 200px;
+		max-height: 300px;
 	}
 	.btnGetVoice span{
 		width: 75px;
@@ -123,6 +145,10 @@
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16);
 		border-radius: 50%;
 		transition: .3s ease;
+		background: #15CC5E;
+	}
+	.btnGetVoice img{
+		height: 50px;
 	}
 	.btnGetVoice{
 		display: grid;
@@ -135,88 +161,69 @@
 		padding: 5px 0;
 	}
 	.activeVoice{
-		background: #36A6E5;
-	}
-	.voiceBlock{
-		width: 85%;
-		margin: 15px auto;
-	}
-	.voiceBlock .mainAnimBlock{
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16);
-		border-radius: 3px;
-		height: 74px;
-		max-width: 400px;
-		margin: 0 auto;
-		display: flex;
+		background: white !important;
 	}
 	.chatBlock{
 		position: absolute;
 		width: 100%;
-		padding: 329px 15px 100px 15px;
+		padding: 300px 15px 100px 15px;
 	}
 	.message{
 		width: 100%;
 		margin: 20px 0;
+		word-break: break-word;
+		display: block;
 	}
-	.me{
-		color: #36A6E5;
+	.me .content{
+		color: #15CC5E;
 		text-align: right;
-		width: 80%;
 		margin-left: auto;
+		background: #FFFFFF;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.13);
+		border-radius: 5px;
+		width: fit-content;
+		max-width: 80%;
+		padding: 10px;
 	}
 	.noMe{
-		color: red;
+		color: #36A6E5;
 		text-align: left;
-		width: 80%;
 		margin-right: auto;
+		background: #FFFFFF;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.13);
+		border-radius: 5px;
+		width: -webkit-fit-content;
+		width: -moz-fit-content;
+		width: fit-content;
+		max-width: 80%;
+		padding: 10px;
+		margin-top: 50px;
 	}
-	.mainAnimBlock span{
-		width: 3px;
-		background: #36A6E5;
-		display: inline-block;
-		margin: auto;
-		height: 5px;
-		transition: 2s linear;
+	.wordDesc{
+		color: #757575;
+		font-size: 12px;
+		display: block;
+		margin-top: 10px;
 	}
-	.animation span:nth-child(odd){
-		animation: voice 1.5s linear infinite;
+	.word{
+		color: #15CC5E;
+		font-size: 12px;
+		display: block;
+		margin-bottom: 5px;
 	}
-	.animation span:nth-child(even){
-		animation: voice 2.5s linear infinite;
+	.raitingMessage{
+		display: flex;
+		float: right;
+		line-height: 30px;
+		font-size: 12px;
+		color: #15CC5E;
+		padding: 10px 0;
 	}
-	@keyframes voice {
-		0%{
-			height: 5px;
-		}
-		10%{
-			height: 20px;
-		}
-		20%{
-			height: 30px;
-		}
-		30%{
-			height: 40px;
-		}
-		40%{
-			height: 50px;
-		}
-		50%{
-			height: 60px;
-		}
-		60%{
-			height: 50px;
-		}
-		70%{
-			height: 40px;
-		}
-		80%{
-			height: 30px;
-		}
-		90%{
-			height: 20px;
-		}
-		100%{
-			height: 5px;
-		}
+	.raitingItem img{
+		height: 20px;
+		margin-right: 5px;
+	}
+	.raitingItem{
+		margin: 0 10px;
 	}
 </style>

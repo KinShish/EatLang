@@ -2,17 +2,17 @@
 	div
 		.mainComponent.backgroundMap
 			.map
-				img.imgMap(src="../assets/main.svg")
+				img.imgMap(src="../../assets/main.svg")
 				.pathUser
 					a
-						img.dontWork(src="../assets/dontWork.svg")
-						img(src="../assets/building/churchGrey.svg")
+						img.dontWork(src="../../assets/dontWork.svg")
+						img(src="../../assets/building/churchGrey.svg")
 					a
-						img.dontWork(src="../assets/dontWork.svg")
-						img(src="../assets/building/haltGrey.svg")
-					router-link(to="/question/1")
-						img.point(src="../assets/point.svg")
-						img(src="../assets/building/hotel.svg")
+						img.dontWork(src="../../assets/dontWork.svg")
+						img(src="../../assets/building/haltGrey.svg")
+					router-link(to="/room/1")
+						img.point(src="../../assets/point.svg")
+						img(src="../../assets/building/hotel.svg")
 		transition(name="opacity")
 			keep-alive
 				router-view
