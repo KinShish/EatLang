@@ -10,7 +10,7 @@
 		.chatBlock
 			.message(v-for="message in messages" :class="message.type==='user'?'me':'noMe'")
 				.content
-					span {{message}}
+					span {{message.text}}
 			//transition-group(name="opacity")
 		div.fixedBottom
 			.btnGetVoice
@@ -51,6 +51,7 @@
 								if(!respons.err){
 									this.messages.push({text:respons.text,type:"user",options:{phonetics:respons.phonetics,grammar:respons.grammar,lexicon:respons.lexicon}});
 									this.messages.push({text:respons.answer,type:"bot"});
+									this.startSound(respons.answer)
 								}
 								this.distance=JSON.stringify(respons)
 							}).catch(e=>alert(e))
@@ -62,6 +63,17 @@
 				window.plugins.speechRecognition.stopListening(
 					(res)=>{console.log('stopListeningSuc',res)},
 					(res)=>{console.log('stopListeningBad',res)},)
+			},
+			startSound(text){
+				// eslint-disable-next-line no-undef
+				TTS
+					.speak({
+						text: text,
+						locale: 'en-US',
+						rate: 0.4,
+						pitch: 1.3,
+						cancel: true
+					})
 			}
 		}
 	}
