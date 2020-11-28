@@ -26,3 +26,4 @@ pnpm-debug.log*
 /google-services.json
 /GoogleService-Info.plist
 /nlp/package-lock.json
+/www/
