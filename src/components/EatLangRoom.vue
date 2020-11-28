@@ -98,7 +98,7 @@
 		z-index: 1;
 		background: white;
 		width: 100%;
-		top: 0;
+		top: 40px;
 	}
 	.fixedBottom{
 		position: fixed;
@@ -108,8 +108,8 @@
 		bottom: 0;
 	}
 	.title{
-		margin-left: 15px;
-		margin-bottom: 0;
+		max-width: 600px;
+		margin: 0 auto;
 	}
 	.placeImage img{
 		width: 100%;
@@ -122,6 +122,7 @@
 		place-content: center;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16);
 		border-radius: 50%;
+		transition: .3s ease;
 	}
 	.btnGetVoice{
 		display: grid;
@@ -174,7 +175,7 @@
 		background: #36A6E5;
 		display: inline-block;
 		margin: auto;
-		height: 60px;
+		height: 5px;
 		transition: 2s linear;
 	}
 	.animation span:nth-child(odd){
@@ -185,37 +186,37 @@
 	}
 	@keyframes voice {
 		0%{
-			height: 60px;
+			height: 5px;
 		}
 		10%{
-			height: 50px;
+			height: 20px;
 		}
 		20%{
-			height: 40px;
+			height: 30px;
 		}
 		30%{
-			height: 30px;
-		}
-		40%{
-			height: 20px;
-		}
-		50%{
-			height: 10px;
-		}
-		60%{
-			height: 20px;
-		}
-		70%{
-			height: 30px;
-		}
-		80%{
 			height: 40px;
 		}
-		90%{
+		40%{
 			height: 50px;
 		}
-		100%{
+		50%{
 			height: 60px;
+		}
+		60%{
+			height: 50px;
+		}
+		70%{
+			height: 40px;
+		}
+		80%{
+			height: 30px;
+		}
+		90%{
+			height: 20px;
+		}
+		100%{
+			height: 5px;
 		}
 	}
 </style>

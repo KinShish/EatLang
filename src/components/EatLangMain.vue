@@ -5,10 +5,10 @@
 				img.imgMap(src="../assets/main.svg")
 				.pathUser
 					a
-						//img.point(src="../assets/point.svg")
+						img.dontWork(src="../assets/dontWork.svg")
 						img(src="../assets/building/churchGrey.svg")
 					a
-						//img.point(src="../assets/point.svg")
+						img.dontWork(src="../assets/dontWork.svg")
 						img(src="../assets/building/haltGrey.svg")
 					router-link(to="/question/1")
 						img.point(src="../assets/point.svg")
@@ -20,16 +20,47 @@
 
 <script>
 	export default {
-
+		activated() {
+			console.log(this.$route.params.type)
+		}
 	}
 </script>
 
 <style scoped>
+	.header{
+		height: 40px;
+		position: relative;
+		width: 100%;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+		color: #36A6E5;
+		background: white;
+		z-index: 10;
+		text-align: center;
+		font-weight: bold;
+		line-height: 40px;
+	}
+	.dontWork{
+		position: absolute;
+		bottom: 50%;
+		left: 30%;
+	}
+	@keyframes pulse {
+		0% {
+			transform: scale(1);
+		}
+		50%{
+			transform: scale(1.3);
+		}
+		100%{
+			transform: scale(1);
+		}
+	}
 	.point{
 		position: absolute;
 		height: 30px !important;
 		width: 30px !important;
 		right: 35%;
+		animation: pulse 1s linear infinite;
 	}
 	.map{
 		width: fit-content;
@@ -49,6 +80,7 @@
 		border-radius: 5px;
 		height: auto;
 		border: 1px solid #8bb330;
+		border-top: none;
 	}
 	.mainComponent{
 		z-index: 1;
@@ -57,7 +89,7 @@
 		height: 100%;
 		display: grid;
 		place-content: center;
-		top: 0;
+		top: 40px;
 		bottom: 0;
 	}
 	.pathUser{
