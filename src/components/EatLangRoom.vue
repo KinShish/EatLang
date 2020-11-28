@@ -99,7 +99,7 @@
 		z-index: 1;
 		background: white;
 		width: 100%;
-		top: 0;
+		top: 40px;
 	}
 	.fixedBottom{
 		position: fixed;
