@@ -117,6 +117,7 @@
 		border-radius: 3px;
 		min-width: 40px;
 		margin-left: 10px;
+		margin: auto;
 	}
 	.soundBox .item .blockImg img{
 		height: 30px;

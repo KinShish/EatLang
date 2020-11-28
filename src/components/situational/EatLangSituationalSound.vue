@@ -4,26 +4,12 @@
 		p.subTitle Игра началась. Вам знакомы слова, которые потребуются для диалога?
 		p.subTitle Прослушайте и повторите их, чтобы пройти дальше.
 		.soundBox
-			.item
+			.item(v-for="word in array")
 				img(src="../../assets/speaker.svg")
-				span.name(@click="chechWordSound('Chruch')")
-					span Chruch
-					span    - Церковь
-				span.blockImg(@click="sayWord('ChruchSay')")
-					img(src="../../assets/whiteMic.svg")
-			.item
-				img(src="../../assets/speaker.svg")
-				span.name(@click="chechWordSound('Coffee')")
-					span Coffee
-					span    - Кофе
-				span.blockImg(@click="sayWord('CoffeeSay')")
-					img(src="../../assets/whiteMic.svg")
-			.item
-				img(src="../../assets/speaker.svg")
-				span.name(@click="chechWordSound('Office')")
-					span Office
-					span    - Офис
-				span.blockImg(@click="sayWord('OfficeSay')")
+				span.name(@click="chechWordSound(word.engName)")
+					span {{word.engName}}
+					span    - {{word.ruName}}
+				span.blockImg(@click="sayWord(word.engName+'Say')")
 					img(src="../../assets/whiteMic.svg")
 		p.subTitleTo Также каждое ваше предложение будет оцениваться по трём параметрам:
 		.ratingBlock
@@ -38,15 +24,27 @@
 				span Грамматика
 		.goToGameBlock
 			transition(name="opacity")
-				button.goToGame(@click="$router.push('/room/1')" v-if="arrWord.length===allCountWord") Начать
+				button.goToGame(@click="$router.push('/room/1')" ) Начать
 </template>
 
 <script>
 	export default {
 		data(){
 			return{
+				array:[
+					{engName:'Can you',ruName:'вы можете?',pathSound:''},
+					{engName:'Help',ruName:'помощь',pathSound:''},
+					{engName:'What',ruName:'что',pathSound:''},
+					{engName:'City/town',ruName:'город',pathSound:''},
+					{engName:'Where is ',ruName:'где',pathSound:''},
+					{engName:'Located/situated',ruName:'расположенный',pathSound:''},
+					{engName:'suburb/outskirts/ countryside',ruName:'пригород',pathSound:''},
+					{engName:'How',ruName:'как',pathSound:''},
+					{engName:'Get there',ruName:'попасть туда',pathSound:''},
+
+				],
 				arrWord:[],
-				allCountWord:6
+				allCountWord:18
 			}
 		},
 		methods:{
@@ -108,6 +106,9 @@
 		display: grid;
 		place-content: center;
 		border-radius: 3px;
+		min-width: 40px;
+		margin-left: 10px;
+		margin: auto;
 	}
 	.soundBox .item .blockImg img{
 		height: 30px;

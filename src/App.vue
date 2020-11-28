@@ -1,6 +1,6 @@
 <template lang="pug">
 	div
-		div(v-if="$route.name==='index'")
+		.maxSize(v-if="$route.name==='index'")
 			img.logo(src="./assets/logo.svg")
 			.chatBlockIndex
 				.messageChatIndex
@@ -11,7 +11,7 @@
 				.messageChatIndex
 					span Будь понятым и оцени свои успехи по трем критериям: грамматика, лексика и фонетика
 			.goToGameBlock
-				button.goToGame(@click="$router.push('/gameMode')") Продолжить
+				button.goToGame(@click="$router.push('/gameMode')") Начать
 		.header(v-else)
 			img(src="./assets/helperHead.svg" @click="$refs.helperModal.show()")
 			span(@click="$router.go(-1)") НАЗАД
