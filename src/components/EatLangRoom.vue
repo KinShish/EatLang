@@ -14,7 +14,9 @@
 			//transition-group(name="opacity")
 		div.fixedBottom
 			.btnGetVoice
-				span(:class="activeVoice?'activeVoice':''" @click="startListing()")
+				span(:class="activeVoice?'activeVoice':''" @click="sound()" v-if="$root.platform==='iPhone'")
+					img(src="../assets/mic.svg")
+				span(:class="activeVoice?'activeVoice':''" v-else @click="startListing()")
 					img(src="../assets/mic.svg")
 </template>
 
@@ -43,15 +45,18 @@
 					matches:100,
 					showPartial:true
 				}
+				this.activeVoice=!this.activeVoice;
 				window.plugins.speechRecognition.startListening(
 					async (res)=>{
-						console.log('startListeningSuc',res);this.arrText=res;this.text=this.arrText[0]
+						this.activeVoice=!this.activeVoice;
+						console.log('startListeningSuc',res)
 						axios.post('http://192.168.1.23:3000/distance',{text:'Hello Can you help me',arrayTextVoic:res})
 							.then(respons=>{
 								if(!respons.err){
-									this.messages.push({text:respons.text,type:"user",options:{phonetics:respons.phonetics,grammar:respons.grammar,lexicon:respons.lexicon}});
-									this.messages.push({text:respons.answer,type:"bot"});
-									this.startSound(respons.answer)
+									this.messages.push({text:respons.data.text,type:"user",options:{phonetics:respons.data.phonetics,grammar:respons.data.grammar,lexicon:respons.data.lexicon}});
+									this.messages.push({text:respons.data.answer,type:"bot"});
+									this.scrollToDown();
+									this.startSound(respons.data.answer)
 								}
 								this.distance=JSON.stringify(respons)
 							}).catch(e=>alert(e))
@@ -71,9 +76,12 @@
 						text: text,
 						locale: 'en-US',
 						rate: 0.4,
-						pitch: 1.3,
+						pitch: 1,
 						cancel: true
 					})
+			},
+			scrollToDown(){
+				window.scroll({top: document.body.scrollHeight*1.5, behavior: "smooth"});
 			}
 		}
 	}
