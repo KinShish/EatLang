@@ -1,13 +1,17 @@
 <template lang="pug">
 	div
-		.gameMode(v-if="$route.name==='index'")
-			h1.title Выберите режим игры
-			.selectGameMode(v-for="mode in mode" :key="mode.title" :class="selectMode===mode.type?'selectGameModeActive':''" @click="selectMode=mode.type")
-				h1 {{mode.title}}
-				p {{mode.descript}}
+		div(v-if="$route.name==='index'")
+			img.logo(src="./assets/logo.svg")
+			.chatBlockIndex
+				.messageChatIndex
+					span Привет!
+					span Это приложение поможет отработать навыки устной речи.
+				.messageChatIndex
+					span Выбирай ситуацию, слушай собеседника и отвечай в микрофон.
+				.messageChatIndex
+					span Будь понятым и оцени свои успехи по трем критериям: грамматика, лексика и фонетика
 			.goToGameBlock
-				transition(name="opacity")
-					button.goToGame(@click="$_eatLang_go_game" v-if="selectMode!==''") Продолжить
+				button.goToGame(@click="$router.push('/gameMode')") Продолжить
 		.header(v-else)
 			img(src="./assets/helperHead.svg" @click="$refs.helperModal.show()")
 			span(@click="$router.go(-1)") НАЗАД
@@ -25,22 +29,6 @@
 
 <script>
 	export default {
-		data(){
-			return{
-				text:'',
-				arrText:[],
-				selectMode:'',
-				mode:[
-					{title:'SMALL TALK',descript:'Непринужденный разговор на отвлеченные темы, которые не предполагают договоренностей, обязательств и т. д.',type:'2'},
-					{title:'СИТУАТИВНЫЙ',descript: 'Короткие диалоги в типычных ситуациях речевого общения',type:'1'}
-					]
-			}
-		},
-		methods:{
-			$_eatLang_go_game(){
-				this.$router.push('info/'+this.selectMode)
-			},
-		},
 		created() {
 			window.plugins.speechRecognition.requestPermission(
 				(requestPermissionSuc)=>{console.log('requestPermission',requestPermissionSuc)} ,
@@ -50,36 +38,30 @@
 </script>
 
 <style scoped>
-	.gameMode{
-		display: grid;
-		place-content: center;
-		height: 100%;
-		position: absolute;
-		width: 100%;
-		text-align: center;
-		margin-bottom: 30px;
+	.logo{
+		margin: 20px auto;
+		display: block;
 	}
-	.selectGameMode{
-		border: 1px solid white;
+	.chatBlockIndex{
+		max-width: 600px;
+		padding: 0 15px;
+	}
+	.messageChatIndex{
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.13);
 		border-radius: 5px;
-		width: 80%;
-		margin: 20px auto;
-		min-height: 170px;
-		transition: .3s ease;
-		padding: 10px;
+		width: 70%;
+		display: block;
+		padding: 20px;
+		margin: 15px 0;
+		text-align: left;
+		color:#1F8CC9;
 	}
-	.selectGameMode h1{
-		font-size: 21px;
-		color: #26B258;
+	.messageChatIndex span{
+		display: block;
 	}
-	.selectGameMode p{
-		min-height: 90px;
-		display: grid;
-		place-content: center;
-	}
-	.selectGameModeActive {
-		border: 1px solid #36A6E5;
-		transition: .3s ease;
+	.messageChatIndex:nth-child(2){
+		margin-left: auto;
+		color: #15CC5E;
+		text-align: right;
 	}
 </style>

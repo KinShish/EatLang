@@ -1,29 +1,15 @@
 <template lang="pug">
-	div
+	.maxSize.getMargin
 		h1.title Опорные слова
-		p.subTitle Опорные слова, которые рекомендуется использовать в данной теме.
-		p.subTitle Вы можете изучить их и прослушать, а также можете проверить своё произношение.
+		p.subTitle Игра началась. Вам знакомы слова, которые потребуются для диалога?
+		p.subTitle Прослушайте и повторите их, чтобы пройти дальше.
 		.soundBox
-			.item
+			.item(v-for="word in array")
 				img(src="../../assets/speaker.svg")
-				span.name
-					span Chruch
-					span    - Церковь
-				span.blockImg
-					img(src="../../assets/whiteMic.svg")
-			.item
-				img(src="../../assets/speaker.svg")
-				span.name
-					span Coffee
-					span    - Кофе
-				span.blockImg
-					img(src="../../assets/whiteMic.svg")
-			.item
-				img(src="../../assets/speaker.svg")
-				span.name
-					span Office
-					span    - Офис
-				span.blockImg
+				span.name(@click="chechWordSound(word.engName)")
+					span {{word.engName}}
+					span    - {{word.ruName}}
+				span.blockImg(@click="sayWord(word.engName+'Say')")
 					img(src="../../assets/whiteMic.svg")
 		p.subTitleTo Также каждое ваше предложение будет оцениваться по трём параметрам:
 		.ratingBlock
@@ -37,12 +23,51 @@
 				img(src="../../assets/rating/grammar.svg")
 				span Грамматика
 		.goToGameBlock
-			button.goToGame(@click="$router.push('/room/2')") Начать
+			transition(name="opacity") //v-if="arrWord.length===allCountWord"
+				button.goToGame(@click="$router.push('/room/2')" ) Начать
 </template>
 
 <script>
 	export default {
-
+		data(){
+			return{
+				array:[
+					{engName:'be new',ruName:'быть новеньким',pathSound:''},
+					{engName:'departament',ruName:'отдел',pathSound:''},
+					{engName:'apprentice',ruName:'стажер',pathSound:''},
+					{engName:'arrive',ruName:'приезжать, прибывать',pathSound:''},
+					{engName:'it\'s lovely',ruName:'прекрасно',pathSound:''},
+					{engName:'a but noisy',ruName:'немного шумный',pathSound:''},
+					{engName:'I\'m not used to',ruName:'я не привык к...',pathSound:''},
+					{engName:'home town',ruName:'родной город',pathSound:''},
+					{engName:'What is your... like?',ruName:'дай храктеристику (опиши)',pathSound:''},
+					{engName:'quiet',ruName:'тихий',pathSound:''},
+					{engName:'not su',ruName:'не такое',pathSound:''},
+					{engName:'crowed place',ruName:'многолюдное место',pathSound:''},
+					{engName:'I have never been to',ruName:'я никогда не бывал...',pathSound:''},
+					{engName:'I\'ve heard a lot about',ruName:'я слышал много об...',pathSound:''},
+					{engName:'You chould',ruName:'тебе следует (совет)',pathSound:''},
+					{engName:'visit',ruName:'посетить',pathSound:''},
+					{engName:'one day',ruName:'однажды',pathSound:''},
+					{engName:'I\'m sure',ruName:'я уверен',pathSound:''},
+					{engName:'love it',ruName:'понравится',pathSound:''},
+				],
+				arrWord:[],
+				allCountWord:38
+			}
+		},
+		methods:{
+			chechWordSound(name){
+				if(this.arrWord.indexOf(name)===-1){
+					this.arrWord.push(name)
+				}
+			},
+			sayWord(name){
+				window.plugins.speechRecognition.startListening(
+					()=>{this.chechWordSound(name)},
+					()=>{})
+			}
+		}
 	}
 </script>
 
@@ -90,6 +115,8 @@
 		display: grid;
 		place-content: center;
 		border-radius: 3px;
+		min-width: 40px;
+		margin-left: 10px;
 	}
 	.soundBox .item .blockImg img{
 		height: 30px;

@@ -30,7 +30,11 @@
     margin: 0 auto;
 }
 .getMargin{
-    margin-top: 50px;
+    margin-top: 50px !important;
+}
+.maxSize{
+    max-width: 600px;
+    margin: 0 auto;
 }
 /*Дополнительно конец*/
 /*Кнопка дальше начало*/
@@ -76,6 +80,8 @@ button.goToGame:active{
     max-width: 600px;
     margin: 0 auto;
     top: 0;
+    right: 0;
+    left: 0;
 }
 .header img{
     margin-right: auto;

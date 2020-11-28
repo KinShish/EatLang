@@ -4,6 +4,11 @@ let routes = {
 	name:'index',
 	component: () => import('../App'),
 	children: [
+		{
+			path: 'gameMode',
+			component:()=> import('../components/EatLangFirstPage'),
+			name: 'gameMode',
+		},
 		//Ситуативная игра начало
 		{
 			path: 'info/1',
@@ -13,17 +18,17 @@ let routes = {
 		{
 			path: 'map/1',
 			component:()=> import('../components/situational/EatLangSituationalMain'),
-			name: 'game',
+			name: 'map',
 		},
 		{
 			path: 'room/1',
 			component:()=> import('../components/situational/EatLangSituationalRoom'),
-			name: 'question',
+			name: 'room',
 		},
 		{
 			path: 'sound/1',
 			component:()=> import('../components/situational/EatLangSituationalSound'),
-			name: 'info',
+			name: 'sound',
 		},
 		//Ситуативная игра конец
 		//Small Talk начало
@@ -35,12 +40,12 @@ let routes = {
 		{
 			path: 'room/2',
 			component:()=> import('../components/smallTalk/EatLangSmallTalkRoom'),
-			name: 'question',
+			name: 'room',
 		},
 		{
 			path: 'sound/2',
 			component:()=> import('../components/smallTalk/EatSmallTalkLangSound'),
-			name: 'info',
+			name: 'sound',
 		},
 		//Small Talk конец
 	]

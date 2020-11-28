@@ -39,22 +39,7 @@
 			return{
 				distance:'',
 				activeVoice:false,
-				messages:[
-					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
-					{text:'бота текст',type:"bot"},
-					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
-					{text:'бота текст',type:"bot"},
-					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
-					{text:'бота текст',type:"bot"},
-					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
-					{text:'бота текст',type:"bot"},
-					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
-					{text:'бота текст',type:"bot"},
-					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
-					{text:'бота текст',type:"bot"},
-					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
-					{text:'бота текст',type:"bot"},
-				],
+				messages:[],
 			}
 		},
 		methods:{

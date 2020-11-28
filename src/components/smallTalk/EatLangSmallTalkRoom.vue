@@ -2,7 +2,7 @@
 	div
 		div.fixedTop
 			.placeImage
-				img(src="../../assets/story/room2.svg")
+				img(src="../../assets/story/room2Man.svg")
 		.chatBlock
 			.message(v-for="message in messages" :class="message.type==='user'?'me':'noMe'")
 				.content
@@ -39,22 +39,7 @@
 			return{
 				distance:'',
 				activeVoice:false,
-				messages:[
-					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
-					{text:'бота текст',type:"bot"},
-					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
-					{text:'бота текст',type:"bot"},
-					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
-					{text:'бота текст',type:"bot"},
-					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
-					{text:'бота текст',type:"bot"},
-					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
-					{text:'бота текст',type:"bot"},
-					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
-					{text:'бота текст',type:"bot"},
-					{text:'мой текст',type:"user",options:{phonetics:12,grammar:13,lexicon:14}},
-					{text:'бота текст',type:"bot"},
-				],
+				messages:[],
 			}
 		},
 		methods:{

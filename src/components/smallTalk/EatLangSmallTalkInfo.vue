@@ -1,8 +1,11 @@
 <template lang="pug">
-	div
+	.getMargin
 		img.titleImage(src="../../assets/story/room2.svg")
-		.title ДОБРАТЬСЯ ДО ДОСТОПРИМЕЧАТЕЛЬНОСТИ
-		p.decript Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nunc sed eu, pellentesque vitae purus. Auctor nunc, id bibendum et etiam. Eget purus nisi, at in mauris cras condimentum. Non sed pharetra vel aenean mauris ut arcu praesent. Eu diam mi cursus dolor, non. Arcu vitae augue arcu varius phasellus interdum vel. At tincidunt risus adipiscing et mi viverra. Elit ut egestas ipsum eu enim urna faucibus donec.
+		.title НОВИЧОК НА КОФЕ БРЕЙК
+		p.decript Вы Алекс - новичок, стажер в IT отделе финала «Цифрового прорыва» в ньюйоркском офисе.
+		p.decript Прилетели из России на прошлой неделе.
+		p.decript Ваша родина – тихий и малонаселенный город на Севере России.
+		p.decript К вам подошел познакомиться коллега, поддержите разговор. Если ваши ответы будут непонятны собеседнику он не сможет вам ответить.
 		.goToGameBlock
 			button.goToGame(@click="$router.push('/sound/2')") Продолжить
 </template>

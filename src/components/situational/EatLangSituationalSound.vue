@@ -1,29 +1,29 @@
 <template lang="pug">
-	div
-		h1.title Опорные слова (ситуативно)
-		p.subTitle Опорные слова, которые рекомендуется использовать в данной теме.
-		p.subTitle Вы можете изучить их и прослушать, а также можете проверить своё произношение.
+	.maxSize.getMargin
+		h1.title Опорные слова
+		p.subTitle Игра началась. Вам знакомы слова, которые потребуются для диалога?
+		p.subTitle Прослушайте и повторите их, чтобы пройти дальше.
 		.soundBox
 			.item
 				img(src="../../assets/speaker.svg")
-				span.name
+				span.name(@click="chechWordSound('Chruch')")
 					span Chruch
 					span    - Церковь
-				span.blockImg
+				span.blockImg(@click="sayWord('ChruchSay')")
 					img(src="../../assets/whiteMic.svg")
 			.item
 				img(src="../../assets/speaker.svg")
-				span.name
+				span.name(@click="chechWordSound('Coffee')")
 					span Coffee
 					span    - Кофе
-				span.blockImg
+				span.blockImg(@click="sayWord('CoffeeSay')")
 					img(src="../../assets/whiteMic.svg")
 			.item
 				img(src="../../assets/speaker.svg")
-				span.name
+				span.name(@click="chechWordSound('Office')")
 					span Office
 					span    - Офис
-				span.blockImg
+				span.blockImg(@click="sayWord('OfficeSay')")
 					img(src="../../assets/whiteMic.svg")
 		p.subTitleTo Также каждое ваше предложение будет оцениваться по трём параметрам:
 		.ratingBlock
@@ -35,14 +35,32 @@
 				span Лексика
 			.item
 				img(src="../../assets/rating/grammar.svg")
-				span Грамматика1
+				span Грамматика
 		.goToGameBlock
-			button.goToGame(@click="$router.push('/map/1')") Дальше
+			transition(name="opacity")
+				button.goToGame(@click="$router.push('/room/2')" v-if="arrWord.length===allCountWord") Начать
 </template>
 
 <script>
 	export default {
-
+		data(){
+			return{
+				arrWord:[],
+				allCountWord:6
+			}
+		},
+		methods:{
+			chechWordSound(name){
+				if(this.arrWord.indexOf(name)===-1){
+					this.arrWord.push(name)
+				}
+			},
+			sayWord(name){
+				window.plugins.speechRecognition.startListening(
+					()=>{this.chechWordSound(name)},
+					()=>{})
+			}
+		}
 	}
 </script>
 

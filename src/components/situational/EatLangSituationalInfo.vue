@@ -1,8 +1,8 @@
 <template lang="pug">
-	div
+	.getMargin
 		img.titleImage(src="../../assets/story/room2.svg")
-		.title ДОБРАТЬСЯ ДО ДОСТОПРИМЕЧАТЕЛЬНОСТИ (ситуативно)
-		p.decript Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nunc sed eu, pellentesque vitae purus. Auctor nunc, id bibendum et etiam. Eget purus nisi, at in mauris cras condimentum. Non sed pharetra vel aenean mauris ut arcu praesent. Eu diam mi cursus dolor, non. Arcu vitae augue arcu varius phasellus interdum vel. At tincidunt risus adipiscing et mi viverra. Elit ut egestas ipsum eu enim urna faucibus donec.
+		.title ДОБРАТЬСЯ ДО ДОСТОПРИМЕЧАТЕЛЬНОСТИ
+		p.decript Вы приехали в новый город и хотите посетить его главную достопримечательность. Расспросите у прохожего, что является главной достопримечательностью города и как туда добраться. Если ваши ответы будут непонятны собеседнику он не сможет вам ответить.
 		.goToGameBlock
 			button.goToGame(@click="$router.push('/sound/1')") Продолжить
 </template>
