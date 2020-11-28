@@ -8,10 +8,10 @@
 				.mainAnimBlock(:class="activeVoice?'animation':''")
 					span(v-for="item in 20")
 		.chatBlock
-			transition-group(name="opacity")
-				.message(v-for="message in messages" :class="message.type==='user'?'me':'noMe'")
-					.content
-						span {{message}}
+			.message(v-for="message in messages" :class="message.type==='user'?'me':'noMe'")
+				.content
+					span {{message}}
+			//transition-group(name="opacity")
 		div.fixedBottom
 			.btnGetVoice
 				span(:class="activeVoice?'activeVoice':''" @click="startListing()")
