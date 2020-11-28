@@ -47,7 +47,7 @@
 				messages:[],
 				questions_id:0,
 				questions:[
-					{text:'Hi. My name is Zhenya. That is you name?',voice:name,words:['имя','Алекс']},
+					{text:'Hi. My name is Zhenya. That is you name?',voice:name,words:['имя','Алекс','Приветствие']},
 					{text:'I\'m an expert from the case 3. I represent compony "Rostelecom". You are new here. Which department do you work?',voice:expert,words:['быть новеньким','отдел']},
 					{text:'Where do you come from?',voice:where,words:['из России','стажер']},
 					{text:'O! Grate! When did you arrive?',voice:grate,words:['прибыл','прошлая неделя']},
