@@ -94,8 +94,7 @@
 									this.scrollToDown();
 								}
 								this.distance=JSON.stringify(respons)
-							}).catch(e=>alert(e))
-
+							}).catch(e=>console.log(e))
 					},
 					(res)=>{console.log('startListeningBad',res)},options)
 			},
@@ -122,11 +121,21 @@
 				if(process.env.NODE_ENV!=='development') {
 					window.scroll({top: document.body.scrollHeight*1.5, behavior: "smooth"});
 				}
+			},
+			sayErrorNo(){
+				axios.get('http://01taxi.ru/distance/auth')
+					.then(respons=>{
+						console.log(respons)
+					}).catch(e=>console.log(e))
+
 			}
 		},
 		mounted() {
-			this.messages.push({text:this.questions[0],type:"bot"});
-			this.startSound(this.questions[0])
+			this.sayErrorNo();
+			setTimeout(()=>{
+				this.messages.push({text:this.questions[0],type:"bot"});
+				this.startSound(this.questions[0])
+			},3000)
 		}
 	}
 </script>

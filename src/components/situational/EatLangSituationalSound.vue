@@ -54,9 +54,14 @@
 				}
 			},
 			sayWord(name){
+				let options = {
+					language:'en-US',
+					matches:10,
+					showPartial:false
+				}
 				window.plugins.speechRecognition.startListening(
 					()=>{this.chechWordSound(name)},
-					()=>{})
+					()=>{},options)
 			}
 		}
 	}

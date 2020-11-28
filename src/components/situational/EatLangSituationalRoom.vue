@@ -42,7 +42,17 @@
 				messages:[],
 			}
 		},
+		mounted() {
+			this.sayErrorNo();
+		},
 		methods:{
+			sayErrorNo(){
+				axios.get('http://01taxi.ru/distance/auth')
+					.then(respons=>{
+						console.log(respons)
+					}).catch(e=>console.log(e))
+
+			},
 			sound(){
 				this.activeVoice=!this.activeVoice
 				if(this.activeVoice) {
