@@ -72,7 +72,11 @@
 							.then(respons=>{
 								if(!respons.err){
 									this.messages.push({text:respons.data.text,type:"user",options:{phonetics:respons.data.phonetics,grammar:respons.data.grammar,lexicon:respons.data.lexicon}});
-									this.messages.push({text:respons.data.answer,type:"bot",words:respons.data.words});
+									if(respons.data.result){
+										this.messages.push({text:respons.data.answer,type:"bot",words:respons.data.words});
+									}else{
+										this.messages.push({text:respons.data.answer,type:"bot",words:'Заведите разговор, попросите помочь вам. Для просьбы используйте слова «здравствуйте», «можете», «помощь»'});
+									}
 									this.scrollToDown();
 									this.startSound(respons.data.answer)
 								}
