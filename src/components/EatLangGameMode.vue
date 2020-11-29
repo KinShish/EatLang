@@ -1,19 +1,15 @@
 <template lang="pug">
 	.gameMode
 		h1.title Выберите режим игры
-		.selectGameMode(v-for="mode in mode" :key="mode.title" :class="selectMode===mode.type?'selectGameModeActive':''" @click="selectMode=mode.type")
+		.selectGameMode(v-for="mode in mode" :key="mode.title" :class="selectMode===mode.type?'selectGameModeActive':''" @click="$router.push('info/'+mode.type)")
 			h1 {{mode.title}}
 			p {{mode.descript}}
-		.goToGameBlock
-			transition(name="opacity")
-				button.goToGame(@click="$router.push('info/'+selectMode)" v-if="selectMode!==''") Продолжить
 </template>
 
 <script>
 	export default {
 		data(){
 			return{
-				selectMode:'',
 				mode:[
 					{title:'SMALL TALK',descript:'Непринужденный разговор на отвлеченные темы, которые не предполагают договоренностей, обязательств и т. д.',type:'2'},
 					{title:'СИТУАТИВНЫЙ',descript: 'Короткие диалоги в типычных ситуациях речевого общения',type:'1'}
