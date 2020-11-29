@@ -1,7 +1,7 @@
 {
-  "name": "VTR",
-  "displayName": "VTR",
-  "version": "0.0.1",
+  "name": "eatlang",
+  "displayName": "eatlang",
+  "version": "1.0.0",
   "description": "Описание приложения",
   "main": "index.js",
   "scripts": {

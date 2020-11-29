@@ -6,7 +6,7 @@
 		.soundBox
 			.item(v-for="word in array")
 				img(src="../../assets/speaker.svg")
-				span.name(@click="chechWordSound(word.engName)")
+				span.name(@click="clickWordSound(word.engName,word.sound)")
 					span {{word.engName}}
 					span    - {{word.ruName}}
 				span.blockImg(@click="sayWord(word.engName+'Say')")
@@ -77,6 +77,11 @@
 			}
 		},
 		methods:{
+			clickWordSound(name,file){
+				const audio = new Audio(file)
+				audio.play()
+				this.chechWordSound(name)
+			},
 			chechWordSound(name){
 				if(this.arrWord.indexOf(name)===-1){
 					this.arrWord.push(name)
