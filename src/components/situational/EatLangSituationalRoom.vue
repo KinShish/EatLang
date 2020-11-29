@@ -3,8 +3,8 @@
 		div.fixedTop
 			.placeImage
 				img(src="../../assets/story/streetGirl.svg")
-			.help Заведите разговор, попросите помочь вам. Для просьбы используйте слова «здравствуйте», «можете», «помощь»
-		.chatBlock
+			.help(v-if="!hideHelp") Заведите разговор, попросите помочь вам. Для просьбы используйте слова «здравствуйте», «можете», «помощь»
+		.chatBlock(:class="!hideHelp?'dopPadding':''")
 			.message(v-for="message in messages" :class="message.type==='user'?'me':'noMe'")
 				.content
 					span {{message.text}}
@@ -37,6 +37,7 @@
 				distance:'',
 				activeVoice:false,
 				messages:[],
+				hideHelp:false
 			}
 		},
 		mounted() {
@@ -73,6 +74,7 @@
 								if(!respons.err){
 									this.messages.push({text:respons.data.text,type:"user",options:{phonetics:respons.data.phonetics,grammar:respons.data.grammar,lexicon:respons.data.lexicon}});
 									if(respons.data.result){
+										this.hideHelp=true;
 										this.messages.push({text:respons.data.answer,type:"bot",words:respons.data.words});
 									}else{
 										this.messages.push({text:respons.data.answer,type:"bot",words:'Заведите разговор, попросите помочь вам. Для просьбы используйте слова «здравствуйте», «можете», «помощь»'});
@@ -115,6 +117,9 @@
 </script>
 
 <style scoped>
+	.dopPadding{
+		padding: 330px 15px 100px 15px !important;
+	}
 	.help{
 		width: 100%;
 		max-width: 600px;
@@ -174,6 +179,7 @@
 		padding: 370px 15px 100px 15px;
 		max-width: 600px;
 		margin: 0 auto;
+		transition: .3s ease;
 	}
 	.message{
 		width: 100%;
