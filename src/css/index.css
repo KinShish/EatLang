@@ -23,7 +23,9 @@
 .title{
     color: #15CC5E;
     font-size: 21px;
-    margin-bottom: 30px;
+    width: 80%;
+    margin: 30px auto;
+    max-width: 600px;
 }
 .app{
     max-width: 600px;
@@ -53,6 +55,7 @@
     outline: none;
     border:2px solid #15CC5E;
     transition: .3s ease;
+    max-width: 600px;
 }
 button.goToGame:active{
     border-color: #15CC5E;

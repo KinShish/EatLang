@@ -19,11 +19,6 @@
 </template>
 
 <script>
-	export default {
-		activated() {
-			console.log(this.$route.params.type)
-		}
-	}
 </script>
 
 <style scoped>

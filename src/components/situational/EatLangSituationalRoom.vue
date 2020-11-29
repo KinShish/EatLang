@@ -3,15 +3,13 @@
 		div.fixedTop
 			.placeImage
 				img(src="../../assets/story/streetGirl.svg")
+			.help Заведите разговор, попросите помочь вам. Для просьбы используйте слова «здравствуйте», «можете», «помощь»
 		.chatBlock
 			.message(v-for="message in messages" :class="message.type==='user'?'me':'noMe'")
 				.content
 					span {{message.text}}
 				.keyWords(v-if="message.type!=='user'")
-					span.wordDesc Используйте опорные слова:
-					span.word Hello
-					span.word Hello
-					span.word Hello
+					span.wordDesc {{message.words}}
 				.raitingMessage(v-else)
 					.raitingItem
 						img(src="../../assets/rating/phoneticsGreen.svg")
@@ -74,7 +72,7 @@
 							.then(respons=>{
 								if(!respons.err){
 									this.messages.push({text:respons.data.text,type:"user",options:{phonetics:respons.data.phonetics,grammar:respons.data.grammar,lexicon:respons.data.lexicon}});
-									this.messages.push({text:respons.data.answer,type:"bot"});
+									this.messages.push({text:respons.data.answer,type:"bot",words:respons.data.words});
 									this.scrollToDown();
 									this.startSound(respons.data.answer)
 								}
@@ -113,6 +111,15 @@
 </script>
 
 <style scoped>
+	.help{
+		width: 100%;
+		max-width: 600px;
+		padding: 0 15px;
+		color: #15CC5E;
+		text-align: center;
+		background: white;
+		margin: 0 auto;
+	}
 	.fixedTop{
 		position: fixed;
 		z-index: 1;
@@ -158,9 +165,11 @@
 		background: #36A6E5 !important;
 	}
 	.chatBlock{
-		position: absolute;
+		position: relative;
 		width: 100%;
-		padding: 300px 15px 100px 15px;
+		padding: 370px 15px 100px 15px;
+		max-width: 600px;
+		margin: 0 auto;
 	}
 	.message{
 		width: 100%;
@@ -198,12 +207,6 @@
 		font-size: 12px;
 		display: block;
 		margin-top: 10px;
-	}
-	.word{
-		color: #15CC5E;
-		font-size: 12px;
-		display: block;
-		margin-bottom: 5px;
 	}
 	.raitingMessage{
 		display: flex;

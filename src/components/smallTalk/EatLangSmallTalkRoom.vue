@@ -7,7 +7,7 @@
 			.message(v-for="message in messages" :class="message.type==='user'?'me':'noMe'")
 				.content
 					span {{message.text}}
-				.keyWords(v-if="message.type!=='user'")
+				.keyWords(v-if="message.type!=='user'&&questions_id!==7")
 					span.wordDesc Используйте опорные слова:
 					span.word(v-for="word in message.words") {{word}}
 				.raitingMessage(v-else)
@@ -106,7 +106,7 @@
 									if(this.questions_id===7){ //Модальное окно конца
 										setTimeout(()=>{
 											this.$refs.endGame.show();
-										},5000)
+										},2000)
 									}
 								}
 								this.distance=JSON.stringify(respons)
@@ -206,9 +206,11 @@
 		background: #36A6E5 !important;
 	}
 	.chatBlock{
-		position: absolute;
+		position: relative;
 		width: 100%;
-		padding: 300px 15px 100px 15px;
+		padding: 330px 15px 100px 15px;
+		max-width: 600px;
+		margin: 0 auto;
 	}
 	.message{
 		width: 100%;
