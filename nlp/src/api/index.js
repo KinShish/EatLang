@@ -45,11 +45,11 @@ const sendPhonetics=(finalText,array)=>{
             }
         })
     })
-    return ((finalText.tokenizeAndStem().length/arrayKeyWords.length)*100+(11-array.length)*11)/2
+    return Math.round(((finalText.tokenizeAndStem().length/arrayKeyWords.length)*100+(11-array.length)*11)/2)
 }
 const addQuestions=(arrayTextVoic)=>{
     const questions=[
-        ['Can you help me'],
+        ['Hello Can you help me'],
         ['What can I visit in your city','What can I visit in your town','What can I visit in your place','What intresting places can I visit in your city'],
         ['Where is this church','Where is located this church','Where is it'],
         ['How can I get this church','How can I get there']
@@ -95,6 +95,7 @@ const addQuestions=(arrayTextVoic)=>{
         lexicon,
         text:finalText,
         words:words[questionsNum],
+        result:(grammar+lexicon)/2>50,
         answer:(grammar+lexicon)/2>50?answer[questionsNum][random(answer[questionsNum].length)]:faildAnswer[random(faildAnswer.length+1)]
     }
 }
