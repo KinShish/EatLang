@@ -15,13 +15,13 @@
 				.raitingMessage(v-else)
 					.raitingItem
 						img(src="../../assets/rating/phoneticsGreen.svg")
-						span {{word.options.phonetics+'%'}}
+						span {{message.options.phonetics+'%'}}
 					.raitingItem
 						img(src="../../assets/rating/grammarGreen.svg")
-						span {{word.options.grammar+'%'}}
+						span {{message.options.grammar+'%'}}
 					.raitingItem
 						img(src="../../assets/rating/vocabularyGreen.svg")
-						span {{word.options.lexicon+'%'}}
+						span {{message.options.lexicon+'%'}}
 			div(ref="bottom")
 		div.fixedBottom
 			.btnGetVoice

@@ -13,13 +13,13 @@
 				.raitingMessage(v-else)
 					.raitingItem
 						img(src="../../assets/rating/phoneticsGreen.svg")
-						span {{word.options.phonetics+'%'}}
+						span {{message.options.phonetics+'%'}}
 					.raitingItem
 						img(src="../../assets/rating/grammarGreen.svg")
-						span {{word.options.grammar+'%'}}
+						span {{message.options.grammar+'%'}}
 					.raitingItem
 						img(src="../../assets/rating/vocabularyGreen.svg")
-						span {{word.options.lexicon+'%'}}
+						span {{message.options.lexicon+'%'}}
 			div(ref="bottom")
 		div.fixedBottom
 			.btnGetVoice
@@ -86,7 +86,6 @@
 						axios.post('http://01taxi.ru/eatlern/'+this.questions_id,{arrayTextVote:res})
 							.then(respons=>{
 								if(!respons.data.err){
-									alert(JSON.stringify(respons.data))
 									this.messages.push({
 										text:respons.data.text,
 										type:"user",
