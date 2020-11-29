@@ -86,7 +86,7 @@
 						axios.post('http://01taxi.ru/eatlern/'+this.questions_id,{arrayTextVote:res})
 							.then(respons=>{
 								if(!respons.data.err){
-									alert(respons.data)
+									alert(JSON.stringify(respons.data))
 									this.messages.push({
 										text:respons.data.text,
 										type:"user",
