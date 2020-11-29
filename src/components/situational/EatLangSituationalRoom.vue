@@ -3,6 +3,7 @@
 		div.fixedTop
 			.placeImage
 				img(src="../../assets/story/streetGirl.svg")
+			.help Заведите разговор, попросите помочь вам. Для просьбы используйте слова «здравствуйте», «можете», «помощь»
 		.chatBlock
 			.message(v-for="message in messages" :class="message.type==='user'?'me':'noMe'")
 				.content
@@ -110,6 +111,15 @@
 </script>
 
 <style scoped>
+	.help{
+		width: 100%;
+		max-width: 600px;
+		padding: 0 15px;
+		color: #15CC5E;
+		text-align: center;
+		background: white;
+		margin: 0 auto;
+	}
 	.fixedTop{
 		position: fixed;
 		z-index: 1;
@@ -157,7 +167,7 @@
 	.chatBlock{
 		position: relative;
 		width: 100%;
-		padding: 330px 15px 100px 15px;
+		padding: 370px 15px 100px 15px;
 		max-width: 600px;
 		margin: 0 auto;
 	}
