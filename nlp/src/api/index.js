@@ -25,35 +25,52 @@ const sendLexicon=(text,finalText)=>{
             }
         }
     })
-    return (count===0?1:Math.round(count/arrayWords.length*100))*(countStem===0?1:Math.round(countStem/arrayWordsStem.length*100))/100
+    return (count===0?1:Math.round(count/arrayWords.length*100))*(arrayWordsStem.length>0?(countStem===0?1:Math.round(countStem/arrayWordsStem.length*100)):100)/100
 
 }
 const sendPhonetics=(finalText,array)=>{
     let arrayKeyWords=[];
     array.forEach(t=>{
-        arrayKeyWords=t.tokenizeAndStem().concat(arrayKeyWords);
+        let array=t.tokenizeAndStem()
+        array.forEach(w=>{
+            let flag=true;
+            for(let word of arrayKeyWords){
+                if(w===word){
+                    flag=false
+                    break
+                }
+            }
+            if(flag){
+                arrayKeyWords.push(w)
+            }
+        })
     })
-    return (finalText.tokenizeAndStem().length/arrayKeyWords.length)*(11-array.length)*11
+    return Math.round(((finalText.tokenizeAndStem().length/arrayKeyWords.length)*100+(11-array.length)*11)/2)
 }
 const addQuestions=(arrayTextVoic)=>{
     const questions=[
-        ['Can you help me'],
+        ['Hello Can you help me'],
         ['What can I visit in your city','What can I visit in your town','What can I visit in your place','What intresting places can I visit in your city'],
-        ['Where is this church','Where is located this church'],
-        ['How can I get this church']
+        ['Where is this church','Where is located this church','Where is it'],
+        ['How can I get this church','How can I get there']
     ];
     const answer=[
         ['Sure','Of course','Go on'],
         ['There is a nice ancient church. You should visit it','There is a wonderful ancient church. You should visit it'],
         ['In the suburb','In the outskirts','In the countryside'],
         ['You can take bus number 5']
-    ]
+    ];
+    const words=[
+      'Для продолжения беседы используйте слова «что», «посетить», «город»',
+        'Уточните, «где она», используйте слово «расположенный», «церковь»',
+        'точните, как туда добраться, используя слова «как», «попасть туда»',
+        ''
+    ];
     let finalText=arrayTextVoic[0].toLowerCase();
     let num=0,min=100,questionsNum,questionsText;
     questions.forEach(array=>{
         for(let t of array){
             let analysisNLP=natural.LevenshteinDistance(t.toLowerCase(), finalText.toLowerCase(), {search: true});
-            //max=max===0?analysisNLP.distance:(max>analysisNLP.distance?max:analysisNLP.distance)
             min=min===100?analysisNLP.distance:(min<analysisNLP.distance?min:analysisNLP.distance)
             if(min===analysisNLP.distance){
                 questionsNum=num;
@@ -62,25 +79,25 @@ const addQuestions=(arrayTextVoic)=>{
         }
         num++;
     })
+    console.log(questionsText)
     const faildAnswer=['I don\'t get you','I don\'t understand you','I can\'t understand','I don\'t get your','I don\'t know what you\'re talking about','Didn’t catch that']
     const random=(n)=>{return Math.floor(Math.random() * (n-1));}
     let analysisNLP=natural.LevenshteinDistance(questionsText.toLowerCase(),finalText, {search: true});
-    /*arrayTextVoic.forEach(t=>{
-        let analysisNLP=natural.LevenshteinDistance(text.toLowerCase(), t.toLowerCase(), {search: true});
-        max=max===0?analysisNLP.distance:(max>analysisNLP.distance?max:analysisNLP.distance)
-        min=min===0?analysisNLP.distance:(min<analysisNLP.distance?min:analysisNLP.distance)
-        if(max===analysisNLP.distance){
-            finalText=t.toLowerCase();
-        }
-    })*/
 
     const phonetics=sendPhonetics(finalText,arrayTextVoic)
 
     const lexicon=sendLexicon(questionsText.toLowerCase(),finalText);
-    //console.log(Math.round(100-analysisNLP.distance/questionsText.length*100),lexicon,(1-analysisNLP.distance/questionsText.length)*lexicon)
-    const grammar=Math.round((1-analysisNLP.distance/questionsText.length)*lexicon);
-    //console.log(questionsNum,random(answer[questionsNum].length),answer[questionsNum].length,answer[questionsNum][random(answer[questionsNum].length)])
-    return {err:false,phonetics,grammar,lexicon,text:finalText,answer:(grammar+lexicon)/2>50?answer[questionsNum][random(answer[questionsNum].length)]:faildAnswer[random(faildAnswer.length+1)]}
+    const grammar=Math.round((1-analysisNLP.distance/questionsText.length)*100);
+    return {
+        err:false,
+        phonetics,
+        grammar,
+        lexicon,
+        text:finalText,
+        words:words[questionsNum],
+        result:(grammar+lexicon)/2>50,
+        answer:(grammar+lexicon)/2>50?answer[questionsNum][random(answer[questionsNum].length)]:faildAnswer[random(faildAnswer.length+1)]
+    }
 }
 
 const checkQuestionSmallTalk=(id,arrayTextVote)=>{
@@ -97,7 +114,6 @@ const checkQuestionSmallTalk=(id,arrayTextVote)=>{
     let num=0,min=100,answerEnd;
     answer[id].forEach(text=>{
         let analysisNLP=natural.LevenshteinDistance(text.toLowerCase(), finalText, {search: true});
-        //max=max===0?analysisNLP.distance:(max>analysisNLP.distance?max:analysisNLP.distance)
         min=min===100?analysisNLP.distance:(min<analysisNLP.distance?min:analysisNLP.distance)
         if(min===analysisNLP.distance){
             answerEnd={num,text:text.toLowerCase(),nlp:analysisNLP};
@@ -109,7 +125,7 @@ const checkQuestionSmallTalk=(id,arrayTextVote)=>{
     const phonetics=sendPhonetics(finalText,arrayTextVote)
     const lexicon=sendLexicon(answerEnd.text,finalText);
     console.log(answerEnd.nlp.distance,answerEnd.text.length)
-    const grammar=Math.round((1-answerEnd.nlp.distance/answerEnd.text.length)*lexicon);
+    const grammar=Math.round(1-answerEnd.nlp.distance/answerEnd.text.length);
     return {
         err:false,
         phonetics,
@@ -142,7 +158,6 @@ exports.plugin = {
             config: {
                 async handler(req) {
                     let {arrayTextVoic}=req.payload;
-                    console.log(arrayTextVoic)
                     try{
                         return addQuestions(arrayTextVoic)
                     }catch (e) {
