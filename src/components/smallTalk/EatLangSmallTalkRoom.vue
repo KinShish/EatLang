@@ -11,15 +11,7 @@
 					span.wordDesc Используйте опорные слова:
 					span.word(v-for="word in message.words") {{word}}
 				.raitingMessage(v-else)
-					.raitingItem
-						img(src="../../assets/rating/phoneticsGreen.svg")
-						span {{word.options.phonetics+'%'}}
-					.raitingItem
-						img(src="../../assets/rating/grammarGreen.svg")
-						span {{word.options.grammar+'%'}}
-					.raitingItem
-						img(src="../../assets/rating/vocabularyGreen.svg")
-						span {{word.options.lexicon+'%'}}
+					| {{word}}
 			div(ref="bottom")
 		div.fixedBottom
 			.btnGetVoice
