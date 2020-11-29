@@ -31,9 +31,21 @@ const sendLexicon=(text,finalText)=>{
 const sendPhonetics=(finalText,array)=>{
     let arrayKeyWords=[];
     array.forEach(t=>{
-        arrayKeyWords=t.tokenizeAndStem().concat(arrayKeyWords);
+        let array=t.tokenizeAndStem()
+        array.forEach(w=>{
+            let flag=true;
+            for(let word of arrayKeyWords){
+                if(w===word){
+                    flag=false
+                    break
+                }
+            }
+            if(flag){
+                arrayKeyWords.push(w)
+            }
+        })
     })
-    return (finalText.tokenizeAndStem().length/arrayKeyWords.length)*(11-array.length)*11
+    return ((finalText.tokenizeAndStem().length/arrayKeyWords.length)*100+(11-array.length)*11)/2
 }
 const addQuestions=(arrayTextVoic)=>{
     const questions=[
