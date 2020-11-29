@@ -125,7 +125,7 @@ const checkQuestionSmallTalk=(id,arrayTextVote)=>{
     const phonetics=sendPhonetics(finalText,arrayTextVote)
     const lexicon=sendLexicon(answerEnd.text,finalText);
     console.log(answerEnd.nlp.distance,answerEnd.text.length)
-    const grammar=Math.round(1-answerEnd.nlp.distance/answerEnd.text.length);
+    const grammar=Math.round((1-answerEnd.nlp.distance/answerEnd.text.length)*100);
     return {
         err:false,
         phonetics,
