@@ -70,8 +70,8 @@
 						axios.post('http://01taxi.ru/eatlern',{arrayTextVoic:res})
 							.then(respons=>{
 								if(!respons.err){
-									this.messages.push({text:respons.data.text,type:"user",words:respons.data.words,options:{phonetics:respons.data.phonetics,grammar:respons.data.grammar,lexicon:respons.data.lexicon}});
-									this.messages.push({text:respons.data.answer,type:"bot"});
+									this.messages.push({text:respons.data.text,type:"user",options:{phonetics:respons.data.phonetics,grammar:respons.data.grammar,lexicon:respons.data.lexicon}});
+									this.messages.push({text:respons.data.answer,type:"bot",words:respons.data.words});
 									this.scrollToDown();
 									this.startSound(respons.data.answer)
 								}
